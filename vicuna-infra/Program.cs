@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Diagnostics;
-using vicuna_infra.Responses;
 
 var builder = WebApplication.CreateBuilder(args);
 
