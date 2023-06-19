@@ -1,6 +1,6 @@
 ﻿using System.Linq.Expressions;
 
-namespace Fivevoices.Backend.Db.Generic
+namespace vicuna_ddd.Infrastructure
 {
     public interface IGenericRepository<T> where T : class
     {

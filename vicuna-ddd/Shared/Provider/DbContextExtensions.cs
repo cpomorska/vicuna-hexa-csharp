@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
-namespace Fivevoices.Backend.Db.Context
+namespace vicuna_ddd.Shared.Provider
 {
     public static class DbContextExtensions
     {

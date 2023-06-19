@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 
-namespace vicuna_ddd.Model
+namespace vicuna_ddd.Model.Users.Entity
 {
     public class UserHash
     {

@@ -1,4 +1,4 @@
-﻿namespace vicuna_ddd.Model
+﻿namespace vicuna_ddd.Model.Users.Entity
 {
     public enum UserRoleTypes
     {

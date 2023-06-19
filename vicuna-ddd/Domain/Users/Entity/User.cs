@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics.CodeAnalysis;
 
-namespace vicuna_ddd.Model
+namespace vicuna_ddd.Model.Users.Entity
 {
     /// <summary>
     /// entity class / dao for users

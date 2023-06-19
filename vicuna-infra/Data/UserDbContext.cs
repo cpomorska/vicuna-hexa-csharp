@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using vicuna_ddd.Shared;
+using vicuna_ddd.Model.Users.Entity;
+using vicuna_ddd.Shared.Provider;
 
 namespace vicuna_ddd.Model
 {

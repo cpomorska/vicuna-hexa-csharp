@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
 
-namespace vicuna_ddd.Model
+namespace vicuna_ddd.Model.Users.Entity
 {
     /// <summary>
     /// entity class / dao for user roles
@@ -12,12 +12,12 @@ namespace vicuna_ddd.Model
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public virtual Int32 RoleId { get; set; }
+        public virtual int RoleId { get; set; }
         [NotNull]
-        public virtual String RoleName { get; set; }
+        public virtual string RoleName { get; set; }
         [NotNull]
         [EnumDataType(typeof(UserRoleTypes))]
         public virtual UserRoleTypes RoleType { get; set; }
-        public virtual String? RoleDescription { get; set; }
+        public virtual string? RoleDescription { get; set; }
     }
 }

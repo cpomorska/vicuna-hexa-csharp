@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace vicuna_ddd.Shared
+namespace vicuna_ddd.Shared.Provider
 {
     public class GenericDbContext : DbContext
     {

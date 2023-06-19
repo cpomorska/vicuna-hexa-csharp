@@ -1,8 +1,8 @@
 ﻿using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
-using vicuna_ddd.Shared;
+using vicuna_ddd.Shared.Provider;
 
-namespace Fivevoices.Backend.Db.Generic
+namespace vicuna_ddd.Infrastructure
 {
     public class GenericRepository<TDbContext, T> : IGenericRepository<T>
         where TDbContext : GenericDbContext
@@ -85,7 +85,7 @@ namespace Fivevoices.Backend.Db.Generic
                     context.Set<T>().Remove(item);
                     context.SaveChanges();
                 }
-                
+
             }
         }
 
