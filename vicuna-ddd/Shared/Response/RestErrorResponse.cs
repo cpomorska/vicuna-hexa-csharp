@@ -1,17 +1,12 @@
-﻿using vicuna_ddd.Domain.Users.Dto;
+﻿using vicuna_ddd.Domain.Users.Exceptions;
 
 namespace vicuna_ddd.Shared.Response
 {
     public class RestErrorResponse : ErrorResponseDto
     {
-        public string Type { get; set; }
-        public string Message { get; set; }
-        public string StackTrace { get; set; }
 
-        public RestErrorResponse(Exception ex)
+        public RestErrorResponse(UserException ex) : base(ex)
         {
-            Type = ex.GetType().Name;
-            Message = ex.Message;
         }
     }
 }
