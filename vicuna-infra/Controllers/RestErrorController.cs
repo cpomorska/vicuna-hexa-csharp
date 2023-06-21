@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 using vicuna_ddd.Domain.Users.Exceptions;
 using vicuna_ddd.Shared.Response;
 
@@ -21,9 +22,9 @@ namespace vicuna_infra.Controllers
             else if (exception is UserUnauthException) code = 401; 
             else if (exception is UserCreationException) code = 400;
 
-            Response.StatusCode = code;
-
-            return new RestErrorResponse(exception);
+                Response.StatusCode = code;
+                var ex = new UserException(HttpStatusCode.NotFound, ErrorCode.Unknown, exception.Message);
+                return new RestErrorResponse(ex);
         }
     }
 

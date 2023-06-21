@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
+using vicuna_ddd.Domain.Users.Dto;
 using vicuna_ddd.Domain.Users.Exceptions;
 using vicuna_ddd.Model.Users.Entity;
 using vicuna_ddd.Shared.Response;
@@ -23,7 +24,21 @@ namespace vicuna_infra.Controllers
             _userService = new UserService(loggerFactory);
         }
 
-        [HttpGet(Name = "byname/{name}")]
+        [HttpGet]
+        [Route("user/{userdto}")]
+        public User? FindUser(UserDto user)
+        {
+            var userFound = _userService.FindUser(user);
+            if (userFound == null)
+            {
+                throw new UserNotFoundException(HttpStatusCode.NotFound, ErrorCode.UserNotFound, $"User {user.UserName} not found");
+            }
+
+            return userFound;
+        }
+
+        [HttpGet]
+        [Route("byname/{name}")]
         public User? GetUserByName(string name)
         {
             var userFound = _userService.GetUserByUsername(name);
@@ -34,11 +49,12 @@ namespace vicuna_infra.Controllers
 
             return userFound;
         }
-        
-        [HttpGet(Name = "bynamepw/{name}/{pass}")]
+
+        [HttpGet]
+        [Route("bynamepw/{name}/{pass}")]
         public User? GetUserByUsernmaAndPassword(string username, string password)
         {
-            var userFound = _userService.GetUserByUsernnameAndPassword(username,password);
+            var userFound = _userService.GetUserByUsernnameAndPassword(username, password);
             if (userFound == null)
             {
                 throw new UserNotFoundException(HttpStatusCode.NotFound, ErrorCode.UserNotFound, $"User {username} not found");
@@ -47,7 +63,8 @@ namespace vicuna_infra.Controllers
             return userFound;
         }
 
-        [HttpGet(Name = "byemail/{email}")]
+        [HttpGet]
+        [Route("byemail/{email}")]
         public User? GetUserByEmail(string email)
         {
             var userFound = _userService.GetUserByEmail(email);

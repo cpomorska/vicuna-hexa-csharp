@@ -10,18 +10,12 @@ namespace vicuna_ddd.Shared.Response
         [Required]
         public string Message { get; set; }
         public ErrorCode ErrorCode { get; set; }
-        public Exception Ex { get; }
 
         public ErrorResponseDto(UserException ex)
         {
             Type = ex.GetType().Name;
             Message = ex.Message;
             ErrorCode = ex.ErrorCode;
-        }
-
-        public ErrorResponseDto(Exception ex)
-        {
-            Ex = ex;
         }
     }
 }

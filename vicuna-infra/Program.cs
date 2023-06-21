@@ -24,7 +24,7 @@ app.UseExceptionHandler(c => c.Run(async context =>
     var exception = context.Features
         .Get<IExceptionHandlerPathFeature>()?
         .Error;
-    var response = new { exception };
+    var response = new { exception.Message };
     await context.Response.WriteAsJsonAsync(response);
 }));
 

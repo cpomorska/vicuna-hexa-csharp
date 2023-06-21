@@ -8,11 +8,12 @@ namespace vicuna_ddd.Infrastructure
         where TDbContext : GenericDbContext
     where T : class
     {
+        private readonly IDbContextFactory<TDbContext> _contextFactory;
         public bool UnitTestDb { get; set; }
 
         public void Add(params T[] items)
         {
-            using (var context = new GenericDbContext(UnitTestDb))
+            using (var context = new UserDbContext(UnitTestDb))
             {
                 foreach (var item in items)
                 {
@@ -25,7 +26,7 @@ namespace vicuna_ddd.Infrastructure
         public IList<T> GetAll(params Expression<Func<T, object>>[] navigationProperties)
         {
             List<T> list;
-            using (var context = new GenericDbContext(UnitTestDb))
+            using (var context = new UserDbContext(UnitTestDb))
             {
                 IQueryable<T> dbQuery = context.Set<T>();
 
@@ -43,7 +44,7 @@ namespace vicuna_ddd.Infrastructure
         public IList<T> GetList(Func<T, bool> where, params Expression<Func<T, object>>[] navigationProperties)
         {
             List<T> list;
-            using (var context = new GenericDbContext(UnitTestDb))
+            using (var context = new UserDbContext(UnitTestDb))
             {
                 IQueryable<T> dbQuery = context.Set<T>();
 
@@ -61,7 +62,7 @@ namespace vicuna_ddd.Infrastructure
         public T GetSingle(Func<T, bool> where, params Expression<Func<T, object>>[] navigationProperties)
         {
             T item;
-            using (var context = new GenericDbContext(UnitTestDb))
+            using (var context = new UserDbContext(UnitTestDb))
             {
                 IQueryable<T> dbQuery = context.Set<T>();
 
@@ -78,7 +79,7 @@ namespace vicuna_ddd.Infrastructure
 
         public void Remove(params T[] items)
         {
-            using (var context = new GenericDbContext(UnitTestDb))
+            using (var context = new UserDbContext(UnitTestDb))
             {
                 foreach (var item in items)
                 {
@@ -91,7 +92,7 @@ namespace vicuna_ddd.Infrastructure
 
         public void Update(params T[] items)
         {
-            using (var context = new GenericDbContext(UnitTestDb))
+            using (var context = new UserDbContext(UnitTestDb))
             {
                 foreach (var item in items)
                 {

@@ -16,6 +16,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <InternalsVisibleTo Include="$(AssemblyName)-test" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\vicuna-ddd\vicuna-core-lib.csproj" />
   </ItemGroup>
 

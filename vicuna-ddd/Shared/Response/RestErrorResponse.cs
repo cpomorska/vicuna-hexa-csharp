@@ -4,8 +4,9 @@ namespace vicuna_ddd.Shared.Response
 {
     public class RestErrorResponse : ErrorResponseDto
     {
+        private Exception? exception;
 
-        public RestErrorResponse(Exception ex) : base(ex)
+        public RestErrorResponse(UserException ex) : base(ex)
         {
         }
     }

@@ -1,15 +1,23 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using vicuna_ddd.Model.Users.Entity;
-using vicuna_ddd.Shared.Provider;
 
-namespace vicuna_ddd.Model
+namespace vicuna_ddd.Shared.Provider
 {
-    public class UserDbContext : GenericDbContext
+    public partial class UserDbContext : GenericDbContext
     {
         public DbSet<User>? Users { get; set; }
         public DbSet<UserHash>? UserHash { get; set; }
         public DbSet<UserRole>? UserRoles { get; set; }
+
+        public UserDbContext(bool useInMemoryDb) : base(useInMemoryDb)
+        {
+            UseInMemoryDb = useInMemoryDb;
+        }
+
+        public UserDbContext(DbContextOptions options) : base(options)
+        {
+        }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -19,11 +27,14 @@ namespace vicuna_ddd.Model
             {
                 var configuration = DbConfigurationProvider.GetApplicationConfigurationRoot();
                 var connectionString = configuration.GetConnectionString("DataAccessPostgreSqlProvider");
-                optionsBuilder.UseNpgsql(connectionString);
-            }
-            else
-            {
-                optionsBuilder.UseInMemoryDatabase(@"Database=EFProviders.InMemory;Trusted_Connection=True;");
+                if (connectionString == null)
+                {
+                    optionsBuilder.UseInMemoryDatabase(@"Database=EFProviders.InMemory;Trusted_Connection=True;");
+                }
+                else
+                {
+                    optionsBuilder.UseNpgsql(connectionString);
+                }
             }
         }
     }
