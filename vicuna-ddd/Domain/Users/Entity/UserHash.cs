@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace vicuna_ddd.Model.Users.Entity
 {
+    [Table("vicunauserhash")]
     public class UserHash
     {
         [Key]

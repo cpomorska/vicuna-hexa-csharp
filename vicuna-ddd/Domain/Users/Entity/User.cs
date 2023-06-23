@@ -7,13 +7,15 @@ namespace vicuna_ddd.Model.Users.Entity
     /// <summary>
     /// entity class / dao for users
     /// </summary>
+    /// 
+    [Table("vicunausers")]
     public class User
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int UserId { get; set; }
         [NotNull]
-        public string? UserNumber { get; set; }
+        public Guid UserNumber { get; set; }
         [NotNull]
         public string? UserToken { get; set; }
         [NotNull]

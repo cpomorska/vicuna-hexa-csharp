@@ -30,7 +30,6 @@ namespace vicuna_ddd.Infrastructure
             {
                 IQueryable<T> dbQuery = context.Set<T>();
 
-                //Apply eager loading
                 foreach (Expression<Func<T, object>> navigationProperty in navigationProperties)
                     dbQuery = dbQuery.Include(navigationProperty);
 
@@ -66,7 +65,6 @@ namespace vicuna_ddd.Infrastructure
             {
                 IQueryable<T> dbQuery = context.Set<T>();
 
-                //Apply eager loading
                 foreach (Expression<Func<T, object>> navigationProperty in navigationProperties)
                     dbQuery = dbQuery.Include(navigationProperty);
 

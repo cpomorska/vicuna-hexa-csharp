@@ -6,6 +6,9 @@
         Unknown = 1,
         DbError = 200,
         UserNotFound = 300,
-        UserNotEnabled = 399
+        UserNotCreated = 304,
+        UserNotUpdated = 305,
+        UserNotEnabled = 399,
+        UserNotRemoved = 400
     }
 }

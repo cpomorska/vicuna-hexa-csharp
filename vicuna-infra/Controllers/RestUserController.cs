@@ -29,12 +29,9 @@ namespace vicuna_infra.Controllers
         public User? FindUser(UserDto user)
         {
             var userFound = _userService.FindUser(user);
-            if (userFound == null)
-            {
-                throw new UserNotFoundException(HttpStatusCode.NotFound, ErrorCode.UserNotFound, $"User {user.UserName} not found");
-            }
-
-            return userFound;
+            return userFound == null
+                ? throw new UserNotFoundException(HttpStatusCode.NotFound, ErrorCode.UserNotFound, $"User {user.UserName} not found")
+                : userFound;
         }
 
         [HttpGet]
@@ -42,12 +39,9 @@ namespace vicuna_infra.Controllers
         public User? GetUserByName(string name)
         {
             var userFound = _userService.GetUserByUsername(name);
-            if (userFound == null) 
-            { 
-                throw new UserNotFoundException(HttpStatusCode.NotFound, ErrorCode.UserNotFound, $"User {name} not found"); 
-            }
-
-            return userFound;
+            return userFound == null
+                ? throw new UserNotFoundException(HttpStatusCode.NotFound, ErrorCode.UserNotFound, $"User {name} not found")
+                : userFound;
         }
 
         [HttpGet]
@@ -55,12 +49,9 @@ namespace vicuna_infra.Controllers
         public User? GetUserByUsernmaAndPassword(string username, string password)
         {
             var userFound = _userService.GetUserByUsernnameAndPassword(username, password);
-            if (userFound == null)
-            {
-                throw new UserNotFoundException(HttpStatusCode.NotFound, ErrorCode.UserNotFound, $"User {username} not found");
-            }
-
-            return userFound;
+            return userFound == null
+                ? throw new UserNotFoundException(HttpStatusCode.NotFound, ErrorCode.UserNotFound, $"User {username} not found")
+                : userFound;
         }
 
         [HttpGet]
@@ -68,12 +59,9 @@ namespace vicuna_infra.Controllers
         public User? GetUserByEmail(string email)
         {
             var userFound = _userService.GetUserByEmail(email);
-            if (userFound == null)
-            {
-                throw new UserNotFoundException(HttpStatusCode.NotFound, ErrorCode.UserNotFound, $"User {email} not found");
-            }
-
-            return userFound;
+            return userFound == null
+                ? throw new UserNotFoundException(HttpStatusCode.NotFound, ErrorCode.UserNotFound, $"User {email} not found")
+                : userFound;
         }
     }
 }
