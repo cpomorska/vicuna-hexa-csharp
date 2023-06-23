@@ -13,7 +13,7 @@ using vicuna_infra.Repository;
 namespace vicuna_infra_test
 {
     [TestClass]
-    public class RestUserManagementControllerTest
+    public class RestManagementControllerTest
     {
         private const string PostUriAddUser = "manage/create";
         private const string PostUriRemoveUser = "manage/remove";
@@ -24,7 +24,7 @@ namespace vicuna_infra_test
         private UserRepository _userRepository;
         private User _user;
 
-        public RestUserManagementControllerTest() 
+        public RestManagementControllerTest() 
         {
             var webAppFactory = new WebApplicationFactory<Program>();
             _httpClient = webAppFactory.CreateDefaultClient();
