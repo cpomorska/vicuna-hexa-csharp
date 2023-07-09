@@ -8,7 +8,7 @@ namespace vicuna_ddd.Infrastructure
         where TDbContext : GenericDbContext
     where T : class
     {
-        private readonly IDbContextFactory<TDbContext> _contextFactory;
+
         public bool UnitTestDb { get; set; }
 
         public void Add(params T[] items)

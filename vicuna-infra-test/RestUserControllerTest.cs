@@ -1,11 +1,9 @@
 using Microsoft.AspNetCore.Mvc.Testing;
-using System.Net.Http.Json;
 using System.Text.Json;
 using vicuna_ddd.Domain.Users.Dto;
 using vicuna_ddd.Domain.Users.Exceptions;
 using vicuna_ddd.Model.Users.Entity;
 using vicuna_ddd.Shared.Provider;
-using vicuna_ddd.Shared.Util;
 using vicuna_infra.Repository;
 
 namespace vicuna_infra_test
@@ -19,7 +17,7 @@ namespace vicuna_infra_test
         private const string RequestUriUserNotExist = "/read/byname/Loinin";
         private const string RequestUriEmail = "/read/byemail/testemail@test.de";
 
-        private HttpClient _httpClient;
+        private readonly HttpClient _httpClient;
         private UserRepository _userRepository;
         private User _user;
 
@@ -37,15 +35,15 @@ namespace vicuna_infra_test
         }
 
         [TestInitialize]
-        public void setup()
+        public void Setup()
         {
             _userRepository = new UserRepository();
-            _user = createTestUser("TestUser");
+            _user = RestControllerTestHelpers.CreateTestUser("TestUser");
             _userRepository.Add(_user);
         }
 
         [TestCleanup]
-        public void teardown()
+        public void Teardown()
         {
             _userRepository = new UserRepository();
             var users = _userRepository.GetAll();
@@ -104,42 +102,11 @@ namespace vicuna_infra_test
             try
             {
                 response = await _httpClient.GetAsync(RequestUriUserNotExist);
-                var userResult = JsonSerializer.Deserialize<User>(await response.Content.ReadAsStringAsync());
+                JsonSerializer.Deserialize<User>(await response.Content.ReadAsStringAsync());
             } catch (Exception ex) {
                 Assert.IsInstanceOfType(ex.GetType(), typeof(UserNotFoundException));
-                Assert.AreEqual(response?.StatusCode, 404);
+                Assert.AreEqual(404, response?.StatusCode);
             }
-        }
-
-        private User createTestUser(string username)
-        {
-            var randomSaltMann = HashUtil.GetRandomSalt(13);
-            var guid = Guid.NewGuid();
-
-            var userHash = new UserHash
-            {
-                saltField = randomSaltMann,
-                hashField = HashUtil.CalculateCustomerHash(username, randomSaltMann),
-            };
-
-            var userRole = new UserRole
-            {
-                RoleName = "TestRole",
-                RoleDescription = "TestDescription",
-                RoleType = UserRoleTypes.Admin
-            };
-
-            return new User
-            {
-                UserName = username,
-                UserEmail = "testemail@test.de",
-                UserPass = "Testpass",
-                UserNumber = guid,
-                UserToken = "userToken",
-                UserHash = userHash,
-                UserRole = userRole,
-                UserEnabled = true
-            };
         }
     }
 }

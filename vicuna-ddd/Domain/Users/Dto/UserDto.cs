@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using vicuna_ddd.Model.Users.Entity;
+﻿using vicuna_ddd.Model.Users.Entity;
 
 namespace vicuna_ddd.Domain.Users.Dto
 {
