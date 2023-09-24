@@ -1,6 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics.CodeAnalysis;
+using System.Text.Json.Serialization;
+using vicuna_ddd.Shared.Entity;
 
 namespace vicuna_ddd.Model.Users.Entity
 {
@@ -9,11 +11,12 @@ namespace vicuna_ddd.Model.Users.Entity
     /// </summary>
     /// 
     [Table("vicunausers")]
-    public class User
+    public class User : BaseEntity
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int UserId { get; set; }
+        [JsonIgnore]
+        public long UserId { get; set; }
         [NotNull]
         public Guid UserNumber { get; set; }
         [NotNull]

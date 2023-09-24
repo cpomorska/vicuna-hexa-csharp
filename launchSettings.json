@@ -1,0 +1,15 @@
+{
+  "profiles": {
+    "Docker Compose": {
+      "commandName": "DockerCompose",
+      "commandVersion": "1.0",
+      "serviceActions": {
+        "vicuna-infra": "StartWithoutDebugging",
+        "kafka": "StartWithoutDebugging",
+        "keycloak": "StartWithoutDebugging",
+        "postgres": "StartWithoutDebugging",
+        "postgres-kc": "StartWithoutDebugging"
+      }
+    }
+  }
+}

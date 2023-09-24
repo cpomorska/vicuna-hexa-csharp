@@ -3,13 +3,8 @@ using vicuna_ddd.Shared.Util;
 
 namespace vicuna_infra_test
 {
-    public sealed class RestControllerTestHelpers
+    public static class RestControllerTestHelpers
     {
-        private RestControllerTestHelpers()
-        {
-            //NOSONAR
-        }
-
         public static User CreateTestUser(string username)
         {
             var randomSaltMann = HashUtil.GetRandomSalt(13);

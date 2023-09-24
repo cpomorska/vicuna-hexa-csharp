@@ -1,14 +1,15 @@
 ﻿using System.Linq.Expressions;
+using vicuna_ddd.Shared.Entity;
 
 namespace vicuna_ddd.Infrastructure
 {
-    public interface IGenericRepository<T> where T : class
+    public interface IGenericRepository<T> where T : BaseEntity
     {
-        IList<T> GetAll(params Expression<Func<T, object>>[] navigationProperties);
-        IList<T> GetList(Func<T, bool> where, params Expression<Func<T, object>>[] navigationProperties);
-        T GetSingle(Func<T, bool> where, params Expression<Func<T, object>>[] navigationProperties);
-        void Add(params T[] items);
-        void Update(params T[] items);
-        void Remove(params T[] items);
+        Task<IList<T>> GetAll(params Expression<Func<T, object>>[] navigationProperties);
+        Task<IList<T>> GetList(Expression<Func<T, bool>> where, params Expression<Func<T, object>>[] navigationProperties);
+        Task<T> GetSingle(Expression<Func<T, bool>> where, params Expression<Func<T, object>>[] navigationProperties);
+        Task Add(params T[] items);
+        Task Update(params T[] items);
+        Task Remove(params T[] items);
     }
 }

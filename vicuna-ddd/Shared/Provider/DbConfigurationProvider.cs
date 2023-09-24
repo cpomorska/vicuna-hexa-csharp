@@ -2,16 +2,16 @@
 
 namespace vicuna_ddd.Shared.Provider
 {
-    public class DbConfigurationProvider
+    public static class DbConfigurationProvider
     {
         private static IConfigurationRoot _userConfigurationRoot;
 
         public static IConfigurationRoot GetApplicationConfigurationRoot()
         {
-            return BuildConfiguartion();
+            return BuildConfiguration();
         }
 
-        private static IConfigurationRoot BuildConfiguartion()
+        private static IConfigurationRoot BuildConfiguration()
         {
             {
                 if (_userConfigurationRoot == null)

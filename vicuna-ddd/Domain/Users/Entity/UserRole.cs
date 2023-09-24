@@ -6,7 +6,7 @@ namespace vicuna_ddd.Model.Users.Entity
 {
     /// <summary>
     /// entity class / dao for user roles
-    /// TODO: use for user managment
+    /// used for user management
     /// </summary> 
     [Table("vicunauserrole")]
     public class UserRole

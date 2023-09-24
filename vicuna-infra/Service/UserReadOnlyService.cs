@@ -6,83 +6,83 @@ using vicuna_infra.Repository;
 
 namespace vicuna_infra.Service
 {
-    public class UserService : IUserService
+    public class UserReadOnlyService : IUserService
     {
         private readonly UserRepository _userRepository;
         private readonly ILogger _logger;
 
-        public UserService(ILoggerFactory loggerFactory)
+        public UserReadOnlyService(ILoggerFactory loggerFactory)
         {
             _logger = loggerFactory.CreateLogger<RestUserController>();
             _userRepository = new UserRepository();
         }
 
-        public User? FindUser(UserDto userDto)
+        public Task<User?> FindUser(UserDto userDto)
         {
             IEnumerable<User> userEntries = new List<User>();
             try
             {
                 _logger.LogInformation("Reading entries by Username");
                 userEntries = _userRepository
-                    .GetList(x => x.UserName == userDto.UserName && x.UserNumber == userDto.UserNumber && x.UserPass == userDto.UserPass && x.UserEnabled == userDto.UserEnabled).ToImmutableList();
+                    .GetList(x => x.UserName == userDto.UserName && x.UserNumber == userDto.UserNumber && x.UserPass == userDto.UserPass && x.UserEnabled == userDto.UserEnabled).Result.ToImmutableList();
             }
             catch (Exception ex)
             {
                 _logger.LogError("Error reading all entries from user  | " + ex);
             }
 
-            return userEntries?.FirstOrDefault();
+            return Task.FromResult(userEntries?.FirstOrDefault());
         }
 
-        public User? GetUserByEmail(string email)
+        public async Task<User?> GetUserByEmail(string email)
         {
             IEnumerable<User> userEntries = new List<User>();
             try
             {
                 _logger.LogInformation("Reading entries by Username");
                userEntries = _userRepository
-                    .GetList(x => x.UserEmail == email).ToImmutableList();
+                    .GetList(x => x.UserEmail == email).Result.ToImmutableList();
             }
             catch (Exception ex)
             {
                 _logger.LogError("Error reading entries from user by email  | " + ex);
             }
 
-            return userEntries?.FirstOrDefault();
+            return await Task.FromResult(userEntries?.FirstOrDefault());
         }
 
-        public User? GetUserByUsernnameAndPassword(string userName, string password)
+        public async Task<User?> GetUserByUsernnameAndPassword(string userName, string password)
         {
             IEnumerable<User> userEntries = new List<User>();
             try
             {
                 _logger.LogInformation("Reading entries by Username");
                 userEntries = _userRepository
-                     .GetList(x => x.UserName == userName && x.UserPass == password).ToImmutableList();
+                     .GetList(x => x.UserName == userName && x.UserPass == password).Result.ToImmutableList();
             }
             catch (Exception ex)
             {
                 _logger.LogError("Error reading entries from user by email  | " + ex);
             }
 
-            return userEntries?.FirstOrDefault();
+            return await Task.FromResult(userEntries?.FirstOrDefault());
         }
 
-        public User? GetUserByUsername(string username)
+        public Task <User?> GetUserByUsername(string username)
         {
             IEnumerable<User>? userEntries = null;
             try
             {
                 _logger.LogInformation("Reading entries by Username");
                 userEntries = _userRepository
-                    .GetList(x => x.UserName == username).ToImmutableList();
+                    .GetList(x => x.UserName == username).Result.ToImmutableList();
             }
             catch (Exception ex)
             {
                 _logger.LogError("Error reading all entries from user  | " + ex);
             }
 
-            return userEntries?.FirstOrDefault(); ;
+            return Task.FromResult(userEntries?.FirstOrDefault());
         }
     }
 }

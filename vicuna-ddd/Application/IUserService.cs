@@ -5,9 +5,9 @@ namespace vicuna_infra.Service
 {
     public interface IUserService
     {
-        User? GetUserByEmail(string email);
-        User? GetUserByUsername(string username);
-        User? GetUserByUsernnameAndPassword(string userName, string password);
-        User? FindUser(UserDto userDto);
+        Task<User?> GetUserByEmail(string email);
+        Task<User?> GetUserByUsername(string username);
+        Task<User?> GetUserByUsernnameAndPassword(string userName, string password);
+        Task<User?> FindUser(UserDto userDto);
     }
 }

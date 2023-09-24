@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  vicuna-infra:
+    image: ${DOCKER_REGISTRY-}vicunainfra
+    build:
+      context: .
+      dockerfile: Dockerfile

@@ -1,10 +1,11 @@
 using Microsoft.AspNetCore.Mvc.Testing;
+using System.Net;
 using System.Text.Json;
 using vicuna_ddd.Domain.Users.Dto;
 using vicuna_ddd.Domain.Users.Exceptions;
 using vicuna_ddd.Model.Users.Entity;
-using vicuna_ddd.Shared.Provider;
 using vicuna_infra.Repository;
+using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 
 namespace vicuna_infra_test
 {
@@ -18,20 +19,15 @@ namespace vicuna_infra_test
         private const string RequestUriEmail = "/read/byemail/testemail@test.de";
 
         private readonly HttpClient _httpClient;
+
         private UserRepository _userRepository;
         private User _user;
 
         public RestUserControllerTest() 
         {
-            var webAppFactory = new WebApplicationFactory<Program>();
-            _httpClient = webAppFactory.CreateDefaultClient();
+            var webFactory = new WebApplicationFactory<Program>();
+            _httpClient = webFactory.CreateDefaultClient();
 
-            using (var client = new UserDbContext(false))
-            {
-                client.Database.EnsureCreated();
-            }
-
-            _userRepository = new UserRepository();
         }
 
         [TestInitialize]
@@ -39,18 +35,18 @@ namespace vicuna_infra_test
         {
             _userRepository = new UserRepository();
             _user = RestControllerTestHelpers.CreateTestUser("TestUser");
-            _userRepository.Add(_user);
+            _ = _userRepository.Add(_user);
         }
 
         [TestCleanup]
         public void Teardown()
         {
             _userRepository = new UserRepository();
-            var users = _userRepository.GetAll();
+            var users = _userRepository.GetAll().Result;
 
             foreach (var user in users)
             {
-                _userRepository.Remove(user);
+                _ = _userRepository.Remove(user);
             }
         }
 
@@ -65,7 +61,7 @@ namespace vicuna_infra_test
             HttpResponseMessage response = await _httpClient.GetAsync(RequestUriUserAsDto);
             var userResult = JsonSerializer.Deserialize<User>(await response.Content.ReadAsStringAsync());
             Assert.IsNotNull(userResult);
-            Assert.IsInstanceOfType(userResult, _user.GetType());
+            Assert.IsInstanceOfType<User>(userResult);
         }
 
         [TestMethod]
@@ -74,7 +70,7 @@ namespace vicuna_infra_test
             HttpResponseMessage response = await _httpClient.GetAsync(RequestUriUser);
             var userResult = JsonSerializer.Deserialize<User>(await response.Content.ReadAsStringAsync());
             Assert.IsNotNull(userResult);
-            Assert.IsInstanceOfType(userResult, _user.GetType());
+            Assert.IsInstanceOfType<User>(userResult);
         }
 
         [TestMethod]
@@ -83,7 +79,7 @@ namespace vicuna_infra_test
             HttpResponseMessage response = await _httpClient.GetAsync(RequestUriUserPass);
             var userResult = JsonSerializer.Deserialize<User>(await response.Content.ReadAsStringAsync());
             Assert.IsNotNull(userResult);
-            Assert.IsInstanceOfType(userResult, _user.GetType());
+            Assert.IsInstanceOfType<User>(userResult);
         }
 
         [TestMethod]
@@ -92,20 +88,20 @@ namespace vicuna_infra_test
             HttpResponseMessage response = await _httpClient.GetAsync(RequestUriEmail);
             var userResult = JsonSerializer.Deserialize<User>(await response.Content.ReadAsStringAsync());
             Assert.IsNotNull(userResult);
-            Assert.IsInstanceOfType(userResult, _user.GetType());
+            Assert.IsInstanceOfType<User>(userResult);
         }
 
         [TestMethod]
         public async Task TestGetUserNotFoundlAsync()
         {
-            HttpResponseMessage? response = null;
+            HttpResponseMessage response = new HttpResponseMessage();
             try
             {
                 response = await _httpClient.GetAsync(RequestUriUserNotExist);
                 JsonSerializer.Deserialize<User>(await response.Content.ReadAsStringAsync());
             } catch (Exception ex) {
-                Assert.IsInstanceOfType(ex.GetType(), typeof(UserNotFoundException));
-                Assert.AreEqual(404, response?.StatusCode);
+                Assert.IsInstanceOfType<UserNotFoundException>(ex.GetType());
+                Assert.AreEqual(HttpStatusCode.NotFound, response.StatusCode!);
             }
         }
     }

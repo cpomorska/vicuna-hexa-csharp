@@ -20,6 +20,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "vicuna-infra", "vicuna-infr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "vicuna-infra-test", "vicuna-infra-test\vicuna-infra-test.csproj", "{1A3F005F-E0FA-4543-B4C9-4451E60678D0}"
 EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{171A43FD-05F9-44AC-AE53-190B776F4B80}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -50,6 +52,10 @@ Global
 		{1A3F005F-E0FA-4543-B4C9-4451E60678D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1A3F005F-E0FA-4543-B4C9-4451E60678D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1A3F005F-E0FA-4543-B4C9-4451E60678D0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{171A43FD-05F9-44AC-AE53-190B776F4B80}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{171A43FD-05F9-44AC-AE53-190B776F4B80}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{171A43FD-05F9-44AC-AE53-190B776F4B80}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{171A43FD-05F9-44AC-AE53-190B776F4B80}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

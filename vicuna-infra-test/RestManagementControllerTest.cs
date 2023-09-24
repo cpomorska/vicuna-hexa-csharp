@@ -1,10 +1,7 @@
-using DotNet.Testcontainers.Containers;
 using Microsoft.AspNetCore.Mvc.Testing;
 using System.Net.Http.Json;
 using System.Text.Json;
-using vicuna_ddd.Model.Users.Entity;
 using vicuna_ddd.Shared.Provider;
-using vicuna_ddd.Shared.Util;
 using vicuna_infra.Repository;
 
 namespace vicuna_infra_test
@@ -43,11 +40,11 @@ namespace vicuna_infra_test
         public void Teardown()
         {
             _userRepository = new UserRepository();
-            var users = _userRepository.GetAll();
+            var users = _userRepository.GetAll().Result;
 
             foreach (var user in users)
             {
-                _userRepository.Remove(user);
+                _ = _userRepository.Remove(user);
             }
         }
 

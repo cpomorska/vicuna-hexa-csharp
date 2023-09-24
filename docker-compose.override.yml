@@ -1,0 +1,83 @@
+version: '3.4'
+
+services:
+  vicuna-infra:
+    build:
+        context: .
+        dockerfile: Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:443;http://+:80
+    ports:
+      - "80"
+      - "443"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+    networks:
+      - vicuna-net 
+
+  postgres:
+    build:
+      context: .
+    container_name: vicunapostgresql
+    environment:
+      POSTGRES_DB: vicuna_user
+      POSTGRES_USER: vicuna_user
+      POSTGRES_PASSWORD: vicuna_pg
+    ports:
+      - "15432:5432"
+    restart: unless-stopped
+    networks:
+      - vicuna-net 
+
+  postgres-kc:
+    container_name: vicunapostgresql-kc
+    image: 'postgres:15'
+    hostname: 'pgkc'
+    environment:
+      - 'POSTGRES_DB=keycloak'
+      - 'POSTGRES_PASSWORD=keycloak'
+      - 'POSTGRES_USER=keycloak'
+      - 'ADVERTISED_HOST=localhost'
+      - 'ADVERTISED_PORT=25432'
+    ports:
+      - '25432:5432'
+    networks:
+      - vicuna-net
+
+  kafka:
+    container_name: vicunakafkazookeeper
+    image: spotify/kafka
+    hostname: kafka
+    environment:
+      - 'ADVERTISED_HOST=localhost'
+      - 'ADVERTISED_PORT=29092'
+    ports:
+      - "22181:2181"
+      - "29092:9092"
+    networks:
+      - vicuna-net
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:latest
+    environment:
+      - 'KC_DB=postgres'
+      - 'KC_DB_URL=jdbc:postgresql://vicunapostgresql-kc:5432/keycloak'
+      - 'KC_DB_USERNAME=keycloak'
+      - 'KC_DB_PASSWORD=keycloak'
+      - 'KEYCLOAK_ADMIN=admin'
+      - 'KEYCLOAK_ADMIN_PASSWORD=admin'
+    command:
+      - start-dev
+    ports:
+      - "28080:8080"
+    depends_on:
+      - postgres-kc
+    networks:
+      - vicuna-net
+
+networks:
+  vicuna-net:
+    name: vicuna-net
+    driver: bridge

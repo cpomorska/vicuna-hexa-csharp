@@ -16,19 +16,19 @@ namespace vicuna_infra.Controllers
     {
 
         private readonly ILogger<RestUserController> _logger;
-        private readonly UserService _userService;
+        private readonly UserReadOnlyService _userService;
 
         public RestUserController(ILoggerFactory loggerFactory)
         {
             _logger = loggerFactory.CreateLogger<RestUserController>();
-            _userService = new UserService(loggerFactory);
+            _userService = new UserReadOnlyService(loggerFactory);
         }
 
         [HttpGet]
         [Route("user/{userdto}")]
         public User? FindUser(UserDto user)
         {
-            var userFound = _userService.FindUser(user);
+            var userFound = _userService.FindUser(user).Result;
             return userFound == null
                 ? throw new UserNotFoundException(HttpStatusCode.NotFound, ErrorCode.UserNotFound, $"User {user.UserName} not found")
                 : userFound;
@@ -38,7 +38,7 @@ namespace vicuna_infra.Controllers
         [Route("byname/{name}")]
         public User? GetUserByName(string name)
         {
-            var userFound = _userService.GetUserByUsername(name);
+            var userFound = _userService.GetUserByUsername(name).Result;
             return userFound == null
                 ? throw new UserNotFoundException(HttpStatusCode.NotFound, ErrorCode.UserNotFound, $"User {name} not found")
                 : userFound;
@@ -48,7 +48,7 @@ namespace vicuna_infra.Controllers
         [Route("bynamepw/{name}/{pass}")]
         public User? GetUserByUsernmaAndPassword(string username, string password)
         {
-            var userFound = _userService.GetUserByUsernnameAndPassword(username, password);
+            var userFound = _userService.GetUserByUsernnameAndPassword(username, password).Result;
             return userFound == null
                 ? throw new UserNotFoundException(HttpStatusCode.NotFound, ErrorCode.UserNotFound, $"User {username} not found")
                 : userFound;
@@ -58,7 +58,7 @@ namespace vicuna_infra.Controllers
         [Route("byemail/{email}")]
         public User? GetUserByEmail(string email)
         {
-            var userFound = _userService.GetUserByEmail(email);
+            var userFound = _userService.GetUserByEmail(email).Result;
             return userFound == null
                 ? throw new UserNotFoundException(HttpStatusCode.NotFound, ErrorCode.UserNotFound, $"User {email} not found")
                 : userFound;

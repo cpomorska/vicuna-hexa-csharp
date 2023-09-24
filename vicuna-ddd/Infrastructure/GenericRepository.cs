@@ -1,31 +1,36 @@
 ﻿using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
+using vicuna_ddd.Shared.Entity;
 using vicuna_ddd.Shared.Provider;
 
 namespace vicuna_ddd.Infrastructure
 {
-    public class GenericRepository<TDbContext, T> : IGenericRepository<T>
+    public class GenericRepository<TDbContext, T> : IGenericRepository<T> where T :BaseEntity
         where TDbContext : GenericDbContext
-    where T : class
     {
 
         public bool UnitTestDb { get; set; }
 
-        public void Add(params T[] items)
+        public GenericRepository() 
         {
             using (var context = new UserDbContext(UnitTestDb))
             {
-                foreach (var item in items)
-                {
-                    context.Set<T>().Add(item);
-                    context.SaveChanges();
-                }
+                _ = context.Database.EnsureCreatedAsync();
             }
         }
 
-        public IList<T> GetAll(params Expression<Func<T, object>>[] navigationProperties)
+
+        public async Task Add(params T[] items)
         {
-            List<T> list;
+            using (var context = new UserDbContext(UnitTestDb))
+            {
+                await context.Set<T>().AddRangeAsync(items);
+                await context.SaveChangesAsync();
+            }
+        }
+
+        public async Task<IList<T>> GetAll(params Expression<Func<T, object>>[] navigationProperties)
+        {
             using (var context = new UserDbContext(UnitTestDb))
             {
                 IQueryable<T> dbQuery = context.Set<T>();
@@ -33,16 +38,14 @@ namespace vicuna_ddd.Infrastructure
                 foreach (Expression<Func<T, object>> navigationProperty in navigationProperties)
                     dbQuery = dbQuery.Include(navigationProperty);
 
-                list = dbQuery
+                return await dbQuery
                     .AsNoTracking()
-                    .ToList();
+                    .ToListAsync();
             }
-            return list;
         }
 
-        public IList<T> GetList(Func<T, bool> where, params Expression<Func<T, object>>[] navigationProperties)
+        public async Task<IList<T>> GetList(Expression<Func<T, bool>> where, params Expression<Func<T, object>>[] navigationProperties)
         {
-            List<T> list;
             using (var context = new UserDbContext(UnitTestDb))
             {
                 IQueryable<T> dbQuery = context.Set<T>();
@@ -50,17 +53,15 @@ namespace vicuna_ddd.Infrastructure
                 foreach (Expression<Func<T, object>> navigationProperty in navigationProperties)
                     dbQuery = dbQuery.Include(navigationProperty);
 
-                list = dbQuery
+                return await dbQuery
                     .AsNoTracking()
                     .Where(where)
-                    .ToList();
+                    .ToListAsync();
             }
-            return list;
         }
 
-        public T GetSingle(Func<T, bool> where, params Expression<Func<T, object>>[] navigationProperties)
+        public async Task<T?> GetSingle(Expression<Func<T, bool>> where, params Expression<Func<T, object>>[] navigationProperties)
         {
-            T item;
             using (var context = new UserDbContext(UnitTestDb))
             {
                 IQueryable<T> dbQuery = context.Set<T>();
@@ -68,35 +69,27 @@ namespace vicuna_ddd.Infrastructure
                 foreach (Expression<Func<T, object>> navigationProperty in navigationProperties)
                     dbQuery = dbQuery.Include(navigationProperty);
 
-                item = dbQuery
+                return await dbQuery
                     .AsNoTracking()
-                    .FirstOrDefault(where);
-            }
-            return item;
-        }
-
-        public void Remove(params T[] items)
-        {
-            using (var context = new UserDbContext(UnitTestDb))
-            {
-                foreach (var item in items)
-                {
-                    context.Set<T>().Remove(item);
-                    context.SaveChanges();
-                }
-
+                    .FirstOrDefaultAsync(where);
             }
         }
 
-        public void Update(params T[] items)
+        public async Task Remove(params T[] items)
         {
             using (var context = new UserDbContext(UnitTestDb))
             {
-                foreach (var item in items)
-                {
-                    context.Set<T>().Update(item);
-                    context.SaveChanges();
-                }
+                context.Set<T>().RemoveRange(items);                        
+                await context.SaveChangesAsync();
+            }
+        }
+
+        public async Task Update(params T[] items)
+        {
+            using (var context = new UserDbContext(UnitTestDb))
+            {
+                context.Set<T>().UpdateRange(items);
+                await context.SaveChangesAsync();
             }
         }
     }

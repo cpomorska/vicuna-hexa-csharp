@@ -1,5 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using vicuna_ddd.Shared.Entity;
+using System.Text.Json.Serialization;
 
 namespace vicuna_ddd.Model.Users.Entity
 {
@@ -8,7 +10,8 @@ namespace vicuna_ddd.Model.Users.Entity
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public virtual int UserId { get; set; }
+        [JsonIgnore]
+        public long UserHashId { get; set; }
         public virtual string? hashField { get; set; }
         public virtual string? saltField { get; set; }
     }
