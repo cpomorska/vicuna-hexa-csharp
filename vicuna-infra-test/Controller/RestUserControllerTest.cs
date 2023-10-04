@@ -7,7 +7,7 @@ using vicuna_ddd.Model.Users.Entity;
 using vicuna_infra.Repository;
 using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 
-namespace vicuna_infra_test
+namespace vicuna_infra_test.Controller
 {
     [TestClass]
     public class RestUserControllerTest
@@ -23,7 +23,7 @@ namespace vicuna_infra_test
         private UserRepository _userRepository;
         private User _user;
 
-        public RestUserControllerTest() 
+        public RestUserControllerTest()
         {
             var webFactory = new WebApplicationFactory<Program>();
             _httpClient = webFactory.CreateDefaultClient();
@@ -99,7 +99,9 @@ namespace vicuna_infra_test
             {
                 response = await _httpClient.GetAsync(RequestUriUserNotExist);
                 JsonSerializer.Deserialize<User>(await response.Content.ReadAsStringAsync());
-            } catch (Exception ex) {
+            }
+            catch (Exception ex)
+            {
                 Assert.IsInstanceOfType<UserNotFoundException>(ex.GetType());
                 Assert.AreEqual(HttpStatusCode.NotFound, response.StatusCode!);
             }

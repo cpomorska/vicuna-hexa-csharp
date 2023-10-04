@@ -5,12 +5,6 @@ VisualStudioVersion = 17.3.32825.248
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "vicuna-core-lib", "vicuna-ddd\vicuna-core-lib.csproj", "{5CBD758A-BADE-4AB7-9890-4DA5F149854E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "vicuna-core-lib-test", "vicuna-core-lib-test\vicuna-core-lib-test.csproj", "{2FEC2396-0626-4252-8FB1-BAECB2B11988}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "com.scprojekt.port.util", "com.scprojekt.port.util\com.scprojekt.port.util.csproj", "{754DBA62-1D9E-4C4C-9021-465C42FD3A02}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test.com.scprojekt.port.util", "Test.com.scprojekt.port.util\Test.com.scprojekt.port.util.csproj", "{FD7197C1-1000-4AC5-B128-21994FC4F7DE}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C6796B51-017B-472C-81E1-5EFCEEFD6C9B}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
@@ -32,18 +26,6 @@ Global
 		{5CBD758A-BADE-4AB7-9890-4DA5F149854E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5CBD758A-BADE-4AB7-9890-4DA5F149854E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5CBD758A-BADE-4AB7-9890-4DA5F149854E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2FEC2396-0626-4252-8FB1-BAECB2B11988}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2FEC2396-0626-4252-8FB1-BAECB2B11988}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2FEC2396-0626-4252-8FB1-BAECB2B11988}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2FEC2396-0626-4252-8FB1-BAECB2B11988}.Release|Any CPU.Build.0 = Release|Any CPU
-		{754DBA62-1D9E-4C4C-9021-465C42FD3A02}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{754DBA62-1D9E-4C4C-9021-465C42FD3A02}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{754DBA62-1D9E-4C4C-9021-465C42FD3A02}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{754DBA62-1D9E-4C4C-9021-465C42FD3A02}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FD7197C1-1000-4AC5-B128-21994FC4F7DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FD7197C1-1000-4AC5-B128-21994FC4F7DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FD7197C1-1000-4AC5-B128-21994FC4F7DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FD7197C1-1000-4AC5-B128-21994FC4F7DE}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E793CB35-6601-4ECF-91FF-173753D254C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E793CB35-6601-4ECF-91FF-173753D254C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E793CB35-6601-4ECF-91FF-173753D254C8}.Release|Any CPU.ActiveCfg = Release|Any CPU

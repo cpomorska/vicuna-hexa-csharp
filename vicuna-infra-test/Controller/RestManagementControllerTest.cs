@@ -4,7 +4,7 @@ using System.Text.Json;
 using vicuna_ddd.Shared.Provider;
 using vicuna_infra.Repository;
 
-namespace vicuna_infra_test
+namespace vicuna_infra_test.Controller
 {
     [TestClass]
     public class RestManagementControllerTest

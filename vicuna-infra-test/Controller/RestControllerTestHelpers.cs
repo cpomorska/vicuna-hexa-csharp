@@ -1,7 +1,7 @@
 ﻿using vicuna_ddd.Model.Users.Entity;
 using vicuna_ddd.Shared.Util;
 
-namespace vicuna_infra_test
+namespace vicuna_infra_test.Controller
 {
     public static class RestControllerTestHelpers
     {
