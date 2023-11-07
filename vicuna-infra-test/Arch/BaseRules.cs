@@ -1,9 +1,7 @@
 ﻿using ArchUnitNET.Domain;
 using ArchUnitNET.Loader;
-using ArchUnitNET.Fluent;
 using static ArchUnitNET.Fluent.ArchRuleDefinition;
 using ArchUnitNET.MSTestV2;
-using vicuna_ddd.Shared.Entity;
 
 namespace vicuna_infra_test.Arch
 {

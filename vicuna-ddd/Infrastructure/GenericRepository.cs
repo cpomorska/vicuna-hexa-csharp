@@ -11,9 +11,9 @@ namespace vicuna_ddd.Infrastructure
 
         public bool UnitTestDb { get; set; }
 
-        public GenericRepository() 
+        public GenericRepository()
         {
-            using (var context = new UserDbContext(UnitTestDb))
+            using (var context = new UserDbContext(false))
             {
                 _ = context.Database.EnsureCreatedAsync();
             }
