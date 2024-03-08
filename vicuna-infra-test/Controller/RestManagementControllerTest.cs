@@ -7,7 +7,7 @@ using vicuna_infra.Repository;
 namespace vicuna_infra_test.Controller
 {
     [TestClass]
-    public class RestManagementControllerTest
+    public class RestManagementControllerTest : RestControllerFixture
     {
         private const string PostUriAddUser = "manage/create";
         private const string PostUriRemoveUser = "manage/remove";
