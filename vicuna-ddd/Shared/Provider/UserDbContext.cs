@@ -27,7 +27,7 @@ namespace vicuna_ddd.Shared.Provider
             {
                 var configuration = DbConfigurationProvider.GetApplicationConfigurationRoot();
                 var connectionString = configuration.GetConnectionString("DataAccessPostgreSqlProvider");
-                if (connectionString == null)
+                if (connectionString == null || connectionString.StartsWith("none"))
                 {
                     optionsBuilder.UseInMemoryDatabase(@"Database=EFProviders.InMemory;Trusted_Connection=True;");
                 }

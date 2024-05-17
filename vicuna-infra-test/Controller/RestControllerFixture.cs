@@ -3,39 +3,48 @@ using Testcontainers.PostgreSql;
 
 namespace vicuna_infra_test.Controller
 {
-    public abstract class RestControllerFixture
+    public class RestControllerFixture : IAsyncLifetime
     {
         private const string UnixSocketAddr = "unix:/var/run/docker.sock";
 
         public static PostgreSqlContainer PostgresContainer { get; private set; }
 
+        public RestControllerFixture() 
+        {
+            _ = SetupClass();
+        }
 
-        [ClassInitialize]
         public async Task SetupClass()
         {
             var dockerEndpoint = Environment.GetEnvironmentVariable("DOCKER_HOST") ?? UnixSocketAddr;
 
             PostgresContainer = new PostgreSqlBuilder()
-                .WithDockerEndpoint(dockerEndpoint)
+                //.WithDockerEndpoint(dockerEndpoint)
                 .WithEnvironment("POSTGRES_DB", "vicuna_pg")
                 .WithEnvironment("POSTGRES_USER", "vicuna_user")
                 .WithEnvironment("POSTGRES_PASSWORD", "vicuna_pw")
                 .WithImage("postgres:15")
                 .WithName("tc-vicuna-pg")
+                .WithHostname("tc-vicuna-pg")
                 .WithPortBinding(15432, 5432)
-                .WithWaitStrategy(Wait.ForUnixContainer().UntilPortIsAvailable(5432))
+                .WithWaitStrategy(Wait.ForUnixContainer().UntilContainerIsHealthy())
+                .WithExtraHost("host.docker.internal","host-gateway")
                 .WithCleanUp(true)
                 .Build();
 
-
-            await PostgresContainer.StartAsync().ConfigureAwait(true);
+            await PostgresContainer.StartAsync().ConfigureAwait(false);
         }
 
-        [ClassCleanup]
-        public async Task TeardownClass()
+
+        public async Task InitializeAsync()
         {
-            await PostgresContainer.StopAsync().ConfigureAwait(false);
-            await PostgresContainer.DisposeAsync();
+            
+        }
+
+        public async Task DisposeAsync()
+        {
+             await PostgresContainer.StopAsync().ConfigureAwait(false);
+             await PostgresContainer.DisposeAsync().AsTask();
         }
     }
 }

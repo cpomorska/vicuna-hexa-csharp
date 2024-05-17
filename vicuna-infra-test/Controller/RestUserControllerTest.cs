@@ -5,11 +5,10 @@ using vicuna_ddd.Domain.Users.Dto;
 using vicuna_ddd.Domain.Users.Exceptions;
 using vicuna_ddd.Model.Users.Entity;
 using vicuna_infra.Repository;
-using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
+using Xunit;
 
 namespace vicuna_infra_test.Controller
 {
-    [TestClass]
     public class RestUserControllerTest
     {
         private const string RequestUriUserAsDto = "read/user/{userDto}";
@@ -27,18 +26,16 @@ namespace vicuna_infra_test.Controller
         {
             var webFactory = new WebApplicationFactory<Program>();
             _httpClient = webFactory.CreateDefaultClient();
-
+            _user = RestControllerTestHelpers.CreateTestUser("TestUser1");
         }
 
-        [TestInitialize]
         public void Setup()
         {
             _userRepository = new UserRepository();
-            _user = RestControllerTestHelpers.CreateTestUser("TestUser");
+            _user = RestControllerTestHelpers.CreateTestUser("TestUser1");
             _ = _userRepository.Add(_user);
         }
 
-        [TestCleanup]
         public void Teardown()
         {
             _userRepository = new UserRepository();
@@ -50,7 +47,7 @@ namespace vicuna_infra_test.Controller
             }
         }
 
-        [TestMethod]
+        [Fact]
         public async Task TestFindUserInDtoAsync()
         {
             UserDto userDto = new UserDto();
@@ -60,38 +57,38 @@ namespace vicuna_infra_test.Controller
 
             HttpResponseMessage response = await _httpClient.GetAsync(RequestUriUserAsDto);
             var userResult = JsonSerializer.Deserialize<User>(await response.Content.ReadAsStringAsync());
-            Assert.IsNotNull(userResult);
-            Assert.IsInstanceOfType<User>(userResult);
+            Assert.NotNull(userResult);
+            Assert.IsType<User>(userResult);
         }
 
-        [TestMethod]
+        [Fact]
         public async Task TestGetUserByNameAsync()
         {
             HttpResponseMessage response = await _httpClient.GetAsync(RequestUriUser);
             var userResult = JsonSerializer.Deserialize<User>(await response.Content.ReadAsStringAsync());
-            Assert.IsNotNull(userResult);
-            Assert.IsInstanceOfType<User>(userResult);
+            Assert.NotNull(userResult);
+            Assert.IsType<User>(userResult);
         }
 
-        [TestMethod]
+        [Fact]
         public async Task TestGetUserByUsernmaAndPasswordAsync()
         {
             HttpResponseMessage response = await _httpClient.GetAsync(RequestUriUserPass);
             var userResult = JsonSerializer.Deserialize<User>(await response.Content.ReadAsStringAsync());
-            Assert.IsNotNull(userResult);
-            Assert.IsInstanceOfType<User>(userResult);
+            Assert.NotNull(userResult);
+            Assert.IsType<User>(userResult);
         }
 
-        [TestMethod]
+        [Fact]
         public async Task TestGetUserByEmailAsync()
         {
             HttpResponseMessage response = await _httpClient.GetAsync(RequestUriEmail);
             var userResult = JsonSerializer.Deserialize<User>(await response.Content.ReadAsStringAsync());
-            Assert.IsNotNull(userResult);
-            Assert.IsInstanceOfType<User>(userResult);
+            Assert.NotNull(userResult);
+            Assert.IsType<User>(userResult);
         }
 
-        [TestMethod]
+        [Fact]
         public async Task TestGetUserNotFoundlAsync()
         {
             HttpResponseMessage response = new HttpResponseMessage();
@@ -102,8 +99,8 @@ namespace vicuna_infra_test.Controller
             }
             catch (Exception ex)
             {
-                Assert.IsInstanceOfType<UserNotFoundException>(ex.GetType());
-                Assert.AreEqual(HttpStatusCode.NotFound, response.StatusCode!);
+                Assert.IsType<UserNotFoundException>(ex.GetType());
+                Assert.Equal(HttpStatusCode.NotFound, response.StatusCode!);
             }
         }
     }

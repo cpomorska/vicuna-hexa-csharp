@@ -32,7 +32,10 @@ namespace vicuna_infra_test.Controller
                 UserToken = "userToken",
                 UserHash = userHash,
                 UserRole = userRole,
-                UserEnabled = true
+                UserEnabled = true,
+                CreatedAt = DateTime.UtcNow,
+                ModifiedAt = DateTime.UtcNow,
+                ModifiedFrom = "randomSaltmann!"
             };
         }
     }

@@ -3,12 +3,13 @@ using vicuna_ddd.Shared.Provider;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 
+
+// Add services to the container.
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-//builder.Services.AddTransient<DbInitializer>();
+builder.Services.AddDbContext<UserDbContext>();
 
 var app = builder.Build();
 
@@ -20,10 +21,17 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
     app.UseCors();
 
-    //using var scope = app.Services.CreateScope();
-    //var services = scope.ServiceProvider;
-    //var initialiser = services.GetRequiredService<DbInitializer>();
-    //initialiser.Run();
+   // using var scope = app.Services.CreateScope();
+   // var services = scope.ServiceProvider;
+   // var initialiser = services.GetRequiredService<DbInitializer>();
+   // initialiser.Run();
+
+    using (var scope = app.Services.CreateScope())
+    {
+        //replace DataContext with your Db Context name
+        var dataContext = scope.ServiceProvider.GetRequiredService<UserDbContext>();
+        dataContext.Database.EnsureCreated();
+    }
 }
 
 app.UseExceptionHandler(errorHandlingPath: "/error");

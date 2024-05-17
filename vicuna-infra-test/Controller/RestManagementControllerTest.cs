@@ -1,13 +1,14 @@
+
 using Microsoft.AspNetCore.Mvc.Testing;
 using System.Net.Http.Json;
 using System.Text.Json;
 using vicuna_ddd.Shared.Provider;
 using vicuna_infra.Repository;
+using Xunit;
 
 namespace vicuna_infra_test.Controller
 {
-    [TestClass]
-    public class RestManagementControllerTest : RestControllerFixture
+    public class RestManagementControllerTest
     {
         private const string PostUriAddUser = "manage/create";
         private const string PostUriRemoveUser = "manage/remove";
@@ -22,7 +23,6 @@ namespace vicuna_infra_test.Controller
             _httpClient = webAppFactory.CreateDefaultClient();
         }
 
-        [TestInitialize]
         public void Setup()
         {
             var webAppFactory = new WebApplicationFactory<Program>();
@@ -36,7 +36,6 @@ namespace vicuna_infra_test.Controller
             _userRepository = new UserRepository();
         }
 
-        [TestCleanup]
         public void Teardown()
         {
             _userRepository = new UserRepository();
@@ -48,18 +47,18 @@ namespace vicuna_infra_test.Controller
             }
         }
 
-        [TestMethod]
+        [Fact]
         public async Task TestAddUserAsync()
         {
-            var testUser = RestControllerTestHelpers.CreateTestUser("NewUserMann!");
+            var testUser = RestControllerTestHelpers.CreateTestUser("NewUser:inMann!");
             var response = await _httpClient.PostAsJsonAsync(PostUriAddUser, testUser);
             var rawResult = JsonSerializer.Deserialize<Guid>(await response.Content.ReadAsStringAsync());
 
-            Assert.IsNotNull(rawResult);
-            Assert.IsInstanceOfType(rawResult, typeof(Guid));
+            Assert.NotNull(rawResult);
+            Assert.IsType<Guid>(rawResult);
         }
 
-        [TestMethod]
+        [Fact]
         public async Task TestRemoveUserAsync()
         {
             var testUser = RestControllerTestHelpers.CreateTestUser("NewUserMann!");
@@ -69,11 +68,11 @@ namespace vicuna_infra_test.Controller
             var endResponse = await _httpClient.PostAsJsonAsync(PostUriRemoveUser, testUser);
             var removeResult = JsonSerializer.Deserialize<Guid>(await endResponse.Content.ReadAsStringAsync());
 
-            Assert.IsNotNull(rawResult);
-            Assert.IsInstanceOfType(removeResult, typeof(Guid));
+            Assert.NotNull(rawResult);
+            Assert.IsType<Guid>(removeResult);
         }
 
-        [TestMethod]
+        [Fact]
         public async Task TestUpdateUserAsync()
         {
             var testUser = RestControllerTestHelpers.CreateTestUser("NewUserMann!");
@@ -82,8 +81,8 @@ namespace vicuna_infra_test.Controller
             var endResponse = await _httpClient.PostAsJsonAsync(PostUriUpdateUser, testUser);
             var updateResult = JsonSerializer.Deserialize<Guid>(await endResponse.Content.ReadAsStringAsync());
 
-            Assert.IsNotNull(updateResult);
-            Assert.IsInstanceOfType(updateResult, typeof(Guid));
+            Assert.NotNull(updateResult);
+            Assert.IsType<Guid>(updateResult);
         }
     }
 }

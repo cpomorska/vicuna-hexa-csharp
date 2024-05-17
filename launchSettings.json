@@ -4,7 +4,7 @@
       "commandName": "DockerCompose",
       "commandVersion": "1.0",
       "serviceActions": {
-        "vicuna-infra": "StartWithoutDebugging",
+        "vicuna-infra": "DoNotStart",
         "kafka": "StartWithoutDebugging",
         "keycloak": "StartWithoutDebugging",
         "postgres": "StartWithoutDebugging",
