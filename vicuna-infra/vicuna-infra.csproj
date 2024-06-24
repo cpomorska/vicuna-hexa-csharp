@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <PackageReference Include="Confluent.Kafka" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="8.0.6" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.11" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.11">
       <PrivateAssets>all</PrivateAssets>

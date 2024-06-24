@@ -21,9 +21,6 @@ namespace vicuna_infra.Service
             try
             {
                 _logger.LogInformation($"Create user {user.UserNumber}");
-                user.ModifiedAt = DateTime.Now;
-                user.ModifiedFrom = "vucina";
-                user.CreatedAt = DateTime.Now;
                 _ = _userRepository.Add(user);
                 guid = user.UserNumber;
             }

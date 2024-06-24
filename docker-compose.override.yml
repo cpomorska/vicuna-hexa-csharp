@@ -2,24 +2,39 @@ version: '3.4'
 
 services:
   vicuna-infra:
+    container_name: vicuna-infra
     build:
-        context: .
-        dockerfile: Dockerfile
+      dockerfile: Dockerfile
+      context: .
+      args:
+        - '--no-cache'
+    command:
+      - 'cp /app/tls/tls.keycloak.crt /usr/local/share/ca-certificates/tls.keycloak.crt'
+      - 'chmod 755 /https/*'
+      - 'chmod 644 /usr/local/share/ca-certificates/tls.keycloak.crt'
+      - 'update-ca-certificates'
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-     #- ASPNETCORE_URLS=https://+:8443;http://+:8080
-      - HTTP_PORTS=8080
-    command:
-      - 'dotnet dev-certs https'
-      - 'dotnet dev-certs https --trust'
+      - ASPNETCORE_URLS=http://+:80;https://+:443
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=password
     ports:
-      - "8080:8080"
-      - "8443:8443"
+      - "80"
+      - "7208:443"
+    depends_on:
+      keycloak:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+      - ${HOME}/.aspnet/https:/https
     networks:
-      - vicuna-net 
+      - vicuna-net
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+      - "keycloak.host.internal:host-gateway"
 
   postgres:
     image: 'postgres:15'
@@ -33,7 +48,12 @@ services:
       - "15432:5432"
     restart: unless-stopped
     networks:
-      - vicuna-net 
+      - vicuna-net
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U vicuna_user -p 5432" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   postgres-kc:
     container_name: vicunapostgresql-kc
@@ -43,12 +63,17 @@ services:
       - 'POSTGRES_DB=keycloak'
       - 'POSTGRES_PASSWORD=keycloak'
       - 'POSTGRES_USER=keycloak'
+      - 'ADVERTISED_HOST=localhost'
+      - 'ADVERTISED_PORT=25432'
     ports:
       - '25432:5432'
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
     networks:
       - vicuna-net
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U keycloak -p 5432" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   kafka:
     container_name: vicunakafkazookeeper
@@ -64,7 +89,8 @@ services:
       - vicuna-net
 
   keycloak:
-    image: quay.io/keycloak/keycloak:latest
+    container_name: keycloak
+    image: quay.io/keycloak/keycloak:24.0.5
     environment:
       - 'KC_DB=postgres'
       - 'KC_DB_URL=jdbc:postgresql://vicunapostgresql-kc:5432/keycloak'
@@ -72,14 +98,32 @@ services:
       - 'KC_DB_PASSWORD=keycloak'
       - 'KEYCLOAK_ADMIN=admin'
       - 'KEYCLOAK_ADMIN_PASSWORD=admin'
+      - 'ADVERTISED_HOST=keycloak.host.internal'
+      - 'ADVERTISED_PORT=28443'
     command:
-      - start-dev
+      - 'start-dev'
+      - '--import-realm'
+      - '--health-enabled=true'
+      - '--https-certificate-key-file=/opt/keycloak/conf/tls/tls.keycloak.key'
+      - '--https-certificate-file=/opt/keycloak/conf/tls/tls.keycloak.crt'
+    volumes:
+      - ./config:/opt/keycloak/data/import/
+      - ./tls:/opt/keycloak/conf/tls/
     ports:
-      - "28080:8080"
+      - "28443:8443"
+      - "28999:9000"
     depends_on:
-      - postgres-kc
+      postgres:
+        condition: service_healthy
     networks:
       - vicuna-net
+    extra_hosts:
+      - "keycloak.host.internal:host-gateway"
+    healthcheck:
+      test: [ "CMD-SHELL", "exec 3<>/dev/tcp/localhost/8080 && echo -e 'GET /health/ready HTTP/1.1\\r\\nHost: localhost\\r\\nConnection: close\\r\\n\\r\\n' >&3 && cat <&3 | grep -q '200 OK'" ]
+      interval: 8s
+      timeout: 5s
+      retries: 20
 
 networks:
   vicuna-net:
