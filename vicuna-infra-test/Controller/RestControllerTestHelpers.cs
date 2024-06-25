@@ -33,9 +33,9 @@ namespace vicuna_infra_test.Controller
                 UserHash = userHash,
                 UserRole = userRole,
                 UserEnabled = true,
-                CreatedAt = DateTime.UtcNow,
-                ModifiedAt = DateTime.UtcNow,
-                ModifiedFrom = "randomSaltmann!"
+                //CreatedAt = DateTime.UtcNow,
+                //ModifiedAt = DateTime.UtcNow,
+                //ModifiedFrom = "randomSaltmann!"
             };
         }
     }

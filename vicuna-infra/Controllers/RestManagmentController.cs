@@ -12,7 +12,6 @@ namespace vicuna_infra.Controllers
     [ApiController]
     [Route("manage")]
     [EnableCors("DevelopmentPolicy")]
-    [Authorize]
     public class RestUserManagementController : ControllerBase
     {
 

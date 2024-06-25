@@ -8,7 +8,7 @@ using Xunit;
 
 namespace vicuna_infra_test.Controller
 {
-    public class RestManagementControllerTest
+    public class RestManagementControllerTest : RestControllerFixture
     {
         private const string PostUriAddUser = "manage/create";
         private const string PostUriRemoveUser = "manage/remove";

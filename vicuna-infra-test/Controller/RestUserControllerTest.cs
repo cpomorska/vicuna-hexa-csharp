@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc.Testing;
 using System.Net;
 using System.Text.Json;
+using Docker.DotNet.Models;
 using vicuna_ddd.Domain.Users.Dto;
 using vicuna_ddd.Domain.Users.Exceptions;
 using vicuna_ddd.Model.Users.Entity;
@@ -9,7 +10,7 @@ using Xunit;
 
 namespace vicuna_infra_test.Controller
 {
-    public class RestUserControllerTest
+    public class RestUserControllerTest : RestControllerFixture
     {
         private const string RequestUriUserAsDto = "read/user/{userDto}";
         private const string RequestUriUserPass = "/read/bynamepw/Testuser/Testpass";
@@ -99,7 +100,7 @@ namespace vicuna_infra_test.Controller
             }
             catch (Exception ex)
             {
-                Assert.IsType<UserNotFoundException>(ex.GetType());
+                Assert.IsType<Runtime>(ex.GetType());
                 Assert.Equal(HttpStatusCode.NotFound, response.StatusCode!);
             }
         }

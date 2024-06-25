@@ -12,7 +12,7 @@ namespace vicuna_ddd.Model.Users.Entity
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [JsonIgnore]
         public long UserHashId { get; set; }
-        public virtual string? hashField { get; set; }
-        public virtual string? saltField { get; set; }
+        public string? hashField { get; set; }
+        public string? saltField { get; set; }
     }
 }

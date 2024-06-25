@@ -36,11 +36,11 @@ namespace vicuna_infra.Controllers
 
         [HttpGet]
         [Route("byname/{name}")]
-        public User? GetUserByName(string name)
+        public User? GetUserByName(string username)
         {
-            var userFound = _userService.GetUserByUsername(name).Result;
+            var userFound = _userService.GetUserByUsername(username).Result;
             return userFound == null
-                ? throw new UserNotFoundException(HttpStatusCode.NotFound, ErrorCode.UserNotFound, $"User {name} not found")
+                ? throw new UserNotFoundException(HttpStatusCode.NotFound, ErrorCode.UserNotFound, $"User {username} not found")
                 : userFound;
         }
 
@@ -56,11 +56,11 @@ namespace vicuna_infra.Controllers
 
         [HttpGet]
         [Route("byemail/{email}")]
-        public User? GetUserByEmail(string email)
+        public User? GetUserByEmail(string useremail)
         {
-            var userFound = _userService.GetUserByEmail(email).Result;
+            var userFound = _userService.GetUserByEmail(useremail).Result;
             return userFound == null
-                ? throw new UserNotFoundException(HttpStatusCode.NotFound, ErrorCode.UserNotFound, $"User {email} not found")
+                ? throw new UserNotFoundException(HttpStatusCode.NotFound, ErrorCode.UserNotFound, $"User {useremail} not found")
                 : userFound;
         }
     }

@@ -18,7 +18,7 @@ namespace vicuna_ddd.Model.Users.Entity
         public virtual string RoleName { get; set; }
         [NotNull]
         [EnumDataType(typeof(UserRoleTypes))]
-        public virtual UserRoleTypes RoleType { get; set; }
-        public virtual string? RoleDescription { get; set; }
+        public UserRoleTypes RoleType { get; set; }
+        public string? RoleDescription { get; set; }
     }
 }

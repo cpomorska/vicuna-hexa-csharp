@@ -31,8 +31,8 @@ namespace vicuna_ddd.Model.Users.Entity
         [NotNull]
         public bool UserEnabled { get; set; }
         [NotNull]
-        public virtual UserRole? UserRole { get; set; }
+        public UserRole? UserRole { get; set; }
         [NotNull]
-        public virtual UserHash? UserHash { get; set; }
+        public UserHash? UserHash { get; set; }
     }
 }

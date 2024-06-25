@@ -1,4 +1,5 @@
 ﻿using DotNet.Testcontainers.Builders;
+using Testcontainers.Keycloak;
 using Testcontainers.PostgreSql;
 
 namespace vicuna_infra_test.Controller
@@ -7,7 +8,8 @@ namespace vicuna_infra_test.Controller
     {
         private const string UnixSocketAddr = "unix:/var/run/docker.sock";
 
-        public static PostgreSqlContainer PostgresContainer { get; private set; }
+        public static PostgreSqlContainer? PostgresContainerTest { get; private set; }
+        public static KeycloakContainer? KeycloakContainerTest { get; private set; }
 
         public RestControllerFixture() 
         {
@@ -18,7 +20,7 @@ namespace vicuna_infra_test.Controller
         {
             var dockerEndpoint = Environment.GetEnvironmentVariable("DOCKER_HOST") ?? UnixSocketAddr;
 
-            PostgresContainer = new PostgreSqlBuilder()
+            PostgresContainerTest = new PostgreSqlBuilder()
                 //.WithDockerEndpoint(dockerEndpoint)
                 .WithEnvironment("POSTGRES_DB", "vicuna_pg")
                 .WithEnvironment("POSTGRES_USER", "vicuna_user")
@@ -27,12 +29,27 @@ namespace vicuna_infra_test.Controller
                 .WithName("tc-vicuna-pg")
                 .WithHostname("tc-vicuna-pg")
                 .WithPortBinding(15432, 5432)
-                .WithWaitStrategy(Wait.ForUnixContainer().UntilContainerIsHealthy())
+                .WithWaitStrategy(Wait.ForUnixContainer().UntilPortIsAvailable(5432))
                 .WithExtraHost("host.docker.internal","host-gateway")
                 .WithCleanUp(true)
                 .Build();
 
-            await PostgresContainer.StartAsync().ConfigureAwait(false);
+
+            
+            // KeycloakContainerTest = new KeycloakBuilder()
+            //     //.WithDockerEndpoint(dockerEndpoint)
+            //     .WithEnvironment("KEYCLOAK_ADMIN","admin")
+            //     .WithEnvironment("KEYCLOAK_ADMIN_PASSWORD","admin")
+            //     .WithEnvironment("ADVERTISED_HOST","keycloak.host.internal")
+            //     .WithEnvironment("ADVERTISED_PORT","28443")
+            //     .WithPortBinding(28443, 443)
+            //     .WithWaitStrategy(Wait.ForUnixContainer().UntilPortIsAvailable(5432))
+            //     .WithExtraHost("keycloak.host.internal","host-gateway")
+            //     .WithCleanUp(true)
+            //     .Build();
+            
+            await PostgresContainerTest!.StartAsync().ConfigureAwait(false);
+            // await KeycloakContainerTest!.StartAsync().ConfigureAwait(false);
         }
 
 
@@ -43,8 +60,11 @@ namespace vicuna_infra_test.Controller
 
         public async Task DisposeAsync()
         {
-             await PostgresContainer.StopAsync().ConfigureAwait(false);
-             await PostgresContainer.DisposeAsync().AsTask();
+             // await PostgresContainerTest!.StopAsync().ConfigureAwait(false);
+             // await PostgresContainerTest.DisposeAsync().AsTask();
+             //
+             // await KeycloakContainerTest!.StopAsync().ConfigureAwait(false);
+             // await KeycloakContainerTest.DisposeAsync().AsTask();
         }
     }
 }
