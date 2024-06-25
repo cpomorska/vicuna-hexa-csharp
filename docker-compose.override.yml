@@ -76,17 +76,23 @@ services:
       retries: 5
 
   kafka:
-    container_name: vicunakafkazookeeper
-    image: spotify/kafka
+    container_name: vicuna-kafka
+    image: apache/kafka
     hostname: kafka
-    environment:
-      - 'ADVERTISED_HOST=localhost'
-      - 'ADVERTISED_PORT=29092'
+    env_file:
+      - kafka.base.env
     ports:
-      - "22181:2181"
       - "29092:9092"
-    networks:
-      - vicuna-net
+    expose:
+      - "9092"
+    network_mode: bridge
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    healthcheck:
+      test: nc -z localhost 9092 || exit -1
+      interval: 5s
+      timeout: 10s
+      retries: 10
 
   keycloak:
     container_name: keycloak
