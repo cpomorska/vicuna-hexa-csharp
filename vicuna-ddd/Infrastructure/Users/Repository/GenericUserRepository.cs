@@ -1,17 +1,18 @@
 ﻿using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
+using vicuna_ddd.Domain.Users.Repository;
 using vicuna_ddd.Shared.Entity;
 using vicuna_ddd.Shared.Provider;
 
 namespace vicuna_ddd.Infrastructure
 {
-    public class GenericRepository<TDbContext, T> : IGenericRepository<T> where T :BaseEntity
+    public class GenericUserRepository<TDbContext, T> : IGenericUserRepository<T> where T :BaseEntity
         where TDbContext : GenericDbContext
     {
 
         public bool UnitTestDb { get; set; }
 
-        public GenericRepository()
+        public GenericUserRepository()
         {
             using (var context = new UserDbContext(false))
             {

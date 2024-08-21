@@ -15,7 +15,7 @@ namespace vicuna_infra_test.Controller
         private const string PostUriUpdateUser = "manage/update";
 
         private HttpClient _httpClient;
-        private UserRepository? _userRepository;
+        private UserUserRepository? _userRepository;
 
         public RestManagementControllerTest()
         {
@@ -33,12 +33,12 @@ namespace vicuna_infra_test.Controller
                 client.Database.EnsureCreated();
             }
 
-            _userRepository = new UserRepository();
+            _userRepository = new UserUserRepository();
         }
 
         public void Teardown()
         {
-            _userRepository = new UserRepository();
+            _userRepository = new UserUserRepository();
             var users = _userRepository.GetAll().Result;
 
             foreach (var user in users)

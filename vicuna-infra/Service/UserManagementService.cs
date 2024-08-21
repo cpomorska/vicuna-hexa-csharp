@@ -6,13 +6,13 @@ namespace vicuna_infra.Service
 {
     public class UserManagementService : IUserManagementService
     {
-        private readonly UserRepository _userRepository;
+        private readonly UserUserRepository _userUserRepository;
         private readonly ILogger _logger;
 
         public UserManagementService(ILoggerFactory loggerFactory)
         {
             _logger = loggerFactory.CreateLogger<RestUserController>();
-            _userRepository = new UserRepository();
+            _userUserRepository = new UserUserRepository();
         }
 
         public Task<Guid?> AddUser(User user)
@@ -21,7 +21,7 @@ namespace vicuna_infra.Service
             try
             {
                 _logger.LogInformation($"Create user {user.UserNumber}");
-                _ = _userRepository.Add(user);
+                _ = _userUserRepository.Add(user);
                 guid = user.UserNumber;
             }
             catch (Exception ex)
@@ -37,7 +37,7 @@ namespace vicuna_infra.Service
             try
             {
                 _logger.LogInformation($"Update user {user.UserNumber}");
-                _ = _userRepository.Add(user);
+                _ = _userUserRepository.Add(user);
                 guid = user.UserNumber;
             }
             catch (Exception ex)
@@ -54,7 +54,7 @@ namespace vicuna_infra.Service
             try
             {
                 _logger.LogInformation($"Update user {user.UserNumber}");
-                _ = _userRepository.Add(user);
+                _ = _userUserRepository.Add(user);
                 guid = user.UserNumber;
             }
             catch (Exception ex)

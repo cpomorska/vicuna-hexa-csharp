@@ -11,7 +11,7 @@ namespace vicuna_infra_test.Controller
         public static PostgreSqlContainer? PostgresContainerTest { get; private set; }
         public static KeycloakContainer? KeycloakContainerTest { get; private set; }
 
-        public RestControllerFixture() 
+        public RestControllerFixture()
         {
             _ = SetupClass();
         }
@@ -30,12 +30,12 @@ namespace vicuna_infra_test.Controller
                 .WithHostname("tc-vicuna-pg")
                 .WithPortBinding(15432, 5432)
                 .WithWaitStrategy(Wait.ForUnixContainer().UntilPortIsAvailable(5432))
-                .WithExtraHost("host.docker.internal","host-gateway")
+                .WithExtraHost("host.docker.internal", "host-gateway")
                 .WithCleanUp(true)
                 .Build();
 
 
-            
+
             // KeycloakContainerTest = new KeycloakBuilder()
             //     //.WithDockerEndpoint(dockerEndpoint)
             //     .WithEnvironment("KEYCLOAK_ADMIN","admin")
@@ -47,7 +47,7 @@ namespace vicuna_infra_test.Controller
             //     .WithExtraHost("keycloak.host.internal","host-gateway")
             //     .WithCleanUp(true)
             //     .Build();
-            
+
             await PostgresContainerTest!.StartAsync().ConfigureAwait(false);
             // await KeycloakContainerTest!.StartAsync().ConfigureAwait(false);
         }
@@ -55,16 +55,16 @@ namespace vicuna_infra_test.Controller
 
         public async Task InitializeAsync()
         {
-            
+
         }
 
         public async Task DisposeAsync()
         {
-             // await PostgresContainerTest!.StopAsync().ConfigureAwait(false);
-             // await PostgresContainerTest.DisposeAsync().AsTask();
-             //
-             // await KeycloakContainerTest!.StopAsync().ConfigureAwait(false);
-             // await KeycloakContainerTest.DisposeAsync().AsTask();
+            // await PostgresContainerTest!.StopAsync().ConfigureAwait(false);
+            // await PostgresContainerTest.DisposeAsync().AsTask();
+            //
+            // await KeycloakContainerTest!.StopAsync().ConfigureAwait(false);
+            // await KeycloakContainerTest.DisposeAsync().AsTask();
         }
     }
 }

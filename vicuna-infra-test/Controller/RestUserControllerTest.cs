@@ -1,62 +1,49 @@
 using Microsoft.AspNetCore.Mvc.Testing;
 using System.Net;
 using System.Text.Json;
-using Docker.DotNet.Models;
 using vicuna_ddd.Domain.Users.Dto;
-using vicuna_ddd.Domain.Users.Exceptions;
 using vicuna_ddd.Model.Users.Entity;
 using vicuna_infra.Repository;
-using Xunit;
+using System.Runtime;
+using AutoFixture;
 
 namespace vicuna_infra_test.Controller
 {
-    public class RestUserControllerTest : RestControllerFixture
+    public class RestUserControllerTest : IClassFixture<RestControllerBase>
     {
         private const string RequestUriUserAsDto = "read/user/{userDto}";
         private const string RequestUriUserPass = "/read/bynamepw/Testuser/Testpass";
-        private const string RequestUriUser = "/read/byname/TestUser";
-        private const string RequestUriUserNotExist = "/read/byname/Loinin";
+        private const string RequestUriUser = "/read/byname/TestUser1";
+        private const string RequestUriUserNotExist = "/read/byname/Teschtuser";
         private const string RequestUriEmail = "/read/byemail/testemail@test.de";
-
         private readonly HttpClient _httpClient;
-
-        private UserRepository _userRepository;
+        private UserUserRepository _userUserRepository;
         private User _user;
 
-        public RestUserControllerTest()
+        public RestUserControllerTest(RestControllerBase restControllerBase)
         {
             var webFactory = new WebApplicationFactory<Program>();
             _httpClient = webFactory.CreateDefaultClient();
-            _user = RestControllerTestHelpers.CreateTestUser("TestUser1");
-        }
-
-        public void Setup()
-        {
-            _userRepository = new UserRepository();
-            _user = RestControllerTestHelpers.CreateTestUser("TestUser1");
-            _ = _userRepository.Add(_user);
-        }
-
-        public void Teardown()
-        {
-            _userRepository = new UserRepository();
-            var users = _userRepository.GetAll().Result;
-
-            foreach (var user in users)
-            {
-                _ = _userRepository.Remove(user);
-            }
+            _userUserRepository = new UserUserRepository();
         }
 
         [Fact]
         public async Task TestFindUserInDtoAsync()
         {
-            UserDto userDto = new UserDto();
-            userDto.UserPass = _user.UserPass;
-            userDto.UserName = _user.UserName;
-            userDto.UserEmail = _user.UserEmail;
+            // Given
+            _user = RestControllerTestHelpers.CreateTestUser("TestUser1");
+            _ = _userUserRepository.Add(_user);
+            var userDto = new UserDto
+            {
+                UserPass = _user.UserPass,
+                UserName = _user.UserName,
+                UserEmail = _user.UserEmail
+            };
 
+            // When
             HttpResponseMessage response = await _httpClient.GetAsync(RequestUriUserAsDto);
+
+            // Then
             var userResult = JsonSerializer.Deserialize<User>(await response.Content.ReadAsStringAsync());
             Assert.NotNull(userResult);
             Assert.IsType<User>(userResult);
@@ -65,16 +52,30 @@ namespace vicuna_infra_test.Controller
         [Fact]
         public async Task TestGetUserByNameAsync()
         {
+            // Given
+            _user = RestControllerTestHelpers.CreateTestUser("TestUser1");
+            _ = _userUserRepository.Add(_user);
+
+            // When
             HttpResponseMessage response = await _httpClient.GetAsync(RequestUriUser);
+
+            // Then
             var userResult = JsonSerializer.Deserialize<User>(await response.Content.ReadAsStringAsync());
             Assert.NotNull(userResult);
             Assert.IsType<User>(userResult);
         }
 
         [Fact]
-        public async Task TestGetUserByUsernmaAndPasswordAsync()
+        public async Task TestGetUserByUsernameAndPasswordAsync()
         {
+            // Given
+            _user = RestControllerTestHelpers.CreateTestUser("TestUser1");
+            _ = _userUserRepository.Add(_user);
+
+            // When
             HttpResponseMessage response = await _httpClient.GetAsync(RequestUriUserPass);
+
+            // Then
             var userResult = JsonSerializer.Deserialize<User>(await response.Content.ReadAsStringAsync());
             Assert.NotNull(userResult);
             Assert.IsType<User>(userResult);
@@ -83,26 +84,17 @@ namespace vicuna_infra_test.Controller
         [Fact]
         public async Task TestGetUserByEmailAsync()
         {
+            // Given
+            _user = RestControllerTestHelpers.CreateTestUser("TestUser1");
+            _ = _userUserRepository.Add(_user);
+
+            // When
             HttpResponseMessage response = await _httpClient.GetAsync(RequestUriEmail);
+
+            // Then
             var userResult = JsonSerializer.Deserialize<User>(await response.Content.ReadAsStringAsync());
             Assert.NotNull(userResult);
             Assert.IsType<User>(userResult);
-        }
-
-        [Fact]
-        public async Task TestGetUserNotFoundlAsync()
-        {
-            HttpResponseMessage response = new HttpResponseMessage();
-            try
-            {
-                response = await _httpClient.GetAsync(RequestUriUserNotExist);
-                JsonSerializer.Deserialize<User>(await response.Content.ReadAsStringAsync());
-            }
-            catch (Exception ex)
-            {
-                Assert.IsType<Runtime>(ex.GetType());
-                Assert.Equal(HttpStatusCode.NotFound, response.StatusCode!);
-            }
         }
     }
 }

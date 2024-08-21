@@ -4,7 +4,7 @@ using vicuna_ddd.Shared.Provider;
 
 namespace vicuna_infra.Repository
 {
-    public class UserRepository : GenericRepository<UserDbContext, User>
+    public class UserUserRepository : GenericUserRepository<UserDbContext, User>
     {
     }
 }

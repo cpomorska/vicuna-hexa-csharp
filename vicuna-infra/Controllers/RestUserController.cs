@@ -35,7 +35,7 @@ namespace vicuna_infra.Controllers
         }
 
         [HttpGet]
-        [Route("byname/{name}")]
+        [Route("byname/{username}")]
         public User? GetUserByName(string username)
         {
             var userFound = _userService.GetUserByUsername(username).Result;

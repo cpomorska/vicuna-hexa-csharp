@@ -1,14 +1,17 @@
 using System.Diagnostics;
+using AutoMapper;
+using Confluent.Kafka;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.AspNetCore.Server.Kestrel.Https;
-using Microsoft.IdentityModel.Protocols.OpenIdConnect;
-using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using vicuna_ddd.Domain.Shared.Mapping;
+using vicuna_ddd.Domain.Users.Messaging;
 using vicuna_ddd.Shared.Provider;
 using vicuna_infra.Filters;
+using vicuna_infra.Messaging;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +22,28 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<UserDbContext>();
 builder.Services.AddTransient<DbInitializer>();
+
+var producerConfig = new ProducerConfig { BootstrapServers = "host.docker.internal:29092" };
+builder.Services.AddSingleton(producerConfig);
+
+var mapperConfig = new MapperConfiguration(mc => { mc.AddProfile<DeliveryConfirmationToDtoProfile>(); mc.AddProfile<DtoToDeliveryConfirmationProfile>(); });
+builder.Services.AddSingleton(mapperConfig.CreateMapper());
+
+var consumerConfig = new ExtendedConsumerConfig
+{
+    Topic = "user-in",
+    GroupId = "test-consumer-group",
+    BootstrapServers = "host.docker.internal:29092",
+    AutoOffsetReset = AutoOffsetReset.Earliest
+};
+builder.Services.AddSingleton(consumerConfig);
+
+builder.Services.AddSingleton<ReactiveProducerBase>(
+    _ => new ReactiveProducerBase(producerConfig.BootstrapServers));
+builder.Services.AddSingleton<IReactiveConsumer>( rcb => new ReactiveConsumerBase(config:consumerConfig,
+    logger: rcb.GetRequiredService<ILogger<ReactiveConsumerBase>>()
+));
+
 builder.Services.AddCors(options => options.AddPolicy("AllowAllOrigins",
     builder =>
     {
@@ -72,7 +97,8 @@ builder.Services.AddSwaggerGen(c =>
                 {
                     AuthorizationUrl =
                         new Uri("https://keycloak.host.internal:28443/realms/development/protocol/openid-connect/auth"),
-                    TokenUrl = new Uri("https://keycloak.host.internal:28443/realms/development/protocol/openid-connect/token"),
+                    TokenUrl = new Uri(
+                        "https://keycloak.host.internal:28443/realms/development/protocol/openid-connect/token"),
                     Scopes = new Dictionary<string, string>
                     {
                         { "openid", "OpenID Connect scope" },
@@ -110,7 +136,7 @@ builder.Services.AddAuthentication(options =>
         // options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
         // options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
         // options.DefaultSignInScheme = "cookie";
-        
+
         options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
         options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
         options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
@@ -124,7 +150,7 @@ builder.Services.AddAuthentication(options =>
         //options.RequireHttpsMetadata = false;
         //options.CallbackPath = builder.Configuration["OpenIdConnect:CallbackPath"];
         //options.AuthenticationMethod = OpenIdConnectRedirectBehavior.RedirectGet;
-        
+
         options.ResponseType = "code";
         options.GetClaimsFromUserInfoEndpoint = true;
         options.SaveTokens = true;
@@ -137,7 +163,7 @@ builder.Services.AddAuthentication(options =>
         //     NameClaimType = "preferred_username",
         //     RoleClaimType = "roles"
         // };
-        
+
         // options.Events = new OpenIdConnectEvents
         // {
         //     OnRedirectToIdentityProvider = context =>
@@ -159,9 +185,9 @@ if (app.Environment.IsDevelopment())
     app.UseAuthorization();
 
     app.UseCors("AllowAllOrigins");
-    
+
     app.UseSwagger();
-    app.UseSwaggerUI(c => 
+    app.UseSwaggerUI(c =>
     {
         c.OAuthClientId("backend-service");
         c.OAuthClientSecret("qQOkEGGd6JzzeDj0wkqjTFzrHdJiWdgz");
@@ -170,7 +196,7 @@ if (app.Environment.IsDevelopment())
         //c.OAuthAdditionalQueryStringParams(new Dictionary<string, string>() { { "nonce", Guid.NewGuid().ToString() } });
         c.OAuthUsePkce();
     });
-    
+
     app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
 
     using var scope = app.Services.CreateScope();
@@ -194,4 +220,3 @@ app.UseHttpsRedirection();
 app.MapControllers();
 
 app.Run();
-

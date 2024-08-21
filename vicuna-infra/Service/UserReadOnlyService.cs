@@ -8,13 +8,13 @@ namespace vicuna_infra.Service
 {
     public class UserReadOnlyService : IUserService
     {
-        private readonly UserRepository _userRepository;
+        private readonly UserUserRepository _userUserRepository;
         private readonly ILogger _logger;
 
         public UserReadOnlyService(ILoggerFactory loggerFactory)
         {
             _logger = loggerFactory.CreateLogger<RestUserController>();
-            _userRepository = new UserRepository();
+            _userUserRepository = new UserUserRepository();
         }
 
         public Task<User?> FindUser(UserDto userDto)
@@ -23,7 +23,7 @@ namespace vicuna_infra.Service
             try
             {
                 _logger.LogInformation("Reading entries by Username");
-                userEntries = _userRepository
+                userEntries = _userUserRepository
                     .GetList(x => x.UserName == userDto.UserName && x.UserNumber == userDto.UserNumber && x.UserPass == userDto.UserPass && x.UserEnabled == userDto.UserEnabled).Result.ToImmutableList();
             }
             catch (Exception ex)
@@ -40,7 +40,7 @@ namespace vicuna_infra.Service
             try
             {
                 _logger.LogInformation("Reading entries by Username");
-               userEntries = _userRepository
+               userEntries = _userUserRepository
                     .GetList(x => x.UserEmail == email).Result.ToImmutableList();
             }
             catch (Exception ex)
@@ -57,7 +57,7 @@ namespace vicuna_infra.Service
             try
             {
                 _logger.LogInformation("Reading entries by Username");
-                userEntries = _userRepository
+                userEntries = _userUserRepository
                      .GetList(x => x.UserName == userName && x.UserPass == password).Result.ToImmutableList();
             }
             catch (Exception ex)
@@ -74,7 +74,7 @@ namespace vicuna_infra.Service
             try
             {
                 _logger.LogInformation("Reading entries by Username");
-                userEntries = _userRepository
+                userEntries = _userUserRepository
                     .GetList(x => x.UserName == username).Result.ToImmutableList();
             }
             catch (Exception ex)
