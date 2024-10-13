@@ -8,6 +8,9 @@ EXPOSE 443
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 COPY ["vicuna-infra/vicuna-infra.csproj", "vicuna-infra/"]
+RUN dotnet restore "vicuna-infra/vicuna-infra.csproj"
+COPY .. .
+RUN dotnet build "vicuna-infra/vicuna-infra.csproj" -c Release --no-restore
 RUN dotnet dev-certs https
 RUN dotnet dev-certs https --trust
 RUN dotnet restore "vicuna-infra/vicuna-infra.csproj"
