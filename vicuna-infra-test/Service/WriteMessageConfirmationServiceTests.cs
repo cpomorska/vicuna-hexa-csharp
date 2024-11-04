@@ -6,75 +6,79 @@ using vicuna_ddd.Domain.Users.Dto;
 using System.Linq.Expressions;
 using vicuna_infra.Service;
 
-public class WriteMessageConfirmationServiceTests
+
+namespace vicuna_infra.Service
 {
-    // Mock objects
-    private readonly Mock<IDeliveryedMessageRepository<DeliveredMessage>> _mockedRepository;
-    private readonly Mock<IMapper> _mockedMapper;
-
-    // System under test
-    private readonly WriteMessageConfirmationService _sut;
-
-    public WriteMessageConfirmationServiceTests()
+    public class WriteMessageConfirmationServiceTests
     {
-        _mockedRepository = new Mock<IDeliveryedMessageRepository<DeliveredMessage>>();
-        _mockedMapper = new Mock<IMapper>();
+        // Mock objects
+        private readonly Mock<IDeliveryedMessageRepository<DeliveredMessage>> _mockedRepository;
+        private readonly Mock<IMapper> _mockedMapper;
 
-        _sut = new WriteMessageConfirmationService(_mockedRepository.Object, _mockedMapper.Object);
-    }
+        // System under test
+        private readonly WriteMessageConfirmationService _sut;
 
-    [Fact]
-    public async Task Given_DeliveryConfirmationDto_When_StoreDeliveredMessage_Then_ReturnsMessageKey()
-    {
-        // Given
-        var testGuid = Guid.NewGuid();
-        var deliveryConfirmationDto = new DeliveryConfirmationDto();
-        var deliveredMessage = new DeliveredMessage { Messagekey = testGuid };
+        public WriteMessageConfirmationServiceTests()
+        {
+            _mockedRepository = new Mock<IDeliveryedMessageRepository<DeliveredMessage>>();
+            _mockedMapper = new Mock<IMapper>();
 
-        _mockedMapper.Setup(m => m.Map<DeliveredMessage>(It.IsAny<DeliveryConfirmationDto>())).Returns(deliveredMessage);
+            _sut = new WriteMessageConfirmationService(_mockedRepository.Object, _mockedMapper.Object);
+        }
 
-        // When
-        var result = await _sut.StoreDeliveredMessage(deliveryConfirmationDto);
+        [Fact]
+        public async Task Given_DeliveryConfirmationDto_When_StoreDeliveredMessage_Then_ReturnsMessageKey()
+        {
+            // Given
+            var testGuid = Guid.NewGuid();
+            var deliveryConfirmationDto = new DeliveryConfirmationDto();
+            var deliveredMessage = new DeliveredMessage { Messagekey = testGuid };
 
-        // Then
-        Assert.NotNull(result);
-        Assert.IsType<Guid>(result);
-        Assert.Equal(testGuid,result);
-    }
+            _mockedMapper.Setup(m => m.Map<DeliveredMessage>(It.IsAny<DeliveryConfirmationDto>())).Returns(deliveredMessage);
 
-    [Fact]
-    public async Task Given_MessageKey_When_UpdateDeliveredMessage_Then_ReturnsMessageKey()
-    {
-        // Given
-        var testGuid = Guid.NewGuid();
-        var deliveredMessage = new DeliveredMessage { Messagekey = testGuid };
+            // When
+            var result = await _sut.StoreDeliveredMessage(deliveryConfirmationDto);
 
-        _mockedRepository.Setup(s => s.GetSingle(It.IsAny<Expression<Func<DeliveredMessage, bool>>>())).ReturnsAsync(deliveredMessage);
+            // Then
+            Assert.NotNull(result);
+            Assert.IsType<Guid>(result);
+            Assert.Equal(testGuid, result);
+        }
 
-        // When
-        var result = await _sut.UpdateDeliveredMessage(testGuid);
+        [Fact]
+        public async Task Given_MessageKey_When_UpdateDeliveredMessage_Then_ReturnsMessageKey()
+        {
+            // Given
+            var testGuid = Guid.NewGuid();
+            var deliveredMessage = new DeliveredMessage { Messagekey = testGuid };
 
-        // Then
-        Assert.NotNull(result);
-        Assert.IsType<Guid>(result);
-        Assert.Equal(testGuid,result);
-    }
+            _mockedRepository.Setup(s => s.GetSingle(It.IsAny<Expression<Func<DeliveredMessage, bool>>>())).ReturnsAsync(deliveredMessage);
 
-    [Fact]
-    public async Task Given_MessageKey_When_DeleteDeliveredMessage_Then_ReturnsMessageKey()
-    {
-        // Given
-        var testGuid = Guid.NewGuid();
-        var deliveredMessage = new DeliveredMessage { Messagekey = testGuid };
+            // When
+            var result = await _sut.UpdateDeliveredMessage(testGuid);
 
-        _mockedRepository.Setup(s => s.GetSingle(It.IsAny<Expression<Func<DeliveredMessage, bool>>>())).ReturnsAsync(deliveredMessage);
+            // Then
+            Assert.NotNull(result);
+            Assert.IsType<Guid>(result);
+            Assert.Equal(testGuid, result);
+        }
 
-        // When
-        var result = await _sut.DeleteDeliveredMessage(testGuid);
+        [Fact]
+        public async Task Given_MessageKey_When_DeleteDeliveredMessage_Then_ReturnsMessageKey()
+        {
+            // Given
+            var testGuid = Guid.NewGuid();
+            var deliveredMessage = new DeliveredMessage { Messagekey = testGuid };
 
-        // Then
-        Assert.NotNull(result);
-        Assert.IsType<Guid>(result);
-        Assert.Equal(testGuid,result);
+            _mockedRepository.Setup(s => s.GetSingle(It.IsAny<Expression<Func<DeliveredMessage, bool>>>())).ReturnsAsync(deliveredMessage);
+
+            // When
+            var result = await _sut.DeleteDeliveredMessage(testGuid);
+
+            // Then
+            Assert.NotNull(result);
+            Assert.IsType<Guid>(result);
+            Assert.Equal(testGuid, result);
+        }
     }
 }
