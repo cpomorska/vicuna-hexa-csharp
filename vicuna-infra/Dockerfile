@@ -13,7 +13,7 @@ COPY .. .
 RUN dotnet build "vicuna-infra/vicuna-infra.csproj" -c Release --no-restore
 RUN dotnet dev-certs https
 RUN dotnet dev-certs https --trust
-RUN dotnet restore "vicuna-infra/vicuna-infra.csproj"
+#RUN dotnet restore "vicuna-infra/vicuna-infra.csproj"
 COPY . .
 WORKDIR "/src/vicuna-infra"
 RUN dotnet build "vicuna-infra.csproj" -c Release -o /app/build
