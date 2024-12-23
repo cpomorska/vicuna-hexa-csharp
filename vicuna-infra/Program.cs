@@ -96,9 +96,9 @@ builder.Services.AddSwaggerGen(c =>
                 AuthorizationCode = new OpenApiOAuthFlow
                 {
                     AuthorizationUrl =
-                        new Uri("https://keycloak.host.internal:28443/realms/development/protocol/openid-connect/auth"),
+                        new Uri("https://host.docker.internal:8443/auth/realms/local-keycloak/protocol/openid-connect/auth"),
                     TokenUrl = new Uri(
-                        "https://keycloak.host.internal:28443/realms/development/protocol/openid-connect/token"),
+                        "https://host.docker.internal:8443/auth/realms/local-keycloak/protocol/openid-connect/token"),
                     Scopes = new Dictionary<string, string>
                     {
                         { "openid", "OpenID Connect scope" },
@@ -144,7 +144,7 @@ builder.Services.AddAuthentication(options =>
     .AddCookie("Cookies")
     .AddOpenIdConnect(options =>
     {
-        options.Authority = "https://keycloak.host.internal:28443/realms/development/";
+        options.Authority = "https://host.docker.internal:8443/auth/realms/local-keycloak";
         options.ClientId = builder.Configuration["OpenIdConnect:ClientId"];
         options.ClientSecret = builder.Configuration["OpenIdConnect:ClientSecret"];
         //options.RequireHttpsMetadata = false;
@@ -189,8 +189,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI(c =>
     {
-        c.OAuthClientId("backend-service");
-        c.OAuthClientSecret("qQOkEGGd6JzzeDj0wkqjTFzrHdJiWdgz");
+        c.OAuthClientId("localoidc");
+        c.OAuthClientSecret("RCrCWiykpDDC4TrCws03A8fkELTzbaUg");
         //c.OAuthRealm("development");
         //c.OAuthAppName("backend-service");
         //c.OAuthAdditionalQueryStringParams(new Dictionary<string, string>() { { "nonce", Guid.NewGuid().ToString() } });

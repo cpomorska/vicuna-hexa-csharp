@@ -6,9 +6,7 @@
       "serviceActions": {
         "vicuna-infra": "DoNotStart",
         "kafka": "StartWithoutDebugging",
-        "keycloak": "StartWithoutDebugging",
-        "postgres": "StartWithoutDebugging",
-        "postgres-kc": "StartWithoutDebugging"
+        "postgres": "StartWithoutDebugging"
       }
     }
   }

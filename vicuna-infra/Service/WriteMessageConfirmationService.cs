@@ -4,8 +4,6 @@ using vicuna_ddd.Domain.Messages.Entity;
 using vicuna_ddd.Domain.Messages.Service;
 using vicuna_ddd.Domain.Users.Dto;
 using vicuna_ddd.Domain.Users.Messaging;
-using System.Threading.Tasks;
-using System;
 
 namespace vicuna_infra.Service
 {
