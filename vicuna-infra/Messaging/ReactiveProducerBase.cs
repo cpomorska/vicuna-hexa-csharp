@@ -1,15 +1,13 @@
+using System.Text;
+using Confluent.Kafka;
+
 namespace vicuna_infra.Messaging
 {
-    using Confluent.Kafka;
-    using System;
-    using System.Reactive.Linq;
-    using System.Threading.Tasks;
-
     public class ReactiveProducerBase : IObservable<Message<Null, byte[]>>
     {
         private readonly string bootstrapServers;
         private readonly ProducerConfig config;
-        private IProducer<Null, byte[]> producer;
+        private readonly IProducer<Null, byte[]> producer;
 
         public ReactiveProducerBase(string bootstrapServers)
         {
@@ -41,7 +39,7 @@ namespace vicuna_infra.Messaging
             try
             {
                 await producer.ProduceAsync("my-topic", new Message<Null, byte[]> { Value = value });
-                Console.WriteLine($"Sent message: {System.Text.Encoding.UTF8.GetString(value)}");
+                Console.WriteLine($"Sent message: {Encoding.UTF8.GetString(value)}");
             }
             catch (Exception ex)
             {

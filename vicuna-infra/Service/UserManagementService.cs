@@ -6,8 +6,8 @@ namespace vicuna_infra.Service
 {
     public class UserManagementService : IUserManagementService
     {
-        private readonly UserUserRepository _userUserRepository;
         private readonly ILogger _logger;
+        private readonly UserUserRepository _userUserRepository;
 
         public UserManagementService(ILoggerFactory loggerFactory)
         {
@@ -28,6 +28,7 @@ namespace vicuna_infra.Service
             {
                 _logger.LogError($"Error creating user {user.UserNumber} | " + ex);
             }
+
             return Task.FromResult(guid);
         }
 

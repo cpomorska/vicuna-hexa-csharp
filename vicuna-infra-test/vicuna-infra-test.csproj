@@ -1,69 +1,69 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
-    <RootNamespace>vicuna_infra_test</RootNamespace>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <RootNamespace>vicuna_infra_test</RootNamespace>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
 
-    <IsPackable>false</IsPackable>
-    <IsTestProject>true</IsTestProject>
-    <PreserveCompilationContext>true</PreserveCompilationContext>
-  </PropertyGroup>
+        <IsPackable>false</IsPackable>
+        <IsTestProject>true</IsTestProject>
+        <PreserveCompilationContext>true</PreserveCompilationContext>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <None Remove="appsettings.json" />
-  </ItemGroup>
+    <ItemGroup>
+        <None Remove="appsettings.json"/>
+    </ItemGroup>
 
-  <ItemGroup>
-    <Content Include="appsettings.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-  </ItemGroup>
+    <ItemGroup>
+        <Content Include="appsettings.json">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+            <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+        </Content>
+    </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="AutoFixture.Xunit2" Version="4.18.1" />
-    <PackageReference Include="AutoMapper" Version="13.0.1" />
-    <PackageReference Include="Confluent.Kafka" Version="2.6.1" />
-    <PackageReference Include="Confluent.SchemaRegistry" Version="2.6.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="9.0.0" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.12.0" />
-    <PackageReference Include="Moq" Version="4.20.72" />
-    <PackageReference Include="MSTest.TestAdapter" Version="3.6.3" />
-    <PackageReference Include="coverlet.collector" Version="6.0.2">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="System.Reactive" Version="6.0.1" />
-    <PackageReference Include="System.Text.RegularExpressions" Version="4.3.1" />
-    <PackageReference Include="Testcontainers" Version="4.0.0" />
-    <PackageReference Include="Testcontainers.Keycloak" Version="4.0.0" />
-    <PackageReference Include="Testcontainers.LocalStack" Version="4.0.0" />
-    <PackageReference Include="Testcontainers.MsSql" Version="4.0.0" />
-    <PackageReference Include="Testcontainers.PostgreSql" Version="4.0.0" />
-    <PackageReference Include="TngTech.ArchUnitNET.xUnit" Version="0.11.1" />
-    <PackageReference Include="xunit.assert" Version="2.9.2" />
-    <PackageReference Include="xunit.core" Version="2.9.2" />
-    <PackageReference Include="xunit.runner.console" Version="2.9.2">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="xunit.runner.visualstudio" Version="2.8.2">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-  </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="AutoFixture.Xunit2" Version="4.18.1"/>
+        <PackageReference Include="AutoMapper" Version="13.0.1"/>
+        <PackageReference Include="Confluent.Kafka" Version="2.6.1"/>
+        <PackageReference Include="Confluent.SchemaRegistry" Version="2.6.1"/>
+        <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="9.0.0"/>
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.12.0"/>
+        <PackageReference Include="Moq" Version="4.20.72"/>
+        <PackageReference Include="MSTest.TestAdapter" Version="3.6.3"/>
+        <PackageReference Include="coverlet.collector" Version="6.0.2">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="System.Reactive" Version="6.0.1"/>
+        <PackageReference Include="System.Text.RegularExpressions" Version="4.3.1"/>
+        <PackageReference Include="Testcontainers" Version="4.0.0"/>
+        <PackageReference Include="Testcontainers.Keycloak" Version="4.0.0"/>
+        <PackageReference Include="Testcontainers.LocalStack" Version="4.0.0"/>
+        <PackageReference Include="Testcontainers.MsSql" Version="4.0.0"/>
+        <PackageReference Include="Testcontainers.PostgreSql" Version="4.0.0"/>
+        <PackageReference Include="TngTech.ArchUnitNET.xUnit" Version="0.11.1"/>
+        <PackageReference Include="xunit.assert" Version="2.9.2"/>
+        <PackageReference Include="xunit.core" Version="2.9.2"/>
+        <PackageReference Include="xunit.runner.console" Version="2.9.2">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="xunit.runner.visualstudio" Version="2.8.2">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+    </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\vicuna-infra\vicuna-infra.csproj" />
-  </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\vicuna-infra\vicuna-infra.csproj"/>
+    </ItemGroup>
 
-  <ItemGroup>
-    <None Update="testhost.deps.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
+    <ItemGroup>
+        <None Update="testhost.deps.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
 
 </Project>

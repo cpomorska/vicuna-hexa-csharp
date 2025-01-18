@@ -4,12 +4,8 @@ using vicuna_ddd.Model.Users.Entity;
 
 namespace vicuna_ddd.Shared.Provider
 {
-    public partial class UserDbContext : GenericDbContext
+    public class UserDbContext : GenericDbContext
     {
-        public DbSet<User>? Users { get; set; }
-        public DbSet<UserHash>? UserHash { get; set; }
-        public DbSet<UserRole>? UserRoles { get; set; }
-
         public UserDbContext(bool useInMemoryDb) : base(useInMemoryDb)
         {
             UseInMemoryDb = useInMemoryDb;
@@ -19,9 +15,16 @@ namespace vicuna_ddd.Shared.Provider
         {
         }
 
+        public DbSet<User>? Users { get; set; }
+        public DbSet<UserHash>? UserHash { get; set; }
+        public DbSet<UserRole>? UserRoles { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            if (optionsBuilder.IsConfigured) return;
+            if (optionsBuilder.IsConfigured)
+            {
+                return;
+            }
 
             if (!UseInMemoryDb)
             {

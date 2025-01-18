@@ -8,12 +8,26 @@ namespace vicuna_infra_test.Controller
     {
         private const string UnixSocketAddr = "unix:/var/run/docker.sock";
 
-        public static PostgreSqlContainer? PostgresContainerTest { get; private set; }
-        public static KeycloakContainer? KeycloakContainerTest { get; private set; }
-
         public RestControllerFixture()
         {
             _ = SetupClass();
+        }
+
+        public static PostgreSqlContainer? PostgresContainerTest { get; private set; }
+        public static KeycloakContainer? KeycloakContainerTest { get; private set; }
+
+
+        public async Task InitializeAsync()
+        {
+        }
+
+        public async Task DisposeAsync()
+        {
+            // await PostgresContainerTest!.StopAsync().ConfigureAwait(false);
+            // await PostgresContainerTest.DisposeAsync().AsTask();
+            //
+            // await KeycloakContainerTest!.StopAsync().ConfigureAwait(false);
+            // await KeycloakContainerTest.DisposeAsync().AsTask();
         }
 
         public async Task SetupClass()
@@ -35,7 +49,6 @@ namespace vicuna_infra_test.Controller
                 .Build();
 
 
-
             // KeycloakContainerTest = new KeycloakBuilder()
             //     //.WithDockerEndpoint(dockerEndpoint)
             //     .WithEnvironment("KEYCLOAK_ADMIN","admin")
@@ -50,21 +63,6 @@ namespace vicuna_infra_test.Controller
 
             await PostgresContainerTest!.StartAsync().ConfigureAwait(false);
             // await KeycloakContainerTest!.StartAsync().ConfigureAwait(false);
-        }
-
-
-        public async Task InitializeAsync()
-        {
-
-        }
-
-        public async Task DisposeAsync()
-        {
-            // await PostgresContainerTest!.StopAsync().ConfigureAwait(false);
-            // await PostgresContainerTest.DisposeAsync().AsTask();
-            //
-            // await KeycloakContainerTest!.StopAsync().ConfigureAwait(false);
-            // await KeycloakContainerTest.DisposeAsync().AsTask();
         }
     }
 }

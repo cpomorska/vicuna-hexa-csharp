@@ -6,12 +6,9 @@ using vicuna_ddd.Shared.Provider;
 
 namespace vicuna_ddd.Infrastructure
 {
-    public class GenericUserRepository<TDbContext, T> : IGenericUserRepository<T> where T :BaseEntity
+    public class GenericUserRepository<TDbContext, T> : IGenericUserRepository<T> where T : BaseEntity
         where TDbContext : GenericDbContext
     {
-
-        public bool UnitTestDb { get; set; }
-
         public GenericUserRepository()
         {
             using (var context = new UserDbContext(false))
@@ -19,6 +16,8 @@ namespace vicuna_ddd.Infrastructure
                 _ = context.Database.EnsureCreatedAsync();
             }
         }
+
+        public bool UnitTestDb { get; set; }
 
 
         public async Task Add(params T[] items)
@@ -37,7 +36,9 @@ namespace vicuna_ddd.Infrastructure
                 IQueryable<T> dbQuery = context.Set<T>();
 
                 foreach (Expression<Func<T, object>> navigationProperty in navigationProperties)
+                {
                     dbQuery = dbQuery.Include(navigationProperty);
+                }
 
                 return await dbQuery
                     .AsNoTracking()
@@ -45,14 +46,17 @@ namespace vicuna_ddd.Infrastructure
             }
         }
 
-        public async Task<IList<T>> GetList(Expression<Func<T, bool>> where, params Expression<Func<T, object>>[] navigationProperties)
+        public async Task<IList<T>> GetList(Expression<Func<T, bool>> where,
+            params Expression<Func<T, object>>[] navigationProperties)
         {
             using (var context = new UserDbContext(UnitTestDb))
             {
                 IQueryable<T> dbQuery = context.Set<T>();
 
                 foreach (Expression<Func<T, object>> navigationProperty in navigationProperties)
+                {
                     dbQuery = dbQuery.Include(navigationProperty);
+                }
 
                 return await dbQuery
                     .AsNoTracking()
@@ -61,14 +65,17 @@ namespace vicuna_ddd.Infrastructure
             }
         }
 
-        public async Task<T?> GetSingle(Expression<Func<T, bool>> where, params Expression<Func<T, object>>[] navigationProperties)
+        public async Task<T?> GetSingle(Expression<Func<T, bool>> where,
+            params Expression<Func<T, object>>[] navigationProperties)
         {
             using (var context = new UserDbContext(UnitTestDb))
             {
                 IQueryable<T> dbQuery = context.Set<T>();
 
                 foreach (Expression<Func<T, object>> navigationProperty in navigationProperties)
+                {
                     dbQuery = dbQuery.Include(navigationProperty);
+                }
 
                 return await dbQuery
                     .AsNoTracking()
@@ -80,7 +87,7 @@ namespace vicuna_ddd.Infrastructure
         {
             using (var context = new UserDbContext(UnitTestDb))
             {
-                context.Set<T>().RemoveRange(items);                        
+                context.Set<T>().RemoveRange(items);
                 await context.SaveChangesAsync();
             }
         }

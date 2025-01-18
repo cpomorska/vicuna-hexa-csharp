@@ -26,7 +26,11 @@ builder.Services.AddTransient<DbInitializer>();
 var producerConfig = new ProducerConfig { BootstrapServers = "host.docker.internal:29092" };
 builder.Services.AddSingleton(producerConfig);
 
-var mapperConfig = new MapperConfiguration(mc => { mc.AddProfile<DeliveryConfirmationToDtoProfile>(); mc.AddProfile<DtoToDeliveryConfirmationProfile>(); });
+var mapperConfig = new MapperConfiguration(mc =>
+{
+    mc.AddProfile<DeliveryConfirmationToDtoProfile>();
+    mc.AddProfile<DtoToDeliveryConfirmationProfile>();
+});
 builder.Services.AddSingleton(mapperConfig.CreateMapper());
 
 var consumerConfig = new ExtendedConsumerConfig
@@ -40,8 +44,8 @@ builder.Services.AddSingleton(consumerConfig);
 
 builder.Services.AddSingleton<ReactiveProducerBase>(
     _ => new ReactiveProducerBase(producerConfig.BootstrapServers));
-builder.Services.AddSingleton<IReactiveConsumer>( rcb => new ReactiveConsumerBase(config:consumerConfig,
-    logger: rcb.GetRequiredService<ILogger<ReactiveConsumerBase>>()
+builder.Services.AddSingleton<IReactiveConsumer>(rcb => new ReactiveConsumerBase(consumerConfig,
+    rcb.GetRequiredService<ILogger<ReactiveConsumerBase>>()
 ));
 
 builder.Services.AddCors(options => options.AddPolicy("AllowAllOrigins",
@@ -96,12 +100,13 @@ builder.Services.AddSwaggerGen(c =>
                 AuthorizationCode = new OpenApiOAuthFlow
                 {
                     AuthorizationUrl =
-                        new Uri("https://host.docker.internal:8443/auth/realms/local-keycloak/protocol/openid-connect/auth"),
+                        new Uri(
+                            "https://host.docker.internal:8443/auth/realms/local-keycloak/protocol/openid-connect/auth"),
                     TokenUrl = new Uri(
                         "https://host.docker.internal:8443/auth/realms/local-keycloak/protocol/openid-connect/token"),
                     Scopes = new Dictionary<string, string>
                     {
-                        { "openid", "OpenID Connect scope" },
+                        { "openid", "OpenID Connect scope" }
                         // Add other scopes as needed
                     }
                 }
@@ -205,7 +210,7 @@ if (app.Environment.IsDevelopment())
     initializer.Run();
 }
 
-app.UseExceptionHandler(errorHandlingPath: "/error");
+app.UseExceptionHandler("/error");
 app.UseExceptionHandler(c => c.Run(async context =>
 {
     var exception = context.Features

@@ -1,25 +1,30 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
 
-namespace vicuna_ddd.Shared.Util;
-
-public class HashUtil
+namespace vicuna_ddd.Shared.Util
 {
-    protected HashUtil() { /*NOSONAR*/ }
-    public static string CalculateCustomerHash(string password, string salt)
+    public class HashUtil
     {
-        byte[] tmpHash = SHA256.HashData(Encoding.ASCII.GetBytes(password + salt));
-        return Convert.ToBase64String(tmpHash);
-    }
-
-    public static string GetRandomSalt(int maximumSaltLength)
-    {
-        var salt = new byte[maximumSaltLength];
-        using (var random = RandomNumberGenerator.Create())
+        protected HashUtil()
         {
-            random.GetNonZeroBytes(salt);
+            /*NOSONAR*/
         }
 
-        return Convert.ToBase64String(salt);
+        public static string CalculateCustomerHash(string password, string salt)
+        {
+            var tmpHash = SHA256.HashData(Encoding.ASCII.GetBytes(password + salt));
+            return Convert.ToBase64String(tmpHash);
+        }
+
+        public static string GetRandomSalt(int maximumSaltLength)
+        {
+            var salt = new byte[maximumSaltLength];
+            using (var random = RandomNumberGenerator.Create())
+            {
+                random.GetNonZeroBytes(salt);
+            }
+
+            return Convert.ToBase64String(salt);
+        }
     }
 }

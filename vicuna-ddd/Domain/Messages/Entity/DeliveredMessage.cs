@@ -8,9 +8,8 @@ using vicuna_ddd.Shared.Entity;
 namespace vicuna_ddd.Domain.Messages.Entity
 {
     /// <summary>
-    /// entity class for delivered messages
+    ///     entity class for delivered messages
     /// </summary>
-    /// 
     [Table("delivered_message")]
     public class DeliveredMessage : BaseEntity
     {
@@ -18,11 +17,11 @@ namespace vicuna_ddd.Domain.Messages.Entity
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [JsonIgnore]
         public long MessageId { get; set; }
-        [NotNull]
-        public Guid? Messagekey { get; set; }
-        [NotNull]
-        public MessageType MessageType { get; set; }
-        [NotNull]
-        public MessageStatus? MessageStatus{ get; set; }
+
+        [NotNull] public Guid? Messagekey { get; set; }
+
+        [NotNull] public MessageType MessageType { get; set; }
+
+        [NotNull] public MessageStatus? MessageStatus { get; set; }
     }
 }

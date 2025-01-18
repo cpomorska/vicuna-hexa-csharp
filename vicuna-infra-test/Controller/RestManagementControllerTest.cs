@@ -1,10 +1,8 @@
-
-using Microsoft.AspNetCore.Mvc.Testing;
 using System.Net.Http.Json;
 using System.Text.Json;
+using Microsoft.AspNetCore.Mvc.Testing;
 using vicuna_ddd.Shared.Provider;
 using vicuna_infra.Repository;
-using Xunit;
 
 namespace vicuna_infra_test.Controller
 {

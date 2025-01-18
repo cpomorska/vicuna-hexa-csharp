@@ -23,9 +23,9 @@ namespace vicuna_ddd.Shared.Provider
 
                     _userConfigurationRoot = builder.Build();
                 }
+
                 return _userConfigurationRoot;
             }
-
         }
     }
 }

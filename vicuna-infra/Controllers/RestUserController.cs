@@ -1,6 +1,6 @@
+using System.Net;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
-using System.Net;
 using vicuna_ddd.Domain.Users.Dto;
 using vicuna_ddd.Domain.Users.Exceptions;
 using vicuna_ddd.Model.Users.Entity;
@@ -14,7 +14,6 @@ namespace vicuna_infra.Controllers
     [EnableCors("DevelopmentPolicy")]
     public class RestUserController : ControllerBase
     {
-
         private readonly ILogger<RestUserController> _logger;
         private readonly UserReadOnlyService _userService;
 
@@ -30,7 +29,8 @@ namespace vicuna_infra.Controllers
         {
             var userFound = _userService.FindUser(user).Result;
             return userFound == null
-                ? throw new UserNotFoundException(HttpStatusCode.NotFound, ErrorCode.UserNotFound, $"User {user.UserName} not found")
+                ? throw new UserNotFoundException(HttpStatusCode.NotFound, ErrorCode.UserNotFound,
+                    $"User {user.UserName} not found")
                 : userFound;
         }
 
@@ -40,7 +40,8 @@ namespace vicuna_infra.Controllers
         {
             var userFound = _userService.GetUserByUsername(username).Result;
             return userFound == null
-                ? throw new UserNotFoundException(HttpStatusCode.NotFound, ErrorCode.UserNotFound, $"User {username} not found")
+                ? throw new UserNotFoundException(HttpStatusCode.NotFound, ErrorCode.UserNotFound,
+                    $"User {username} not found")
                 : userFound;
         }
 
@@ -50,7 +51,8 @@ namespace vicuna_infra.Controllers
         {
             var userFound = _userService.GetUserByUsernnameAndPassword(username, password).Result;
             return userFound == null
-                ? throw new UserNotFoundException(HttpStatusCode.NotFound, ErrorCode.UserNotFound, $"User {username} not found")
+                ? throw new UserNotFoundException(HttpStatusCode.NotFound, ErrorCode.UserNotFound,
+                    $"User {username} not found")
                 : userFound;
         }
 
@@ -60,7 +62,8 @@ namespace vicuna_infra.Controllers
         {
             var userFound = _userService.GetUserByEmail(useremail).Result;
             return userFound == null
-                ? throw new UserNotFoundException(HttpStatusCode.NotFound, ErrorCode.UserNotFound, $"User {useremail} not found")
+                ? throw new UserNotFoundException(HttpStatusCode.NotFound, ErrorCode.UserNotFound,
+                    $"User {useremail} not found")
                 : userFound;
         }
     }

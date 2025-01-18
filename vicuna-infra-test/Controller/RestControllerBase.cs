@@ -5,10 +5,10 @@ namespace vicuna_infra_test.Controller
 {
     public class RestControllerBase : IDisposable
     {
-        private UserUserRepository _userUserRepository;
-        private User _user;
-        
-        public RestControllerBase ()
+        private readonly User _user;
+        private readonly UserUserRepository _userUserRepository;
+
+        public RestControllerBase()
         {
             _userUserRepository = new UserUserRepository();
             _user = RestControllerTestHelpers.CreateTestUser("TestUser1");
@@ -20,7 +20,7 @@ namespace vicuna_infra_test.Controller
             var users = _userUserRepository.GetAll().Result;
             foreach (var user in users)
             {
-                 _ = _userUserRepository.Remove(user);
+                _ = _userUserRepository.Remove(user);
             }
         }
     }

@@ -13,7 +13,7 @@ namespace vicuna_infra_test.Controller
             var userHash = new UserHash
             {
                 saltField = randomSaltMann,
-                hashField = HashUtil.CalculateCustomerHash(username, randomSaltMann),
+                hashField = HashUtil.CalculateCustomerHash(username, randomSaltMann)
             };
 
             var userRole = new UserRole
@@ -32,7 +32,7 @@ namespace vicuna_infra_test.Controller
                 UserToken = "userToken",
                 UserHash = userHash,
                 UserRole = userRole,
-                UserEnabled = true,
+                UserEnabled = true
                 //CreatedAt = DateTime.UtcNow,
                 //ModifiedAt = DateTime.UtcNow,
                 //ModifiedFrom = "randomSaltmann!"

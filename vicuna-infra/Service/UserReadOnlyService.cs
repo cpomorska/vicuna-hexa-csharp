@@ -8,8 +8,8 @@ namespace vicuna_infra.Service
 {
     public class UserReadOnlyService : IUserService
     {
-        private readonly UserUserRepository _userUserRepository;
         private readonly ILogger _logger;
+        private readonly UserUserRepository _userUserRepository;
 
         public UserReadOnlyService(ILoggerFactory loggerFactory)
         {
@@ -24,7 +24,10 @@ namespace vicuna_infra.Service
             {
                 _logger.LogInformation("Reading entries by Username");
                 userEntries = _userUserRepository
-                    .GetList(x => x.UserName == userDto.UserName && x.UserNumber == userDto.UserNumber && x.UserPass == userDto.UserPass && x.UserEnabled == userDto.UserEnabled).Result.ToImmutableList();
+                    .GetList(x =>
+                        x.UserName == userDto.UserName && x.UserNumber == userDto.UserNumber &&
+                        x.UserPass == userDto.UserPass && x.UserEnabled == userDto.UserEnabled).Result
+                    .ToImmutableList();
             }
             catch (Exception ex)
             {
@@ -40,7 +43,7 @@ namespace vicuna_infra.Service
             try
             {
                 _logger.LogInformation("Reading entries by Username");
-               userEntries = _userUserRepository
+                userEntries = _userUserRepository
                     .GetList(x => x.UserEmail == email).Result.ToImmutableList();
             }
             catch (Exception ex)
@@ -58,7 +61,7 @@ namespace vicuna_infra.Service
             {
                 _logger.LogInformation("Reading entries by Username");
                 userEntries = _userUserRepository
-                     .GetList(x => x.UserName == userName && x.UserPass == password).Result.ToImmutableList();
+                    .GetList(x => x.UserName == userName && x.UserPass == password).Result.ToImmutableList();
             }
             catch (Exception ex)
             {
@@ -68,7 +71,7 @@ namespace vicuna_infra.Service
             return await Task.FromResult(userEntries?.FirstOrDefault());
         }
 
-        public Task <User?> GetUserByUsername(string username)
+        public Task<User?> GetUserByUsername(string username)
         {
             IEnumerable<User>? userEntries = null;
             try

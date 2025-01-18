@@ -1,11 +1,8 @@
-using Microsoft.AspNetCore.Mvc.Testing;
-using System.Net;
 using System.Text.Json;
+using Microsoft.AspNetCore.Mvc.Testing;
 using vicuna_ddd.Domain.Users.Dto;
 using vicuna_ddd.Model.Users.Entity;
 using vicuna_infra.Repository;
-using System.Runtime;
-using AutoFixture;
 
 namespace vicuna_infra_test.Controller
 {
@@ -17,7 +14,7 @@ namespace vicuna_infra_test.Controller
         private const string RequestUriUserNotExist = "/read/byname/Teschtuser";
         private const string RequestUriEmail = "/read/byemail/testemail@test.de";
         private readonly HttpClient _httpClient;
-        private UserUserRepository _userUserRepository;
+        private readonly UserUserRepository _userUserRepository;
         private User _user;
 
         public RestUserControllerTest(RestControllerBase restControllerBase)
@@ -41,7 +38,7 @@ namespace vicuna_infra_test.Controller
             };
 
             // When
-            HttpResponseMessage response = await _httpClient.GetAsync(RequestUriUserAsDto);
+            var response = await _httpClient.GetAsync(RequestUriUserAsDto);
 
             // Then
             var userResult = JsonSerializer.Deserialize<User>(await response.Content.ReadAsStringAsync());
@@ -57,7 +54,7 @@ namespace vicuna_infra_test.Controller
             _ = _userUserRepository.Add(_user);
 
             // When
-            HttpResponseMessage response = await _httpClient.GetAsync(RequestUriUser);
+            var response = await _httpClient.GetAsync(RequestUriUser);
 
             // Then
             var userResult = JsonSerializer.Deserialize<User>(await response.Content.ReadAsStringAsync());
@@ -73,7 +70,7 @@ namespace vicuna_infra_test.Controller
             _ = _userUserRepository.Add(_user);
 
             // When
-            HttpResponseMessage response = await _httpClient.GetAsync(RequestUriUserPass);
+            var response = await _httpClient.GetAsync(RequestUriUserPass);
 
             // Then
             var userResult = JsonSerializer.Deserialize<User>(await response.Content.ReadAsStringAsync());
@@ -89,7 +86,7 @@ namespace vicuna_infra_test.Controller
             _ = _userUserRepository.Add(_user);
 
             // When
-            HttpResponseMessage response = await _httpClient.GetAsync(RequestUriEmail);
+            var response = await _httpClient.GetAsync(RequestUriEmail);
 
             // Then
             var userResult = JsonSerializer.Deserialize<User>(await response.Content.ReadAsStringAsync());

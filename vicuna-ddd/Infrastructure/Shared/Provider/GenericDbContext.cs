@@ -4,8 +4,6 @@ namespace vicuna_ddd.Shared.Provider
 {
     public class GenericDbContext : DbContext
     {
-        public bool UseInMemoryDb { get; set; }
-
         public GenericDbContext()
         {
         }
@@ -19,9 +17,13 @@ namespace vicuna_ddd.Shared.Provider
         {
         }
 
+        public bool UseInMemoryDb { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            if (optionsBuilder.IsConfigured) { return; }
+            if (optionsBuilder.IsConfigured)
+            {
+            }
             else
             {
                 optionsBuilder.UseInMemoryDatabase(@"Database=EFProviders.InMemory;Trusted_Connection=True;");

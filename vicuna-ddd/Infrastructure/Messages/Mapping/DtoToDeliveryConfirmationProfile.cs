@@ -5,7 +5,7 @@ using vicuna_ddd.Domain.Users.Dto;
 namespace vicuna_ddd.Domain.Shared.Mapping
 {
     /// <summary>
-    /// Represents a mapping profile for converting DeliveryConfirmationDto objects to Message objects.
+    ///     Represents a mapping profile for converting DeliveryConfirmationDto objects to Message objects.
     /// </summary>
     public class DtoToDeliveryConfirmationProfile : Profile
     {

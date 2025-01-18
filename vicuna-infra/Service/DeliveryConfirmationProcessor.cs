@@ -4,14 +4,11 @@ using vicuna_ddd.Domain.Users.Messaging;
 
 namespace vicuna_infra.Service
 {
-
-    using Microsoft.Extensions.Logging;
-
     public class DeliveryConfirmationProcessor
     {
-        private readonly ILogger<DeliveryConfirmationProcessor> logger;
         private readonly IReadMessageConformationService? _readMessageConformationService;
         private readonly IWriteMessageConfirmationService? _writeMessageConfirmationService;
+        private readonly ILogger<DeliveryConfirmationProcessor> logger;
 
         public DeliveryConfirmationProcessor()
         {
@@ -23,8 +20,8 @@ namespace vicuna_infra.Service
             IWriteMessageConfirmationService writeMessageConfirmationService)
         {
             this.logger = logger;
-            this._readMessageConformationService = readMessageConformationService;
-            this._writeMessageConfirmationService = _writeMessageConfirmationService;
+            _readMessageConformationService = readMessageConformationService;
+            _writeMessageConfirmationService = _writeMessageConfirmationService;
         }
 
         public MessageResult ProcessMessageDeliveredDto(DeliveryConfirmationDto deliveryConfirmationDto)
@@ -32,7 +29,7 @@ namespace vicuna_infra.Service
             if (deliveryConfirmationDto == null ||
                 string.IsNullOrWhiteSpace(deliveryConfirmationDto.MessageKey.ToString()))
             {
-                logger.LogError($"An error occurred while processing MessageDeliveredDto, Message is null or empty");
+                logger.LogError("An error occurred while processing MessageDeliveredDto, Message is null or empty");
                 return MessageResult.NoK;
             }
 
@@ -61,4 +58,3 @@ namespace vicuna_infra.Service
         }
     }
 }
-

@@ -1,13 +1,12 @@
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
-using vicuna_ddd.Domain.Users.Messaging;
 using Confluent.Kafka;
 using Confluent.Kafka.SyncOverAsync;
 using Confluent.SchemaRegistry.Serdes;
+using vicuna_ddd.Domain.Users.Messaging;
 
 namespace vicuna_infra.Messaging
 {
-
     public class ReactiveConsumerBase : IReactiveConsumer, IDisposable
     {
         private readonly IConsumer<Null, string> consumer;
@@ -18,7 +17,7 @@ namespace vicuna_infra.Messaging
         {
             var builder = new ConsumerBuilder<Null, string>(config);
             builder.SetKeyDeserializer(Deserializers.Null);
-            builder.SetValueDeserializer(new JsonDeserializer<String>().AsSyncOverAsync());
+            builder.SetValueDeserializer(new JsonDeserializer<string>().AsSyncOverAsync());
 
             consumer = builder.Build();
             consumer.Subscribe(config.Topic);
@@ -57,7 +56,7 @@ namespace vicuna_infra.Messaging
         }
 
         /// <summary>
-        /// Releases all resources used by the consumer.
+        ///     Releases all resources used by the consumer.
         /// </summary>
         public void Dispose()
         {

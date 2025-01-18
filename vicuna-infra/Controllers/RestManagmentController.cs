@@ -1,7 +1,6 @@
+using System.Net;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
-using System.Net;
-using Microsoft.AspNetCore.Authorization;
 using vicuna_ddd.Domain.Users.Exceptions;
 using vicuna_ddd.Model.Users.Entity;
 using vicuna_ddd.Shared.Response;
@@ -14,7 +13,6 @@ namespace vicuna_infra.Controllers
     [EnableCors("DevelopmentPolicy")]
     public class RestUserManagementController : ControllerBase
     {
-
         private readonly ILogger<RestUserController> _logger;
         private readonly UserManagementService _userService;
 
@@ -30,7 +28,8 @@ namespace vicuna_infra.Controllers
         {
             var userFoundGuid = _userService.AddUser(user).Result;
             return (Guid)(userFoundGuid == null
-                ? throw new UserCreationException(HttpStatusCode.NotFound, ErrorCode.UserNotCreated, $"User {user.UserName} not created")
+                ? throw new UserCreationException(HttpStatusCode.NotFound, ErrorCode.UserNotCreated,
+                    $"User {user.UserName} not created")
                 : userFoundGuid);
         }
 
@@ -40,7 +39,8 @@ namespace vicuna_infra.Controllers
         {
             var userUpdateGuid = _userService.UpdateUser(user).Result;
             return (Guid)(userUpdateGuid == null
-                ? throw new UserCreationException(HttpStatusCode.NotFound, ErrorCode.UserNotUpdated, $"User {user.UserName} not updated")
+                ? throw new UserCreationException(HttpStatusCode.NotFound, ErrorCode.UserNotUpdated,
+                    $"User {user.UserName} not updated")
                 : userUpdateGuid);
         }
 
@@ -50,9 +50,9 @@ namespace vicuna_infra.Controllers
         {
             var userRemoveGuid = _userService.AddUser(user).Result;
             return (Guid)(userRemoveGuid == null
-                ? throw new UserCreationException(HttpStatusCode.NotFound, ErrorCode.UserNotRemoved, $"User {user.UserName} not removed")
+                ? throw new UserCreationException(HttpStatusCode.NotFound, ErrorCode.UserNotRemoved,
+                    $"User {user.UserName} not removed")
                 : userRemoveGuid);
         }
-
     }
 }

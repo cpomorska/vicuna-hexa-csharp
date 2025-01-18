@@ -1,19 +1,18 @@
+using System.Linq.Expressions;
+using AutoMapper;
 using Moq;
 using vicuna_ddd.Domain.Meesage.Repository;
-using AutoMapper;
 using vicuna_ddd.Domain.Messages.Entity;
 using vicuna_ddd.Domain.Users.Dto;
-using System.Linq.Expressions;
-using vicuna_infra.Service;
-
 
 namespace vicuna_infra.Service
 {
     public class WriteMessageConfirmationServiceTests
     {
+        private readonly Mock<IMapper> _mockedMapper;
+
         // Mock objects
         private readonly Mock<IDeliveryedMessageRepository<DeliveredMessage>> _mockedRepository;
-        private readonly Mock<IMapper> _mockedMapper;
 
         // System under test
         private readonly WriteMessageConfirmationService _sut;
@@ -34,7 +33,8 @@ namespace vicuna_infra.Service
             var deliveryConfirmationDto = new DeliveryConfirmationDto();
             var deliveredMessage = new DeliveredMessage { Messagekey = testGuid };
 
-            _mockedMapper.Setup(m => m.Map<DeliveredMessage>(It.IsAny<DeliveryConfirmationDto>())).Returns(deliveredMessage);
+            _mockedMapper.Setup(m => m.Map<DeliveredMessage>(It.IsAny<DeliveryConfirmationDto>()))
+                .Returns(deliveredMessage);
 
             // When
             var result = await _sut.StoreDeliveredMessage(deliveryConfirmationDto);
@@ -52,7 +52,8 @@ namespace vicuna_infra.Service
             var testGuid = Guid.NewGuid();
             var deliveredMessage = new DeliveredMessage { Messagekey = testGuid };
 
-            _mockedRepository.Setup(s => s.GetSingle(It.IsAny<Expression<Func<DeliveredMessage, bool>>>())).ReturnsAsync(deliveredMessage);
+            _mockedRepository.Setup(s => s.GetSingle(It.IsAny<Expression<Func<DeliveredMessage, bool>>>()))
+                .ReturnsAsync(deliveredMessage);
 
             // When
             var result = await _sut.UpdateDeliveredMessage(testGuid);
@@ -70,7 +71,8 @@ namespace vicuna_infra.Service
             var testGuid = Guid.NewGuid();
             var deliveredMessage = new DeliveredMessage { Messagekey = testGuid };
 
-            _mockedRepository.Setup(s => s.GetSingle(It.IsAny<Expression<Func<DeliveredMessage, bool>>>())).ReturnsAsync(deliveredMessage);
+            _mockedRepository.Setup(s => s.GetSingle(It.IsAny<Expression<Func<DeliveredMessage, bool>>>()))
+                .ReturnsAsync(deliveredMessage);
 
             // When
             var result = await _sut.DeleteDeliveredMessage(testGuid);

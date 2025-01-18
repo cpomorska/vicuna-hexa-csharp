@@ -13,7 +13,7 @@ namespace vicuna_infra.Filters
             {
                 operation.Security = new List<OpenApiSecurityRequirement>
                 {
-                    new OpenApiSecurityRequirement
+                    new()
                     {
                         {
                             new OpenApiSecurityScheme
