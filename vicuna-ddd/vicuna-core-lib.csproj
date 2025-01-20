@@ -5,6 +5,7 @@
         <RootNamespace>vicuna_ddd</RootNamespace>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <SonarQubeExclude>false</SonarQubeExclude>
     </PropertyGroup>
 
     <ItemGroup>
