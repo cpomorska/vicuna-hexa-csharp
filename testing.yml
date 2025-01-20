@@ -1,0 +1,45 @@
+include:
+  - template: Security/SAST.gitlab-ci.yml
+  - template: Jobs/Secret-Detection.gitlab-ci.yml
+
+test_wallet:
+  allow_failure: true
+  stage: test_vicuna
+  needs: ["build_vicuna"]
+  tags:
+    - docker
+  image:
+    name: mcr.microsoft.com/dotnet/sdk:9.0.101
+  script:
+    - "echo 'from Branch $CI_COMMIT_BRANCH' "
+    - "dotnet test vicuna-infra-test/vicuna-infra-test.csproj --collect:\"XPlat Code Coverage\" --logger:\"junit;LogFilePath=testresult.xml\""
+    - "dotnet tool install -g dotnet-reportgenerator-globaltool"
+    - "/root/.dotnet/tools/reportgenerator -reports:\"**/coverage.cobertura.xml\" -targetdir:\"./coverage\" --reporttypes:\"Cobertura;HtmlInline\""
+  #  - "sed -n '/Summary/,/^$/p' coverage/Summary.txt"
+  coverage: '/Line coverage: \d+/'
+  artifacts:
+    reports:
+      junit:
+        - "*/testresult.xml"
+      coverage_report:
+        coverage_format: cobertura
+        path: "./coverage/Cobertura.xml"
+    paths:
+      - "./coverage/*.*"
+
+sast:
+  stage: test_vicuna
+  needs: ["build_vicuna"]
+
+semgrep-sast:
+  variables:
+    SAST_ANALYZER_IMAGE_TAG: 4.10.1-fips
+    SAST_EXCLUDED_PATHS: /*.json
+
+secret_detection:
+  stage: test_vicuna
+  needs: ["build_vicuna"]
+  variables:
+    SECRET_DETECTION_RULESET_GIT_REFERENCE: ".gitlab/secret-detection-ruleset.toml"
+    SAST_EXCLUDED_PATHS: /*.json
+    SECRET_DETECTION_HISTORIC_SCAN: "true"
