@@ -25,5 +25,6 @@ FROM base AS final
 COPY /app/tls//tls.keycloak.crt /usr/local/share/ca-certificates/tls.keycloak.crt
 WORKDIR /app
 COPY --from=publish /app/publish .
+RUN app-get install netcat
 RUN chmod 644 /usr/local/share/ca-certificates/tls.keycloak.crt && update-ca-certificates
 ENTRYPOINT ["dotnet", "vicuna-infra.dll"]
