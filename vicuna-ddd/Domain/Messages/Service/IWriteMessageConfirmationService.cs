@@ -16,7 +16,7 @@ namespace vicuna_ddd.Domain.Messages.Service
         ///     confirmation if successful,
         ///     or null if there was an error storing the message confirmation.
         /// </returns>
-        Task<Guid?> StoreDeliveredMessage(DeliveryConfirmationDto messageDelivery);
+        Task<Guid?> StoreDeliveredMessage(DeliveryConfirmationDto? messageDelivery);
 
         /// <summary>
         ///     Updates the delivered message with the specified id.

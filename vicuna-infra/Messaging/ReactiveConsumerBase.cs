@@ -11,13 +11,15 @@ namespace vicuna_infra.Messaging
     {
         private readonly IConsumer<Null, string> consumer;
         private readonly CancellationTokenSource cts = new();
-        private readonly ILogger<ReactiveConsumerBase>? logger;
+        private readonly ILogger<ReactiveConsumerBase>? _logger;
 
         public ReactiveConsumerBase(ExtendedConsumerConfig config, ILogger<ReactiveConsumerBase> logger)
         {
             var builder = new ConsumerBuilder<Null, string>(config);
             builder.SetKeyDeserializer(Deserializers.Null);
             builder.SetValueDeserializer(new JsonDeserializer<string>().AsSyncOverAsync());
+
+            _logger = logger;
 
             consumer = builder.Build();
             consumer.Subscribe(config.Topic);
@@ -38,16 +40,16 @@ namespace vicuna_infra.Messaging
                     catch (OperationCanceledException o)
                     {
                         // Break the loop
-                        logger.LogInformation($"Received message: {o.Message}");
+                        _logger!.LogInformation($"Received message: {o.Message}");
                         break;
                     }
                     catch (ConsumeException e)
                     {
-                        logger.LogError($"Consume error occurred: {e.Error.Reason}");
+                        _logger!.LogError($"Consume error occurred: {e.Error.Reason}");
                     }
                     catch (Exception e)
                     {
-                        logger.LogError($"Unexpected error occurred: {e.Message}");
+                        _logger!.LogError($"Unexpected error occurred: {e.Message}");
                     }
                 }
 

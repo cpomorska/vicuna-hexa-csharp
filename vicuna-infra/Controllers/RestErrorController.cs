@@ -32,7 +32,7 @@ namespace vicuna_infra.Controllers
             }
 
             Response.StatusCode = code;
-            var ex = new UserException(HttpStatusCode.NotFound, ErrorCode.Unknown, exception.Message);
+            var ex = new UserException(HttpStatusCode.NotFound, ErrorCode.Unknown, exception!.Message);
             return new RestErrorResponse(ex);
         }
     }

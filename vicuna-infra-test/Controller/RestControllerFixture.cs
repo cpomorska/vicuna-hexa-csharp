@@ -17,12 +17,14 @@ namespace vicuna_infra_test.Controller
         public static KeycloakContainer? KeycloakContainerTest { get; private set; }
 
 
-        public async Task InitializeAsync()
+        public Task InitializeAsync()
         {
+            return Task.CompletedTask;
         }
 
-        public async Task DisposeAsync()
+        public Task DisposeAsync()
         {
+            return Task.CompletedTask;
             // await PostgresContainerTest!.StopAsync().ConfigureAwait(false);
             // await PostgresContainerTest.DisposeAsync().AsTask();
             //

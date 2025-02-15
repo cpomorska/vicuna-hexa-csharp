@@ -101,9 +101,9 @@ builder.Services.AddSwaggerGen(c =>
                 {
                     AuthorizationUrl =
                         new Uri(
-                            "https://host.docker.internal:8443/auth/realms/local-keycloak/protocol/openid-connect/auth"),
+                            "https://host.docker.internal:28443/auth/realms/local-keycloak/protocol/openid-connect/auth"),
                     TokenUrl = new Uri(
-                        "https://host.docker.internal:8443/auth/realms/local-keycloak/protocol/openid-connect/token"),
+                        "https://host.docker.internal:28443/auth/realms/local-keycloak/protocol/openid-connect/token"),
                     Scopes = new Dictionary<string, string>
                     {
                         { "openid", "OpenID Connect scope" }
@@ -202,7 +202,9 @@ if (app.Environment.IsDevelopment())
         c.OAuthUsePkce();
     });
 
+#pragma warning disable ASP0014
     app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+#pragma warning restore ASP0014
 
     using var scope = app.Services.CreateScope();
     var services = scope.ServiceProvider;
@@ -216,7 +218,7 @@ app.UseExceptionHandler(c => c.Run(async context =>
     var exception = context.Features
         .Get<IExceptionHandlerPathFeature>()?
         .Error;
-    var response = new { exception.Message };
+    var response = new { exception!.Message };
     Debug.Assert(context != null, nameof(context) + " != null");
     await context.Response.WriteAsJsonAsync(response);
 }));

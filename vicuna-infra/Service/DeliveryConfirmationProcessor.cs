@@ -21,10 +21,10 @@ namespace vicuna_infra.Service
         {
             this.logger = logger;
             _readMessageConformationService = readMessageConformationService;
-            _writeMessageConfirmationService = _writeMessageConfirmationService;
+            _writeMessageConfirmationService = writeMessageConfirmationService;
         }
 
-        public MessageResult ProcessMessageDeliveredDto(DeliveryConfirmationDto deliveryConfirmationDto)
+        public MessageResult ProcessMessageDeliveredDto(DeliveryConfirmationDto? deliveryConfirmationDto)
         {
             if (deliveryConfirmationDto == null ||
                 string.IsNullOrWhiteSpace(deliveryConfirmationDto.MessageKey.ToString()))
@@ -36,16 +36,10 @@ namespace vicuna_infra.Service
             try
             {
                 var deliveredMessage =
-                    _readMessageConformationService.FindMessageConformation(deliveryConfirmationDto.MessageKey);
+                    _readMessageConformationService!.FindMessageConformation(deliveryConfirmationDto.MessageKey);
 
-                if (deliveredMessage == null)
-                {
-                    logger.LogWarning($"Could not find a message with ID '{deliveryConfirmationDto.MessageKey}'.");
-                    return MessageResult.Unknown;
-                }
-
-                deliveredMessage.Result.MessageStatus = MessageStatus.Delivered;
-                _writeMessageConfirmationService.StoreDeliveredMessage(deliveryConfirmationDto);
+                deliveredMessage.Result!.MessageStatus = MessageStatus.Delivered;
+                _writeMessageConfirmationService!.StoreDeliveredMessage(deliveryConfirmationDto);
 
                 return MessageResult.Ok;
             }

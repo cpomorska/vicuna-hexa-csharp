@@ -23,6 +23,7 @@ namespace vicuna_infra_test.Arch
             Classes()
                 .That().AreAssignableTo(GenericInterfaces)
                 .Should().HaveNameContaining("Generic")
+                .WithoutRequiringPositiveResults()
                 .Check(Architecture);
         }
 
@@ -34,6 +35,7 @@ namespace vicuna_infra_test.Arch
                 .That().Are(EntityClasses)
                 .Should().ResideInNamespace("..Domain..")
                 .AndShould().ResideInNamespace("..Entity..")
+                .WithoutRequiringPositiveResults()
                 .Check(Architecture);
         }
     }

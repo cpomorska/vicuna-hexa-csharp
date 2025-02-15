@@ -4,7 +4,7 @@ using vicuna_ddd.Domain.Users.Repository;
 using vicuna_ddd.Shared.Entity;
 using vicuna_ddd.Shared.Provider;
 
-namespace vicuna_ddd.Infrastructure
+namespace vicuna_ddd.Infrastructure.Users.Repository
 {
     public class GenericUserRepository<TDbContext, T> : IGenericUserRepository<T> where T : BaseEntity
         where TDbContext : GenericDbContext
@@ -65,7 +65,7 @@ namespace vicuna_ddd.Infrastructure
             }
         }
 
-        public async Task<T?> GetSingle(Expression<Func<T, bool>> where,
+        public async Task<T> GetSingle(Expression<Func<T, bool>> where,
             params Expression<Func<T, object>>[] navigationProperties)
         {
             using (var context = new UserDbContext(UnitTestDb))
@@ -77,9 +77,9 @@ namespace vicuna_ddd.Infrastructure
                     dbQuery = dbQuery.Include(navigationProperty);
                 }
 
-                return await dbQuery
+                return (await dbQuery
                     .AsNoTracking()
-                    .FirstOrDefaultAsync(where);
+                    .FirstOrDefaultAsync(where))!;
             }
         }
 

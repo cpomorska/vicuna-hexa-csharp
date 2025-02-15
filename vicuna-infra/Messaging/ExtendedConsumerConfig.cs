@@ -15,6 +15,6 @@ namespace vicuna_infra.Messaging
         /// <summary>
         ///     A comma-separated list of Kafka broker addresses.
         /// </summary>
-        public string BootstrapServers { get; set; }
+        public new string BootstrapServers { get; set; }
     }
 }

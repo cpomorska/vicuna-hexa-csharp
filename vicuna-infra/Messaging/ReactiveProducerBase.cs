@@ -22,7 +22,7 @@ namespace vicuna_infra.Messaging
             {
                 while (true)
                 {
-                    Message<Null, byte[]> msg = null;
+                    Message<Null, byte[]>? msg = null;
                     if (msg != null)
                     {
                         await SendAsync(msg);
@@ -33,9 +33,9 @@ namespace vicuna_infra.Messaging
             return new Unsubscriber(() => { producer?.Dispose(); });
         }
 
-        private async Task SendAsync(Message<Null, byte[]> message)
+        private async Task SendAsync(Message<Null, byte[]>? message)
         {
-            var value = message.Value;
+            var value = message!.Value;
             try
             {
                 await producer.ProduceAsync("my-topic", new Message<Null, byte[]> { Value = value });
