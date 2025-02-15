@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 
-namespace vicuna_ddd.Shared.Provider
+namespace vicuna_ddd.Infrastructure.Shared.Provider
 {
     public static class DbConfigurationProvider
     {

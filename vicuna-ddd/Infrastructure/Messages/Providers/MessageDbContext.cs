@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using vicuna_ddd.Domain.Messages.Entity;
+using vicuna_ddd.Infrastructure.Shared.Provider;
 using vicuna_ddd.Model.Users.Entity;
 
 namespace vicuna_ddd.Shared.Provider
