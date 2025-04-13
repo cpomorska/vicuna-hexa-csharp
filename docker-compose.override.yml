@@ -18,6 +18,7 @@ services:
       - ASPNETCORE_URLS=http://+:80;https://+:443
       #- ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
       #- ASPNETCORE_Kestrel__Certificates__Default__Password=password
+
       - DATABASE_CONNECTION_STRING=User ID=vicuna_user;Password=vicuna_pg;Host=host.docker.internal;Port=15432;Database=vicuna_user;Pooling=true;
     ports:
       - "80"
