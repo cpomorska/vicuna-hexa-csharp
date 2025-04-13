@@ -1,4 +1,5 @@
 using System.Net;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using vicuna_ddd.Domain.Users.Exceptions;
@@ -11,6 +12,7 @@ namespace vicuna_infra.Controllers
     [ApiController]
     [Route("manage")]
     [EnableCors("DevelopmentPolicy")]
+    [Authorize]
     public class RestUserManagementController : ControllerBase
     {
         private readonly ILogger<RestUserController> _logger;

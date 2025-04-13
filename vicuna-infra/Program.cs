@@ -23,7 +23,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<UserDbContext>();
 builder.Services.AddTransient<DbInitializer>();
 
-var producerConfig = new ProducerConfig { BootstrapServers = "host.docker.internal:29092" };
+var producerConfig = new ProducerConfig { BootstrapServers = builder.Configuration["Kafka:Bootstrapper"]};
 builder.Services.AddSingleton(producerConfig);
 
 var mapperConfig = new MapperConfiguration(mc =>
@@ -35,27 +35,27 @@ builder.Services.AddSingleton(mapperConfig.CreateMapper());
 
 var consumerConfig = new ExtendedConsumerConfig
 {
-    Topic = "user-in",
-    GroupId = "test-consumer-group",
-    BootstrapServers = "host.docker.internal:29092",
+    Topic = builder.Configuration["Kafka:TopicIn"]!,
+    GroupId = builder.Configuration["Kafka:Group"]!,
+    BootstrapServers = builder.Configuration["Kafka:Bootstrapper"]!,
     AutoOffsetReset = AutoOffsetReset.Earliest
 };
 builder.Services.AddSingleton(consumerConfig);
 
 builder.Services.AddSingleton<ReactiveProducerBase>(
-    _ => new ReactiveProducerBase(producerConfig.BootstrapServers));
+    _ => new ReactiveProducerBase(producerConfig.BootstrapServers!));
 builder.Services.AddSingleton<IReactiveConsumer>(rcb => new ReactiveConsumerBase(consumerConfig,
     rcb.GetRequiredService<ILogger<ReactiveConsumerBase>>()
 ));
 
-builder.Services.AddCors(options => options.AddPolicy("AllowAllOrigins",
-    builder =>
-    {
-        builder.AllowAnyOrigin()
-            .AllowAnyHeader()
-            .AllowAnyMethod()
-            .DisallowCredentials();
-    }));
+// builder.Services.AddCors(options => options.AddPolicy("AllowAllOrigins",
+//     builder =>
+//     {
+//         builder.AllowAnyOrigin()
+//             .AllowAnyHeader()
+//             .AllowAnyMethod()
+//             .DisallowCredentials();
+//     }));
 builder.Services.AddSwaggerGen(c =>
 {
     // c.SwaggerDoc("v1", new OpenApiInfo { Title = "Protected API", Version = "v1" });
@@ -99,8 +99,8 @@ builder.Services.AddSwaggerGen(c =>
             {
                 AuthorizationCode = new OpenApiOAuthFlow
                 {
-                    AuthorizationUrl = new Uri(builder.Configuration["Swagger:AuthUrl"]),
-                    TokenUrl = new Uri(builder.Configuration["Swagger:TokenUrl"]),
+                    AuthorizationUrl = new Uri(builder.Configuration["Swagger:AuthUrl"]!),
+                    TokenUrl = new Uri(builder.Configuration["Swagger:TokenUrl"]!),
                     Scopes = new Dictionary<string, string>
                     {
                         { "openid", "OpenID Connect scope" }
