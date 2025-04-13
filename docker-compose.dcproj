@@ -17,5 +17,6 @@
     </ItemGroup>
     <ItemGroup>
         <Content Include="kafka.base.env"/>
+        <Content Include="keycloak.base.env" />
     </ItemGroup>
 </Project>

@@ -23,7 +23,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<UserDbContext>();
 builder.Services.AddTransient<DbInitializer>();
 
-var producerConfig = new ProducerConfig { BootstrapServers = "host.docker.internal:29092" };
+var producerConfig = new ProducerConfig { BootstrapServers = builder.Configuration["Kafka:Bootstrapper"]};
 builder.Services.AddSingleton(producerConfig);
 
 var mapperConfig = new MapperConfiguration(mc =>
@@ -35,27 +35,27 @@ builder.Services.AddSingleton(mapperConfig.CreateMapper());
 
 var consumerConfig = new ExtendedConsumerConfig
 {
-    Topic = "user-in",
-    GroupId = "test-consumer-group",
-    BootstrapServers = "host.docker.internal:29092",
+    Topic = builder.Configuration["Kafka:TopicIn"]!,
+    GroupId = builder.Configuration["Kafka:Group"]!,
+    BootstrapServers = builder.Configuration["Kafka:Bootstrapper"]!,
     AutoOffsetReset = AutoOffsetReset.Earliest
 };
 builder.Services.AddSingleton(consumerConfig);
 
 builder.Services.AddSingleton<ReactiveProducerBase>(
-    _ => new ReactiveProducerBase(producerConfig.BootstrapServers));
+    _ => new ReactiveProducerBase(producerConfig.BootstrapServers!));
 builder.Services.AddSingleton<IReactiveConsumer>(rcb => new ReactiveConsumerBase(consumerConfig,
     rcb.GetRequiredService<ILogger<ReactiveConsumerBase>>()
 ));
 
-builder.Services.AddCors(options => options.AddPolicy("AllowAllOrigins",
-    builder =>
-    {
-        builder.AllowAnyOrigin()
-            .AllowAnyHeader()
-            .AllowAnyMethod()
-            .DisallowCredentials();
-    }));
+// builder.Services.AddCors(options => options.AddPolicy("AllowAllOrigins",
+//     builder =>
+//     {
+//         builder.AllowAnyOrigin()
+//             .AllowAnyHeader()
+//             .AllowAnyMethod()
+//             .DisallowCredentials();
+//     }));
 builder.Services.AddSwaggerGen(c =>
 {
     // c.SwaggerDoc("v1", new OpenApiInfo { Title = "Protected API", Version = "v1" });
@@ -90,7 +90,7 @@ builder.Services.AddSwaggerGen(c =>
     // });
 
     {
-        c.SwaggerDoc("v1", new OpenApiInfo { Title = "Your API", Version = "v1" });
+        c.SwaggerDoc("v1", new OpenApiInfo { Title = "Vicuna API", Version = "v1" });
 
         c.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
         {
@@ -99,15 +99,11 @@ builder.Services.AddSwaggerGen(c =>
             {
                 AuthorizationCode = new OpenApiOAuthFlow
                 {
-                    AuthorizationUrl =
-                        new Uri(
-                            "https://host.docker.internal:28443/auth/realms/development/protocol/openid-connect/auth"),
-                    TokenUrl = new Uri(
-                        "https://host.docker.internal:28443/auth/realms/development/protocol/openid-connect/token"),
+                    AuthorizationUrl = new Uri(builder.Configuration["Swagger:AuthUrl"]!),
+                    TokenUrl = new Uri(builder.Configuration["Swagger:TokenUrl"]!),
                     Scopes = new Dictionary<string, string>
                     {
                         { "openid", "OpenID Connect scope" }
-                        // Add other scopes as needed
                     }
                 }
             }
@@ -149,7 +145,7 @@ builder.Services.AddAuthentication(options =>
     .AddCookie("Cookies")
     .AddOpenIdConnect(options =>
     {
-        options.Authority = "https://host.docker.internal:8443/auth/realms/development";
+        options.Authority = "https://host.docker.internal:8443/realms/development";
         options.ClientId = builder.Configuration["OpenIdConnect:ClientId"];
         options.ClientSecret = builder.Configuration["OpenIdConnect:ClientSecret"];
         //options.RequireHttpsMetadata = false;
@@ -189,16 +185,16 @@ if (app.Environment.IsDevelopment())
     app.UseAuthentication();
     app.UseAuthorization();
 
-    app.UseCors("AllowAllOrigins");
+    app.UseCors("AllowAll");
 
     app.UseSwagger();
     app.UseSwaggerUI(c =>
     {
-        c.OAuthClientId("localoidc");
-        c.OAuthClientSecret("RCrCWiykpDDC4TrCws03A8fkELTzbaUg");
-        //c.OAuthRealm("development");
-        //c.OAuthAppName("backend-service");
-        //c.OAuthAdditionalQueryStringParams(new Dictionary<string, string>() { { "nonce", Guid.NewGuid().ToString() } });
+        c.OAuthClientId("backend-service");
+        c.OAuthClientSecret("qQOkEGGd6JzzeDj0wkqjTFzrHdJiWdgz");
+        c.OAuthRealm("development");
+        c.OAuthAppName("backend-service");
+        c.OAuthAdditionalQueryStringParams(new Dictionary<string, string>() { { "nonce", Guid.NewGuid().ToString() } });
         c.OAuthUsePkce();
     });
 
@@ -223,6 +219,7 @@ app.UseExceptionHandler(c => c.Run(async context =>
     await context.Response.WriteAsJsonAsync(response);
 }));
 
+app.UseCors("AllowAllOrigins");
 app.UseHttpsRedirection();
 app.MapControllers();
 

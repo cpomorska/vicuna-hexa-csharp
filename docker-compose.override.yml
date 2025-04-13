@@ -18,6 +18,8 @@ services:
       - ASPNETCORE_URLS=http://+:80;https://+:443
       #- ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
       #- ASPNETCORE_Kestrel__Certificates__Default__Password=password
+
+      - DATABASE_CONNECTION_STRING=User ID=vicuna_user;Password=vicuna_pg;Host=host.docker.internal;Port=15432;Database=vicuna_user;Pooling=true;
     ports:
       - "80"
       - "7208:443"
@@ -96,17 +98,9 @@ services:
 
   keycloak:
     container_name: keycloak
-    image: quay.io/keycloak/keycloak:26.1.3
-    environment:
-      - 'KC_DB=postgres'
-      - 'KC_DB_URL=jdbc:postgresql://vicunapostgresql-kc:5432/keycloak'
-      - 'KC_DB_USERNAME=keycloak'
-      - 'KC_DB_PASSWORD=keycloak'
-      - 'KEYCLOAK_ADMIN=admin'
-      - 'KEYCLOAK_ADMIN_PASSWORD=admin'
-      - 'ADVERTISED_HOST=keycloak.host.internal'
-      - 'ADVERTISED_PORT=28443'
-      #- 'JAVA_TOOL_OPTIONS=-XX:UseSVE=0'
+    image: quay.io/keycloak/keycloak:26.2.0
+    env_file:
+      - keycloak.base.env
     command:
       - 'start-dev'
       - '--import-realm'
