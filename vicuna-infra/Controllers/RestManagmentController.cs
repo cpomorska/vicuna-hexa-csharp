@@ -12,7 +12,7 @@ namespace vicuna_infra.Controllers
     [ApiController]
     [Route("manage")]
     [EnableCors("DevelopmentPolicy")]
-    [Authorize]
+    [AllowAnonymous]
     public class RestUserManagementController : ControllerBase
     {
         private readonly ILogger<RestUserController> _logger;
@@ -29,6 +29,7 @@ namespace vicuna_infra.Controllers
         public Guid AddUser(User user)
         {
             var userFoundGuid = _userService.AddUser(user).Result;
+            _logger.LogInformation($"Adding user $user.UserNumber");
             return (Guid)(userFoundGuid == null
                 ? throw new UserCreationException(HttpStatusCode.NotFound, ErrorCode.UserNotCreated,
                     $"User {user.UserName} not created")
