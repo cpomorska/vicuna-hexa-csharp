@@ -59,7 +59,7 @@ namespace vicuna_infra_test.Controller
         [Fact]
         public async Task TestRemoveUserAsync()
         {
-            var testUser = RestControllerTestHelpers.CreateTestUser("NewUserMann!");
+            var testUser = RestControllerTestHelpers.CreateTestUser("NewUserMannRemove!");
             var response = await _httpClient.PostAsJsonAsync(PostUriAddUser, testUser);
             var rawResult = await response.Content.ReadAsStringAsync();
 
@@ -73,7 +73,7 @@ namespace vicuna_infra_test.Controller
         [Fact]
         public async Task TestUpdateUserAsync()
         {
-            var testUser = RestControllerTestHelpers.CreateTestUser("NewUserMann!");
+            var testUser = RestControllerTestHelpers.CreateTestUser("NewUserMannUpdate!");
             _ = await _httpClient.PostAsJsonAsync(PostUriAddUser, testUser);
 
             var endResponse = await _httpClient.PostAsJsonAsync(PostUriUpdateUser, testUser);

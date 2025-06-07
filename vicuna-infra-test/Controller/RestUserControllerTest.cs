@@ -6,7 +6,7 @@ using vicuna_infra.Repository;
 
 namespace vicuna_infra_test.Controller
 {
-    public class RestUserControllerTest : IClassFixture<RestControllerBase>
+    public class RestUserControllerTest : IClassFixture<RestControllerFixture>
     {
         private const string RequestUriUserAsDto = "read/user/{userDto}";
         private const string RequestUriUserPass = "/read/bynamepw/Testuser/Testpass";
@@ -15,14 +15,15 @@ namespace vicuna_infra_test.Controller
         private const string RequestUriEmail = "/read/byemail/testemail@test.de";
         private readonly HttpClient _httpClient;
         private readonly UserUserRepository _userUserRepository;
-        private User _user;
+        private User? _user;
 
-        public RestUserControllerTest(RestControllerBase restControllerBase)
+        public RestUserControllerTest()
         {
             var webFactory = new WebApplicationFactory<Program>();
             _httpClient = webFactory.CreateDefaultClient();
             _userUserRepository = new UserUserRepository();
         }
+
 
         [Fact]
         public async Task TestFindUserInDtoAsync()

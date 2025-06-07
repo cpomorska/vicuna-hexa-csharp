@@ -5,7 +5,7 @@ namespace vicuna_infra_test.Controller
 {
     public static class RestControllerTestHelpers
     {
-        public static User CreateTestUser(string username)
+        public static User? CreateTestUser(string username)
         {
             var randomSaltMann = HashUtil.GetRandomSalt(13);
             var guid = Guid.NewGuid();
@@ -28,7 +28,7 @@ namespace vicuna_infra_test.Controller
                 UserName = username,
                 UserEmail = "testemail@test.de",
                 UserPass = "Testpass",
-                UserNumber = guid,
+                UserNumber = new Guid(),
                 UserToken = "userToken",
                 UserHash = userHash,
                 UserRole = userRole,
