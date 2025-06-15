@@ -1,0 +1,21 @@
+# This is a generated file. Not intended for manual editing.
+version: "3.4"
+services:
+  vicuna-infra:
+    build:
+      context: "Z:\\source\\repos\\RiderProjects\\vicuna-hexa-csharp"
+      dockerfile: "Dockerfile"
+      target: "base"
+    command: []
+    entrypoint:
+    - "dotnet"
+    - "/app/bin/Debug/net9.0/vicuna-infra.dll"
+    environment:
+      DOTNET_USE_POLLING_FILE_WATCHER: "true"
+    image: "vicunainfra:dev"
+    ports: []
+    volumes:
+    - "Z:\\source\\repos\\RiderProjects\\vicuna-hexa-csharp\\vicuna-infra:/app:rw"
+    - "Z:\\source\\repos\\RiderProjects\\vicuna-hexa-csharp:/src:rw"
+    - "C:\\Users\\darkstar2024\\.nuget\\packages:/root/.nuget/packages"
+    working_dir: "/app"
