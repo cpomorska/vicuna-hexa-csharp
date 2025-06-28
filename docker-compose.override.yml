@@ -128,6 +128,27 @@ services:
       interval: 8s
       timeout: 5s
       retries: 20
+  
+  fixodauserservice:
+    image: ${DOCKER_REGISTRY-}fixodauserservice
+    build:
+      context: .
+      dockerfile: FixodaUserService/Dockerfile
+  
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: sqlserver
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=YourStrong!Passw0rd
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlserver_data:/var/opt/mssql
+    restart: unless-stopped
+
+volumes:
+  sqlserver_data:    
 
 networks:
   vicuna-net:
