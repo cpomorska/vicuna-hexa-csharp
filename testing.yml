@@ -9,7 +9,7 @@ test_wallet:
   tags:
     - docker
   image:
-    name: mcr.microsoft.com/dotnet/sdk:9.0.301
+    name: mcr.microsoft.com/dotnet/sdk:9.0.302
   script:
     - "echo 'from Branch $CI_COMMIT_BRANCH' "
     - "dotnet test vicuna-infra-test/vicuna-infra-test.csproj --collect:\"XPlat Code Coverage\" --logger:\"junit;LogFilePath=testresult.xml\""
