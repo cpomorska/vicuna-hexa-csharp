@@ -7,7 +7,7 @@ default:
   tags:
     - docker
 
-image: mcr.microsoft.com/dotnet/sdk:9.0.304
+image: custome-dind:latest
 
 stages:
   - build_vicuna

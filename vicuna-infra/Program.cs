@@ -30,7 +30,7 @@ var mapperConfig = new MapperConfiguration(mc =>
 {
     mc.AddProfile<DeliveryConfirmationToDtoProfile>();
     mc.AddProfile<DtoToDeliveryConfirmationProfile>();
-});
+}, null);
 builder.Services.AddSingleton(mapperConfig.CreateMapper());
 
 var consumerConfig = new ExtendedConsumerConfig
