@@ -51,7 +51,7 @@
         <PackageReference Include="Testcontainers.LocalStack" Version="4.7.0" />
         <PackageReference Include="Testcontainers.MsSql" Version="4.7.0" />
         <PackageReference Include="Testcontainers.PostgreSql" Version="4.7.0" />
-        <PackageReference Include="TngTech.ArchUnitNET.xUnit" Version="0.12.1" />
+        <PackageReference Include="TngTech.ArchUnitNET.xUnit" Version="0.12.3" />
         <PackageReference Include="xunit.assert" Version="2.9.3" />
         <PackageReference Include="xunit.core" Version="2.9.3" />
         <PackageReference Include="xunit.runner.console" Version="2.9.3">
