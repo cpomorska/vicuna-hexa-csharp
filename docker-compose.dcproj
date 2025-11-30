@@ -9,9 +9,8 @@
         <DockerServiceName>vicuna-infra</DockerServiceName>
     </PropertyGroup>
     <ItemGroup>
-        <None Include="docker-compose.override.yml">
-            <DependentUpon>docker-compose.yml</DependentUpon>
-        </None>
+        <None Include=".github\docker-compose.override.yml" />
+        <None Include="docker-compose.override.yml" />
         <None Include="docker-compose.yml"/>
         <None Include=".dockerignore"/>
     </ItemGroup>
