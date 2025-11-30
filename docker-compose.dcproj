@@ -9,7 +9,6 @@
         <DockerServiceName>vicuna-infra</DockerServiceName>
     </PropertyGroup>
     <ItemGroup>
-        <None Include=".github\docker-compose.override.yml" />
         <None Include="docker-compose.override.yml" />
         <None Include="docker-compose.yml"/>
         <None Include=".dockerignore"/>
@@ -18,5 +17,8 @@
         <Content Include="Dockerfile" />
         <Content Include="kafka.base.env"/>
         <Content Include="keycloak.base.env" />
+    </ItemGroup>
+    <ItemGroup>
+      <Folder Include=".github\" />
     </ItemGroup>
 </Project>
