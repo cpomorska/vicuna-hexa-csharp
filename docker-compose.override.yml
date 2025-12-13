@@ -39,7 +39,7 @@ services:
       - "keycloak.host.internal:host-gateway"
 
   postgres:
-    image: 'postgres:17'
+    image: 'postgres:18'
     hostname: 'pginfra'
     container_name: vicunapostgresql
     environment:
@@ -59,7 +59,7 @@ services:
 
   postgres-kc:
     container_name: vicunapostgresql-kc
-    image: 'postgres:17'
+    image: 'postgres:18'
     hostname: 'pgkc'
     environment:
       - 'POSTGRES_DB=keycloak'
