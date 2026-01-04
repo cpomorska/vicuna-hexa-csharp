@@ -16,8 +16,8 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80;https://+:443
-      #- ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
-      #- ASPNETCORE_Kestrel__Certificates__Default__Password=password
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/app/tls/https.pfx
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=changeit
 
       - DATABASE_CONNECTION_STRING=User ID=vicuna_user;Password=vicuna_pg;Host=host.docker.internal;Port=15432;Database=vicuna_user;Pooling=true;
     ports:
@@ -129,23 +129,23 @@ services:
       timeout: 5s
       retries: 20
   
-  fixodauserservice:
-    image: ${DOCKER_REGISTRY-}fixodauserservice
-    build:
-      context: .
-      dockerfile: FixodaUserService/Dockerfile
-  
-  sqlserver:
-    image: mcr.microsoft.com/mssql/server:2025-latest
-    container_name: sqlserver
-    environment:
-      - ACCEPT_EULA=Y
-      - SA_PASSWORD=YourStrong!Passw0rd
-    ports:
-      - "1433:1433"
-    volumes:
-      - sqlserver_data:/var/opt/mssql
-    restart: unless-stopped
+#  fixodauserservice:
+#    image: ${DOCKER_REGISTRY-}fixodauserservice
+#    build:
+#      context: .
+#      dockerfile: FixodaUserService/Dockerfile
+#  
+#  sqlserver:
+#    image: mcr.microsoft.com/mssql/server:2025-latest
+#    container_name: sqlserver
+#    environment:
+#      - ACCEPT_EULA=Y
+#      - SA_PASSWORD=YourStrong!Passw0rd
+#    ports:
+#      - "1433:1433"
+#    volumes:
+#      - sqlserver_data:/var/opt/mssql
+#    restart: unless-stopped
 
 volumes:
   sqlserver_data:    

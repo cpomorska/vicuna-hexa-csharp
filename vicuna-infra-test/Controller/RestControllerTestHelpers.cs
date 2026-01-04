@@ -28,14 +28,14 @@ namespace vicuna_infra_test.Controller
                 UserName = username,
                 UserEmail = "testemail@test.de",
                 UserPass = "Testpass",
-                UserNumber = new Guid(),
+                UserNumber = Guid.NewGuid(),
                 UserToken = "userToken",
                 UserHash = userHash,
                 UserRole = userRole,
-                UserEnabled = true
-                //CreatedAt = DateTime.UtcNow,
-                //ModifiedAt = DateTime.UtcNow,
-                //ModifiedFrom = "randomSaltmann!"
+                UserEnabled = true,
+                CreatedAt = DateTime.UtcNow,
+                ModifiedAt = DateTime.UtcNow,
+                ModifiedFrom = "randomSaltmann!"
             };
         }
     }
