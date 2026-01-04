@@ -1,7 +1,7 @@
 ﻿using System.Linq.Expressions;
 using vicuna_ddd.Infrastructure.Shared.Entity;
 
-namespace vicuna_ddd.Domain.Meesage.Repository
+namespace vicuna_ddd.Domain.Messages.Repository
 {
     /// <summary>
     ///     Generic Repository Interface, which is used for the GenericRepository

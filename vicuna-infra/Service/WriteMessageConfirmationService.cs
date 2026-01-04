@@ -1,6 +1,6 @@
 using AutoMapper;
-using vicuna_ddd.Domain.Meesage.Repository;
 using vicuna_ddd.Domain.Messages.Entity;
+using vicuna_ddd.Domain.Messages.Repository;
 using vicuna_ddd.Domain.Messages.Service;
 using vicuna_ddd.Domain.Users.Dto;
 using vicuna_ddd.Domain.Users.Messaging;
