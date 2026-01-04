@@ -99,6 +99,7 @@ services:
   keycloak:
     container_name: keycloak
     image: quay.io/keycloak/keycloak:26.4.7
+
     env_file:
       - keycloak.base.env
     command:
