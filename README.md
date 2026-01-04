@@ -1,6 +1,6 @@
 # Vicuna DDD
 
-A reference implementation of a REST service using Domain-Driven Design (DDD) and Hexagonal Architecture with C# and .NET 9.
+A reference implementation of a REST service using Domain-Driven Design (DDD) and Hexagonal Architecture with C# and .NET 10.
 
 ## Features
 
@@ -15,7 +15,7 @@ A reference implementation of a REST service using Domain-Driven Design (DDD) an
 
 ## Tech Stack
 
-- **Backend:** C# 13, .NET 9
+- **Backend:** C# 14, .NET 10
 - **Database:** PostgreSQL 18
 - **Identity Provider:** Keycloak 26.x
 - **Message Broker:** Apache Kafka
@@ -27,7 +27,7 @@ A reference implementation of a REST service using Domain-Driven Design (DDD) an
 ### Prerequisites
 
 - Docker and Docker Compose installed.
-- .NET 9 SDK.
+- .NET 10 SDK.
 - Add the following entries to your `/etc/hosts` (or `C:\Windows\System32\drivers\etc\hosts` on Windows):
   ```text
   127.0.0.1 keycloak.host.internal
