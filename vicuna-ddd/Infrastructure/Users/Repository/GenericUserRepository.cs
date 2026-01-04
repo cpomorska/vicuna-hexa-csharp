@@ -1,7 +1,7 @@
 ﻿using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using vicuna_ddd.Domain.Users.Repository;
-using vicuna_ddd.Shared.Entity;
+using vicuna_ddd.Infrastructure.Shared.Entity;
 using vicuna_ddd.Shared.Provider;
 
 namespace vicuna_ddd.Infrastructure.Users.Repository

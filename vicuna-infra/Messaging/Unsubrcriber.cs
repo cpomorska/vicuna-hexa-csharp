@@ -1,17 +1,19 @@
 namespace vicuna_infra.Messaging
 {
-    public class Unsubscriber : IDisposable
+    public class Unsubscriber(Action unsubscribeAction) : IDisposable
     {
-        private readonly Action _unsubscribeAction;
-
-        public Unsubscriber(Action unsubscribeAction)
-        {
-            _unsubscribeAction = unsubscribeAction;
-        }
-
         public void Dispose()
         {
-            _unsubscribeAction?.Invoke();
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+        
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                unsubscribeAction?.Invoke();
+            }
         }
     }
 }
