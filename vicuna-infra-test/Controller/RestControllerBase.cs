@@ -5,7 +5,7 @@ namespace vicuna_infra_test.Controller
 {
     public class RestControllerBase : IDisposable
     {
-        private readonly User _user;
+        private readonly User? _user;
         private readonly UserUserRepository _userUserRepository;
 
         public RestControllerBase()

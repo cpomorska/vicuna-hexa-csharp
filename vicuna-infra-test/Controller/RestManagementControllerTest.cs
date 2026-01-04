@@ -1,3 +1,4 @@
+using System.Net;
 using System.Net.Http.Json;
 using System.Text.Json;
 using Microsoft.AspNetCore.Mvc.Testing;
@@ -59,28 +60,26 @@ namespace vicuna_infra_test.Controller
         [Fact]
         public async Task TestRemoveUserAsync()
         {
-            var testUser = RestControllerTestHelpers.CreateTestUser("NewUserMann!");
+            var testUser = RestControllerTestHelpers.CreateTestUser("NewUserMannRemove!");
             var response = await _httpClient.PostAsJsonAsync(PostUriAddUser, testUser);
             var rawResult = await response.Content.ReadAsStringAsync();
 
-            var endResponse = await _httpClient.PostAsJsonAsync(PostUriRemoveUser, testUser);
-            var removeResult = JsonSerializer.Deserialize<Guid>(await endResponse.Content.ReadAsStringAsync());
+            var endResponse = await _httpClient.DeleteAsync(PostUriRemoveUser + "/" + testUser?.UserNumber);
 
             Assert.NotNull(rawResult);
-            Assert.IsType<Guid>(removeResult);
+            Assert.Equal(HttpStatusCode.NoContent, endResponse.StatusCode);
         }
 
         [Fact]
         public async Task TestUpdateUserAsync()
         {
-            var testUser = RestControllerTestHelpers.CreateTestUser("NewUserMann!");
+            var testUser = RestControllerTestHelpers.CreateTestUser("NewUserMannUpdate!");
             _ = await _httpClient.PostAsJsonAsync(PostUriAddUser, testUser);
 
-            var endResponse = await _httpClient.PostAsJsonAsync(PostUriUpdateUser, testUser);
-            var updateResult = JsonSerializer.Deserialize<Guid>(await endResponse.Content.ReadAsStringAsync());
+            var endResponse = await _httpClient.PutAsJsonAsync(PostUriUpdateUser, testUser);
 
-            Assert.NotNull(updateResult);
-            Assert.IsType<Guid>(updateResult);
+            Assert.NotNull(endResponse);
+            Assert.Equal(HttpStatusCode.NoContent, endResponse.StatusCode);
         }
     }
 }

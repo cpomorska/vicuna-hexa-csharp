@@ -26,12 +26,12 @@ builder.Services.AddTransient<DbInitializer>();
 var producerConfig = new ProducerConfig { BootstrapServers = builder.Configuration["Kafka:Bootstrapper"]};
 builder.Services.AddSingleton(producerConfig);
 
-var mapperConfig = new MapperConfiguration(mc =>
-{
-    mc.AddProfile<DeliveryConfirmationToDtoProfile>();
-    mc.AddProfile<DtoToDeliveryConfirmationProfile>();
-});
-builder.Services.AddSingleton(mapperConfig.CreateMapper());
+// var mapperConfig = new MapperConfiguration(mc =>
+// {
+//     mc.AddProfile<DeliveryConfirmationToDtoProfile>();
+//     mc.AddProfile<DtoToDeliveryConfirmationProfile>();
+// }, null);
+//builder.Services.AddSingleton(mapperConfig.CreateMapper());
 
 var consumerConfig = new ExtendedConsumerConfig
 {

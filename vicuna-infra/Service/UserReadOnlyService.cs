@@ -6,16 +6,10 @@ using vicuna_infra.Repository;
 
 namespace vicuna_infra.Service
 {
-    public class UserReadOnlyService : IUserService
+    public class UserReadOnlyService(ILoggerFactory loggerFactory) : IUserService
     {
-        private readonly ILogger _logger;
-        private readonly UserUserRepository _userUserRepository;
-
-        public UserReadOnlyService(ILoggerFactory loggerFactory)
-        {
-            _logger = loggerFactory.CreateLogger<RestUserController>();
-            _userUserRepository = new UserUserRepository();
-        }
+        private readonly ILogger _logger = loggerFactory.CreateLogger<RestUserController>();
+        private readonly UserUserRepository _userUserRepository = new();
 
         public Task<User?> FindUser(UserDto userDto)
         {

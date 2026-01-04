@@ -25,4 +25,19 @@ COPY --from=publish /app/publish .
 RUN cp /app/tls/tls.keycloak.crt /usr/local/share/ca-certificates/tls.keycloak.crt
 RUN chmod 644 /usr/local/share/ca-certificates/tls.keycloak.crt
 RUN update-ca-certificates
+
+
+# Erzeuge self-signed cert + pfx (Passwort hier als Beispiel 'changeit' — bei Bedarf ändern)
+RUN mkdir -p /app/tls \
+ && openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+    -keyout /app/tls/https.key -out /app/tls/https.crt -subj "/CN=localhost" \
+ && openssl pkcs12 -export -out /app/tls/https.pfx -inkey /app/tls/https.key -in /app/tls/https.crt -passout pass:changeit \
+ && chmod 644 /app/tls/https.pfx
+
+# Kestrel so konfigurieren, dass das PFX verwendet wird
+ENV ASPNETCORE_Kestrel__Certificates__Default__Path=/app/tls/https.pfx
+ENV ASPNETCORE_Kestrel__Certificates__Default__Password=changeit
+
+RUN ls -la /app/tls
+
 ENTRYPOINT ["dotnet", "vicuna-infra.dll"]

@@ -12,16 +12,10 @@ namespace vicuna_infra.Controllers
     [ApiController]
     [Route("read")]
     [EnableCors("DevelopmentPolicy")]
-    public class RestUserController : ControllerBase
+    public class RestUserController(ILoggerFactory loggerFactory) : ControllerBase
     {
-        private readonly ILogger<RestUserController> _logger;
-        private readonly UserReadOnlyService _userService;
-
-        public RestUserController(ILoggerFactory loggerFactory)
-        {
-            _logger = loggerFactory.CreateLogger<RestUserController>();
-            _userService = new UserReadOnlyService(loggerFactory);
-        }
+        private readonly ILogger<RestUserController> _logger = loggerFactory.CreateLogger<RestUserController>();
+        private readonly UserReadOnlyService _userService = new(loggerFactory);
 
         [HttpGet]
         [Route("user/{userdto}")]
