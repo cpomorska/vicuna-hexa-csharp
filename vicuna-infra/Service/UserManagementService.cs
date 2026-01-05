@@ -55,8 +55,8 @@ namespace vicuna_infra.Service
 
             return Task.FromResult(guid);
         }
-
-        public Task<Guid?> RemoveUser(User user)
+        
+        public Task<Guid?> RemoveUser(Guid userId)
         {
             Guid? guid = null;
             try
