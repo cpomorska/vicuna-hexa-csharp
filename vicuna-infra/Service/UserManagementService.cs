@@ -55,8 +55,8 @@ namespace vicuna_infra.Service
 
             return Task.FromResult(guid);
         }
-
-        public Task<Guid?> RemoveUser(User user)
+        
+        public Task<Guid?> RemoveUser(Guid userId)
         {
             Guid? guid = null;
             try
@@ -101,31 +101,6 @@ namespace vicuna_infra.Service
             catch (Exception ex)
             {
                 _logger.LogError(ex,"Error removing user {UserId}", userId);
-            }
-
-            return Task.FromResult(guid);
-        }
-        
-        public Task<Guid?> RemoveUser(Guid userId)
-        {
-            Guid? guid = null;
-            try
-            {
-                _logger.LogInformation("Reading entries by Username");
-                IEnumerable<User> userEntries = _userUserRepository
-                    .GetList(x => x.UserNumber == userId).Result.ToImmutableList();
-                User user = userEntries.FirstOrDefault();
-                
-                if (user == null) return Task.FromResult(guid);
-                
-                _logger.LogInformation($"Remove user {user.UserNumber}");
-                _ = _userUserRepository.Remove(user);
-                
-                guid = user.UserNumber;
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"Error removing user {userId} | " + ex);
             }
 
             return Task.FromResult(guid);
