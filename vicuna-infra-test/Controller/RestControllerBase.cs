@@ -12,7 +12,7 @@ namespace vicuna_infra_test.Controller
         {
             _userUserRepository = new UserUserRepository();
             _user = RestControllerTestHelpers.CreateTestUser("TestUser1");
-            _ = _userUserRepository.Add(_user);
+            _ = _userUserRepository.Add(_user!);
         }
 
         public void Dispose()

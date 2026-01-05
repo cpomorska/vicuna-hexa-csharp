@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json.Serialization;
-using vicuna_ddd.Shared.Entity;
+using vicuna_ddd.Infrastructure.Shared.Entity;
 
 namespace vicuna_ddd.Model.Users.Entity
 {

@@ -30,13 +30,7 @@ namespace vicuna_infra_test.Controller
         {
             // Given
             _user = RestControllerTestHelpers.CreateTestUser("TestUser1");
-            _ = _userUserRepository.Add(_user);
-            var userDto = new UserDto
-            {
-                UserPass = _user.UserPass,
-                UserName = _user.UserName,
-                UserEmail = _user.UserEmail
-            };
+            _ = _userUserRepository.Add(_user!);
 
             // When
             var response = await _httpClient.GetAsync(RequestUriUserAsDto);
@@ -52,7 +46,7 @@ namespace vicuna_infra_test.Controller
         {
             // Given
             _user = RestControllerTestHelpers.CreateTestUser("TestUser1");
-            _ = _userUserRepository.Add(_user);
+            _ = _userUserRepository.Add(_user!);
 
             // When
             var response = await _httpClient.GetAsync(RequestUriUser);
@@ -68,7 +62,7 @@ namespace vicuna_infra_test.Controller
         {
             // Given
             _user = RestControllerTestHelpers.CreateTestUser("TestUser1");
-            _ = _userUserRepository.Add(_user);
+            _ = _userUserRepository.Add(_user!);
 
             // When
             var response = await _httpClient.GetAsync(RequestUriUserPass);
@@ -84,7 +78,7 @@ namespace vicuna_infra_test.Controller
         {
             // Given
             _user = RestControllerTestHelpers.CreateTestUser("TestUser1");
-            _ = _userUserRepository.Add(_user);
+            _ = _userUserRepository.Add(_user!);
 
             // When
             var response = await _httpClient.GetAsync(RequestUriEmail);

@@ -1,10 +1,8 @@
-using System.Net;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
-using vicuna_ddd.Domain.Users.Exceptions;
+using vicuna_ddd.Infrastructure.Events;
 using vicuna_ddd.Model.Users.Entity;
-using vicuna_ddd.Shared.Response;
 using vicuna_infra.Service;
 
 namespace vicuna_infra.Controllers
@@ -13,10 +11,10 @@ namespace vicuna_infra.Controllers
     [Route("manage")]
     [EnableCors("DevelopmentPolicy")]
     [AllowAnonymous]
-    public class RestUserManagementController(ILoggerFactory loggerFactory) : ControllerBase
+    public class RestUserManagementController(ILoggerFactory loggerFactory, IDomainEventDispatcher dispatcher) : ControllerBase
     {
         private readonly ILogger<RestUserController> _logger = loggerFactory.CreateLogger<RestUserController>();
-        private readonly UserManagementService _userService = new(loggerFactory);
+        private readonly UserManagementService _userService = new(loggerFactory, dispatcher);
 
         [HttpPost]
         [Route("create")]
@@ -29,7 +27,7 @@ namespace vicuna_infra.Controllers
                 return BadRequest(ModelState);
             }
             
-            _logger.LogInformation($"Adding user {user.UserNumber}");
+            _logger.LogInformation("Adding user {UserNumber}",user.UserNumber);
             var userFoundGuid = _userService.AddUser(user).Result;
 
             return userFoundGuid != Guid.Empty 
@@ -48,7 +46,7 @@ namespace vicuna_infra.Controllers
             {
                 return BadRequest(ModelState);
             }
-            _logger.LogInformation($"Updating user {user.UserNumber}");
+            _logger.LogInformation("Updating user {UserNumber}", user.UserNumber);
             var userUpdateGuid = _userService.UpdateUser(user).Result;
             
             return userUpdateGuid != Guid.Empty
@@ -67,7 +65,7 @@ namespace vicuna_infra.Controllers
             {
                 return BadRequest(ModelState);
             }
-            _logger.LogInformation($"Removing user {user.UserNumber}");
+            _logger.LogInformation("Removing user {UserNumber}", user.UserNumber);
             var userRemoveGuid = _userService.RemoveUser(user).Result;
             
             return userRemoveGuid != Guid.Empty
@@ -86,7 +84,7 @@ namespace vicuna_infra.Controllers
             {
                 return BadRequest(ModelState);
             }
-            _logger.LogInformation($"Removing user { userId}");
+            _logger.LogInformation("Removing user {UserId}", userId);
             var userRemoveGuid = _userService.RemoveUser(userId).Result;
             
             return userRemoveGuid != Guid.Empty

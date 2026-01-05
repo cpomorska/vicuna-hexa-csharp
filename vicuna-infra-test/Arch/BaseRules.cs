@@ -11,7 +11,7 @@ namespace vicuna_infra_test.Arch
         private static readonly Architecture Architecture =
             new ArchLoader().LoadAssemblies(Assembly.Load("vicuna-infra")).Build();
 
-        private readonly IObjectProvider<Class> EntityClasses = Classes().That().AreAssignableTo("BaseEntity");
+        private readonly IObjectProvider<Class> EntityClasses = Classes().That().AreAssignableTo(Types().That().HaveFullName("vicuna_ddd.Infrastructure.Shared.Entity.BaseEntity"));
 
         private readonly IObjectProvider<Interface> GenericInterfaces =
             Interfaces().That().HaveFullNameContaining("IGeneric").As("Generic Interfaces");
