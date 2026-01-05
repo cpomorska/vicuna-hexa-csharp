@@ -33,7 +33,7 @@ namespace vicuna_infra.Controllers
             
             return userFound != null 
                 ? Ok(userFound) 
-                : throw new UserNotFoundException(HttpStatusCode.NotFound, ErrorCode.UserNotFound, "user not found whíle searching by name");
+                : NotFound();
         }
 
         [HttpGet]

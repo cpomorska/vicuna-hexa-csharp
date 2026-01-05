@@ -33,7 +33,7 @@ namespace vicuna_infra.Service
             try
             {
                 _logger.LogInformation("Update user {UserNumber}", user.UserNumber);
-                _ = _userUserRepository.Add(user);
+                _ = _userUserRepository.Update(user);
                 guid = user.UserNumber;
             }
             catch (Exception ex)
@@ -50,7 +50,7 @@ namespace vicuna_infra.Service
             try
             {
                 _logger.LogInformation("Remove user {UserNumber}", user.UserNumber);
-                _ = _userUserRepository.Add(user);
+                _ = _userUserRepository.Remove(user);
                 guid = user.UserNumber;
             }
             catch (Exception ex)

@@ -29,7 +29,7 @@ namespace vicuna_infra.Controllers
                 return BadRequest(ModelState);
             }
             
-            _logger.LogInformation($"Adding user {user.UserNumber}");
+            _logger.LogInformation("Adding user {UserNumber}",user.UserNumber);
             var userFoundGuid = _userService.AddUser(user).Result;
 
             return userFoundGuid != Guid.Empty 
@@ -48,7 +48,7 @@ namespace vicuna_infra.Controllers
             {
                 return BadRequest(ModelState);
             }
-            _logger.LogInformation($"Updating user {user.UserNumber}");
+            _logger.LogInformation("Updating user {UserNumber}", user.UserNumber);
             var userUpdateGuid = _userService.UpdateUser(user).Result;
             
             return userUpdateGuid != Guid.Empty
@@ -67,7 +67,7 @@ namespace vicuna_infra.Controllers
             {
                 return BadRequest(ModelState);
             }
-            _logger.LogInformation($"Removing user {user.UserNumber}");
+            _logger.LogInformation("Removing user {UserNumber}", user.UserNumber);
             var userRemoveGuid = _userService.RemoveUser(user).Result;
             
             return userRemoveGuid != Guid.Empty
@@ -86,7 +86,7 @@ namespace vicuna_infra.Controllers
             {
                 return BadRequest(ModelState);
             }
-            _logger.LogInformation($"Removing user { userId}");
+            _logger.LogInformation("Removing user {UserId}", userId);
             var userRemoveGuid = _userService.RemoveUser(userId).Result;
             
             return userRemoveGuid != Guid.Empty
