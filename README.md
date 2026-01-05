@@ -1,5 +1,6 @@
 # Vicuna DDD
 
+
 A reference implementation of a REST service using Domain-Driven Design (DDD) and Hexagonal Architecture with C# and .NET 10.
 
 ## Features
@@ -14,6 +15,7 @@ A reference implementation of a REST service using Domain-Driven Design (DDD) an
 - **Testing:** Unit and integration tests included.
 
 ## Tech Stack
+
 
 - **Backend:** C# 14, .NET 10
 - **Database:** PostgreSQL 18
@@ -60,14 +62,15 @@ A reference implementation of a REST service using Domain-Driven Design (DDD) an
 - Debug the project by starting the `vicuna-infra:https` profile.
 - Access the OpenAPI/Swagger UI to interact with the service.
 
-## Kafka & Docker networking — Troubleshooting
+
+## Kafka & Docker networking & Troubleshooting
 
 If you run into Kafka connection errors (rdkafka/Confluent client) inside containers, the most common causes are Docker network configuration and Kafka advertised listeners. Use the guidance below to get a reliable local setup and debug connection issues.
 
 ### Common fixes
 
 - Prefer the Docker service name inside containers: set `Kafka:Bootstrapper` to `kafka:9092` (not `localhost` or `host.docker.internal`) so clients bootstrap via the Docker network.
-- Do not use `network_mode: bridge` for the `kafka` service together with a user-defined network — remove `network_mode` and let `kafka` join the project network (e.g. `vicuna-net`).
+- Do not use `network_mode: bridge` for the `kafka` service together with a user-defined network ï¿½ remove `network_mode` and let `kafka` join the project network (e.g. `vicuna-net`).
 - Ensure Kafka's advertised listeners include the internal name used by containers. Example env variables in `kafka.base.env`:
   ```text
   KAFKA_LISTENERS=PLAINTEXT://:9092,PLAINTEXT_HOST://0.0.0.0:29092
