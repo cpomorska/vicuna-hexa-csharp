@@ -1,10 +1,11 @@
-using System.Net;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 using vicuna_ddd.Domain.Users.Exceptions;
 using vicuna_ddd.Model.Users.Entity;
 using vicuna_ddd.Shared.Response;
+using vicuna_infra.Messaging;
 using vicuna_infra.Service;
 
 namespace vicuna_infra.Controllers
@@ -13,10 +14,10 @@ namespace vicuna_infra.Controllers
     [Route("manage")]
     [EnableCors("DevelopmentPolicy")]
     [AllowAnonymous]
-    public class RestUserManagementController(ILoggerFactory loggerFactory) : ControllerBase
+    public class RestUserManagementController(ILoggerFactory loggerFactory, IDomainEventDispatcher dispatcher) : ControllerBase
     {
         private readonly ILogger<RestUserController> _logger = loggerFactory.CreateLogger<RestUserController>();
-        private readonly UserManagementService _userService = new(loggerFactory);
+        private readonly UserManagementService _userService = new(loggerFactory, dispatcher);
 
         [HttpPost]
         [Route("create")]

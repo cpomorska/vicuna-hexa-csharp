@@ -1,32 +1,40 @@
 ﻿using System.Collections.Immutable;
+using vicuna_ddd.Domain.Users.Events;
 using vicuna_ddd.Model.Users.Entity;
 using vicuna_infra.Controllers;
+using vicuna_infra.Messaging;
 using vicuna_infra.Repository;
 
 namespace vicuna_infra.Service
 {
-    public class UserManagementService(ILoggerFactory loggerFactory) : IUserManagementService
+    public class UserManagementService(ILoggerFactory loggerFactory, IDomainEventDispatcher dispatcher) : IUserManagementService
     {
         private readonly ILogger _logger = loggerFactory.CreateLogger<RestUserController>();
         private readonly UserUserRepository _userUserRepository = new();
+        private readonly IDomainEventDispatcher _dispatcher = dispatcher;
 
-        public Task<Guid?> AddUser(User user)
+        public async Task<Guid?> AddUser(User user)
         {
             Guid? guid = null;
             try
             {
                 _logger.LogInformation("Create user {UserNumber}", user.UserNumber);
-                _ = _userUserRepository.Add(user);
+                await _userUserRepository.Add(user);
                 guid = user.UserNumber;
+
+                // Domain-Event nach erfolgreichem Persistieren
+                var evt = new UserCreatedEvent(user.UserNumber, user.UserName, DateTime.Now); // Passe Konstruktor an
+                await _dispatcher.DispatchAsync(evt);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex,"Error creating user {UserNumber}", user.UserNumber);
             }
 
-            return Task.FromResult(guid);
+            return guid;
         }
 
+        // analog für UpdateUser / RemoveUser: nach Erfolg ein Event dispatchen
         public Task<Guid?> UpdateUser(User user)
         {
             Guid? guid = null;
@@ -35,6 +43,10 @@ namespace vicuna_infra.Service
                 _logger.LogInformation("Update user {UserNumber}", user.UserNumber);
                 _ = _userUserRepository.Update(user);
                 guid = user.UserNumber;
+
+                // Domain-Event nach erfolgreichem Persistieren
+                var evt = new UserUpdatedEvent(user.UserNumber, user.UserName, DateTime.Now); // Passe Konstruktor an
+                _dispatcher.DispatchAsync(evt);
             }
             catch (Exception ex)
             {
@@ -52,6 +64,10 @@ namespace vicuna_infra.Service
                 _logger.LogInformation("Remove user {UserNumber}", user.UserNumber);
                 _ = _userUserRepository.Remove(user);
                 guid = user.UserNumber;
+
+                // Domain-Event nach erfolgreichem Persistieren
+                var evt = new UserRemovedEvent(user.UserNumber, user.UserName, DateTime.Now); // Passe Konstruktor an
+                _dispatcher.DispatchAsync(evt);
             }
             catch (Exception ex)
             {
@@ -77,6 +93,10 @@ namespace vicuna_infra.Service
                 _ = _userUserRepository.Remove(user);
                 
                 guid = user.UserNumber;
+
+                // Domain-Event nach erfolgreichem Persistieren
+                var evt = new UserRemovedEvent(user.UserNumber, user.UserName, DateTime.Now); // Passe Konstruktor an
+                _dispatcher.DispatchAsync(evt);
             }
             catch (Exception ex)
             {

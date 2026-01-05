@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using AutoMapper;
 using Confluent.Kafka;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -7,7 +6,9 @@ using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.AspNetCore.Server.Kestrel.Https;
 using Microsoft.OpenApi.Models;
+using System.Diagnostics;
 using vicuna_ddd.Domain.Shared.Mapping;
+using vicuna_ddd.Domain.Users.Events;
 using vicuna_ddd.Domain.Users.Messaging;
 using vicuna_ddd.Shared.Provider;
 using vicuna_infra.Filters;
@@ -25,6 +26,8 @@ builder.Services.AddTransient<DbInitializer>();
 
 var producerConfig = new ProducerConfig { BootstrapServers = builder.Configuration["Kafka:Bootstrapper"]};
 builder.Services.AddSingleton(producerConfig);
+builder.Services.AddSingleton<IDomainEventDispatcher, DomainEventDispatcher>();
+builder.Services.AddScoped<IDomainEventHandler<UserCreatedEvent>, UserCreatedEventHandler>();
 
 // var mapperConfig = new MapperConfiguration(mc =>
 // {
