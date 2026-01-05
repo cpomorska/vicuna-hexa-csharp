@@ -1,6 +1,4 @@
-using System.Threading.Tasks;
-
-namespace vicuna_infra.Messaging
+namespace vicuna_ddd.Infrastructure.Events
 {
     public interface IDomainEventHandler<TEvent>
     {

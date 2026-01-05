@@ -1,4 +1,6 @@
-namespace vicuna_infra.Messaging
+using Microsoft.Extensions.DependencyInjection;
+
+namespace vicuna_ddd.Infrastructure.Events
 {
     public class DomainEventDispatcher : IDomainEventDispatcher
     {

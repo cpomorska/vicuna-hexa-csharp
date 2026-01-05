@@ -1,8 +1,9 @@
 using System.Text.Json;
 using Confluent.Kafka;
 using vicuna_ddd.Domain.Users.Events;
+using vicuna_ddd.Infrastructure.Events;
 
-namespace vicuna_infra.Messaging
+namespace vicuna_infra.Events
 {
     public class UserCreatedEventHandler : IDomainEventHandler<UserCreatedEvent>
     {

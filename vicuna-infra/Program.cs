@@ -1,4 +1,3 @@
-using AutoMapper;
 using Confluent.Kafka;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
@@ -7,10 +6,11 @@ using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.AspNetCore.Server.Kestrel.Https;
 using Microsoft.OpenApi.Models;
 using System.Diagnostics;
-using vicuna_ddd.Domain.Shared.Mapping;
 using vicuna_ddd.Domain.Users.Events;
 using vicuna_ddd.Domain.Users.Messaging;
+using vicuna_ddd.Infrastructure.Events;
 using vicuna_ddd.Shared.Provider;
+using vicuna_infra.Events;
 using vicuna_infra.Filters;
 using vicuna_infra.Messaging;
 
@@ -29,13 +29,6 @@ builder.Services.AddSingleton(producerConfig);
 builder.Services.AddSingleton<IDomainEventDispatcher, DomainEventDispatcher>();
 builder.Services.AddScoped<IDomainEventHandler<UserCreatedEvent>, UserCreatedEventHandler>();
 
-// var mapperConfig = new MapperConfiguration(mc =>
-// {
-//     mc.AddProfile<DeliveryConfirmationToDtoProfile>();
-//     mc.AddProfile<DtoToDeliveryConfirmationProfile>();
-// }, null);
-//builder.Services.AddSingleton(mapperConfig.CreateMapper());
-
 var consumerConfig = new ExtendedConsumerConfig
 {
     Topic = builder.Configuration["Kafka:TopicIn"]!,
@@ -43,6 +36,7 @@ var consumerConfig = new ExtendedConsumerConfig
     BootstrapServers = builder.Configuration["Kafka:Bootstrapper"]!,
     AutoOffsetReset = AutoOffsetReset.Earliest
 };
+
 builder.Services.AddSingleton(consumerConfig);
 
 builder.Services.AddSingleton<ReactiveProducerBase>(

@@ -1,8 +1,8 @@
 ﻿using System.Collections.Immutable;
 using vicuna_ddd.Domain.Users.Events;
+using vicuna_ddd.Infrastructure.Events;
 using vicuna_ddd.Model.Users.Entity;
 using vicuna_infra.Controllers;
-using vicuna_infra.Messaging;
 using vicuna_infra.Repository;
 
 namespace vicuna_infra.Service

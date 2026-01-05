@@ -1,11 +1,8 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
-using System.Net;
-using vicuna_ddd.Domain.Users.Exceptions;
+using vicuna_ddd.Infrastructure.Events;
 using vicuna_ddd.Model.Users.Entity;
-using vicuna_ddd.Shared.Response;
-using vicuna_infra.Messaging;
 using vicuna_infra.Service;
 
 namespace vicuna_infra.Controllers
