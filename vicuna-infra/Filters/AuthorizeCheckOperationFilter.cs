@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace vicuna_infra.Filters
@@ -15,16 +15,16 @@ namespace vicuna_infra.Filters
                 {
                     new()
                     {
-                        {
-                            new OpenApiSecurityScheme
-                            {
-                                Reference = new OpenApiReference
-                                {
-                                    Type = ReferenceType.SecurityScheme, Id = "oauth2"
-                                }
-                            },
-                            new[] { "openid" }
-                        }
+                        //{
+                        //    //new OpenApiSecurityScheme
+                        //    //{
+                        //    //    Reference = new OpenApiReference
+                        //    //    {
+                        //    //        Type = ReferenceType.SecurityScheme, Id = "oauth2"
+                        //    //    }
+                        //    //},
+                        //    //new[] { "openid" }
+                        //}
                     }
                 };
             }
