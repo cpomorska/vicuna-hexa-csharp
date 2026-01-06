@@ -6,7 +6,7 @@ using vicuna_infra.Repository;
 
 namespace vicuna_infra_test.Controller
 {
-    public class RestUserControllerTest : IClassFixture<RestControllerFixture>
+    public class RestUserControllerTest : RestControllerBase
     {
         private const string RequestUriUserAsDto = "read/user/{userDto}";
         private const string RequestUriUserPass = "/read/bynamepw/Testuser/Testpass";
