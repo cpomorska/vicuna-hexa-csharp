@@ -11,7 +11,6 @@ namespace vicuna_infra.Service
     {
         private readonly ILogger _logger = loggerFactory.CreateLogger<RestUserController>();
         private readonly UserUserRepository _userUserRepository = new();
-        private readonly IDomainEventDispatcher _dispatcher = dispatcher;
 
         public async Task<Guid?> AddUser(User user)
         {
@@ -24,7 +23,7 @@ namespace vicuna_infra.Service
 
                 // Domain-Event nach erfolgreichem Persistieren
                 var evt = new UserCreatedEvent(user.UserNumber, user.UserName, DateTime.Now); // Passe Konstruktor an
-                await _dispatcher.DispatchAsync(evt);
+                await dispatcher.DispatchAsync(evt);
             }
             catch (Exception ex)
             {
@@ -46,7 +45,7 @@ namespace vicuna_infra.Service
 
                 // Domain-Event nach erfolgreichem Persistieren
                 var evt = new UserUpdatedEvent(user.UserNumber, user.UserName, DateTime.Now); // Passe Konstruktor an
-                _dispatcher.DispatchAsync(evt);
+                dispatcher.DispatchAsync(evt);
             }
             catch (Exception ex)
             {
@@ -56,7 +55,7 @@ namespace vicuna_infra.Service
             return Task.FromResult(guid);
         }
         
-        public Task<Guid?> RemoveUser(Guid userId)
+        public Task<Guid?> RemoveUser(User user)
         {
             Guid? guid = null;
             try
@@ -67,7 +66,7 @@ namespace vicuna_infra.Service
 
                 // Domain-Event nach erfolgreichem Persistieren
                 var evt = new UserRemovedEvent(user.UserNumber, user.UserName, DateTime.Now); // Passe Konstruktor an
-                _dispatcher.DispatchAsync(evt);
+                dispatcher.DispatchAsync(evt);
             }
             catch (Exception ex)
             {
@@ -96,7 +95,7 @@ namespace vicuna_infra.Service
 
                 // Domain-Event nach erfolgreichem Persistieren
                 var evt = new UserRemovedEvent(user.UserNumber, user.UserName, DateTime.Now); // Passe Konstruktor an
-                _dispatcher.DispatchAsync(evt);
+                dispatcher.DispatchAsync(evt);
             }
             catch (Exception ex)
             {
