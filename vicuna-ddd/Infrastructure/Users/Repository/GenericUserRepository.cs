@@ -9,13 +9,6 @@ namespace vicuna_ddd.Infrastructure.Users.Repository
     public class GenericUserRepository<TDbContext, T> : IGenericUserRepository<T> where T : BaseEntity
         where TDbContext : GenericDbContext
     {
-        public GenericUserRepository()
-        {
-            using (var context = new UserDbContext(false))
-            {
-                _ = context.Database.EnsureCreatedAsync();
-            }
-        }
 
         public bool UnitTestDb { get; set; }
 
