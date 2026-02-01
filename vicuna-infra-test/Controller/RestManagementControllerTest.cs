@@ -9,6 +9,7 @@ using vicuna_infra.Repository;
 using vicuna_ddd.Infrastructure.Events;
 using Assert = Xunit.Assert;
 
+
 namespace vicuna_infra_test.Controller
 {
     public class RestManagementControllerTest : RestControllerBase          
