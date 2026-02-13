@@ -1,7 +1,7 @@
 ﻿using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using vicuna_ddd.Domain.Users.Repository;
-using vicuna_ddd.Shared.Entity;
+using vicuna_ddd.Infrastructure.Shared.Entity;
 using vicuna_ddd.Shared.Provider;
 
 namespace vicuna_ddd.Infrastructure.Users.Repository
@@ -9,13 +9,6 @@ namespace vicuna_ddd.Infrastructure.Users.Repository
     public class GenericUserRepository<TDbContext, T> : IGenericUserRepository<T> where T : BaseEntity
         where TDbContext : GenericDbContext
     {
-        public GenericUserRepository()
-        {
-            using (var context = new UserDbContext(false))
-            {
-                _ = context.Database.EnsureCreatedAsync();
-            }
-        }
 
         public bool UnitTestDb { get; set; }
 

@@ -1,5 +1,5 @@
 ﻿using System.Linq.Expressions;
-using vicuna_ddd.Shared.Entity;
+using vicuna_ddd.Infrastructure.Shared.Entity;
 
 namespace vicuna_ddd.Domain.Users.Repository
 {

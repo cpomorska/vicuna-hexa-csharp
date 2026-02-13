@@ -18,7 +18,7 @@ public class RestControllerFixture : IAsyncLifetime
     {
         var dockerEndpoint = Environment.GetEnvironmentVariable("DOCKER_HOST") ?? UnixSocketAddr;
 
-        PostgresContainerTest = new PostgreSqlBuilder()
+        PostgresContainerTest = new PostgreSqlBuilder("postgres:18")
             //.WithDockerEndpoint(dockerEndpoint)
             .WithEnvironment("POSTGRES_DB", "vicuna_pg")
             .WithEnvironment("POSTGRES_USER", "vicuna_user")
@@ -27,7 +27,7 @@ public class RestControllerFixture : IAsyncLifetime
             .WithName("tc-vicuna-pg")
             .WithHostname("tc-vicuna-pg")
             .WithPortBinding(15432, 5432)
-            .WithWaitStrategy(Wait.ForUnixContainer().UntilPortIsAvailable(5432))
+            .WithWaitStrategy(Wait.ForUnixContainer().UntilInternalTcpPortIsAvailable(5432))
             .WithExtraHost("host.docker.internal", "host-gateway")
             .WithCleanUp(true)
             .Build();

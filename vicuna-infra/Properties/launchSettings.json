@@ -34,7 +34,7 @@
       "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/swagger",
       "publishAllPorts": true,
       "useSSL": true,
-      "DockerfileRunArguments": "--add-host=host.docker.internal:host-gateway --net=bridge"
+      "DockerfileRunArguments": "--add-host=host.docker.internal:host-gateway --net bridge"
     },
     "WSL": {
       "commandName": "WSL2",

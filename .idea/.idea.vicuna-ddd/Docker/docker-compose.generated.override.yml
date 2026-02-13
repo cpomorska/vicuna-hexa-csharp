@@ -3,7 +3,7 @@ version: "3.4"
 services:
   vicuna-infra:
     build:
-      context: "C:\\Users\\darkstar2024\\source\\repos\\cpomorska\\vicuna-hexa-csharp"
+      context: "Z:\\source\\repos\\RiderProjects\\vicuna-hexa-csharp"
       dockerfile: "Dockerfile"
       target: "base"
     command: []
@@ -15,7 +15,7 @@ services:
     image: "vicunainfra:dev"
     ports: []
     volumes:
-    - "C:\\Users\\darkstar2024\\source\\repos\\cpomorska\\vicuna-hexa-csharp\\vicuna-infra:/app:rw"
-    - "C:\\Users\\darkstar2024\\source\\repos\\cpomorska\\vicuna-hexa-csharp:/src:rw"
+    - "Z:\\source\\repos\\RiderProjects\\vicuna-hexa-csharp\\vicuna-infra:/app:rw"
+    - "Z:\\source\\repos\\RiderProjects\\vicuna-hexa-csharp:/src:rw"
     - "C:\\Users\\darkstar2024\\.nuget\\packages:/root/.nuget/packages"
     working_dir: "/app"

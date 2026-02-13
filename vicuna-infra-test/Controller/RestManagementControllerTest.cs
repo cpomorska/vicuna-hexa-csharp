@@ -1,12 +1,18 @@
+using System.Net;
 using System.Net.Http.Json;
 using System.Text.Json;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using vicuna_ddd.Shared.Provider;
 using vicuna_infra.Repository;
+using vicuna_ddd.Infrastructure.Events;
+using Assert = Xunit.Assert;
+
 
 namespace vicuna_infra_test.Controller
 {
-    public class RestManagementControllerTest : RestControllerFixture
+    public class RestManagementControllerTest : RestControllerBase          
     {
         private const string PostUriAddUser = "manage/create";
         private const string PostUriRemoveUser = "manage/remove";
@@ -17,13 +23,32 @@ namespace vicuna_infra_test.Controller
 
         public RestManagementControllerTest()
         {
-            var webAppFactory = new WebApplicationFactory<Program>();
+            var webAppFactory = new WebApplicationFactory<Program>()
+                .WithWebHostBuilder(builder =>
+                {
+                    builder.ConfigureServices(services =>
+                    {
+                        // replace domain event dispatcher with a no-op implementation to avoid Kafka calls
+                        services.RemoveAll<IDomainEventDispatcher>();
+                        services.AddSingleton<IDomainEventDispatcher, NoOpDomainEventDispatcher>();
+                    });
+                });
+
             _httpClient = webAppFactory.CreateDefaultClient();
         }
 
         public void Setup()
         {
-            var webAppFactory = new WebApplicationFactory<Program>();
+            var webAppFactory = new WebApplicationFactory<Program>()
+                .WithWebHostBuilder(builder =>
+                {
+                    builder.ConfigureServices(services =>
+                    {
+                        services.RemoveAll<IDomainEventDispatcher>();
+                        services.AddSingleton<IDomainEventDispatcher, NoOpDomainEventDispatcher>();
+                    });
+                });
+
             _httpClient = webAppFactory.CreateDefaultClient();
 
             using (var client = new UserDbContext(false))
@@ -63,11 +88,10 @@ namespace vicuna_infra_test.Controller
             var response = await _httpClient.PostAsJsonAsync(PostUriAddUser, testUser);
             var rawResult = await response.Content.ReadAsStringAsync();
 
-            var endResponse = await _httpClient.PostAsJsonAsync(PostUriRemoveUser, testUser);
-            var removeResult = JsonSerializer.Deserialize<Guid>(await endResponse.Content.ReadAsStringAsync());
+            var endResponse = await _httpClient.DeleteAsync(PostUriRemoveUser + "/" + testUser?.UserNumber);
 
             Assert.NotNull(rawResult);
-            Assert.IsType<Guid>(removeResult);
+            Assert.Equal(HttpStatusCode.NoContent, endResponse.StatusCode);
         }
 
         [Fact]
@@ -76,11 +100,16 @@ namespace vicuna_infra_test.Controller
             var testUser = RestControllerTestHelpers.CreateTestUser("NewUserMannUpdate!");
             _ = await _httpClient.PostAsJsonAsync(PostUriAddUser, testUser);
 
-            var endResponse = await _httpClient.PostAsJsonAsync(PostUriUpdateUser, testUser);
-            var updateResult = JsonSerializer.Deserialize<Guid>(await endResponse.Content.ReadAsStringAsync());
+            var endResponse = await _httpClient.PutAsJsonAsync(PostUriUpdateUser, testUser);
 
-            Assert.NotNull(updateResult);
-            Assert.IsType<Guid>(updateResult);
+            Assert.NotNull(endResponse);
+            Assert.Equal(HttpStatusCode.NoContent, endResponse.StatusCode);
+        }
+
+        // No-op domain event dispatcher used in tests to prevent Kafka/network access
+        private class NoOpDomainEventDispatcher : IDomainEventDispatcher
+        {
+            public Task DispatchAsync<TEvent>(TEvent @event) where TEvent : class => Task.CompletedTask;
         }
     }
 }

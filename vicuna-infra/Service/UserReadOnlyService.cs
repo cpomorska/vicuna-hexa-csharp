@@ -6,23 +6,17 @@ using vicuna_infra.Repository;
 
 namespace vicuna_infra.Service
 {
-    public class UserReadOnlyService : IUserService
+    public class UserReadOnlyService(ILoggerFactory loggerFactory) : IUserService
     {
-        private readonly ILogger _logger;
-        private readonly UserUserRepository _userUserRepository;
-
-        public UserReadOnlyService(ILoggerFactory loggerFactory)
-        {
-            _logger = loggerFactory.CreateLogger<RestUserController>();
-            _userUserRepository = new UserUserRepository();
-        }
+        private readonly ILogger _logger = loggerFactory.CreateLogger<RestUserController>();
+        private readonly UserUserRepository _userUserRepository = new();
 
         public Task<User?> FindUser(UserDto userDto)
         {
             IEnumerable<User> userEntries = new List<User>();
             try
             {
-                _logger.LogInformation("Reading entries by Username");
+                _logger.LogInformation("Reading entries from Users");
                 userEntries = _userUserRepository
                     .GetList(x =>
                         x.UserName == userDto.UserName && x.UserNumber == userDto.UserNumber &&
@@ -31,7 +25,7 @@ namespace vicuna_infra.Service
             }
             catch (Exception ex)
             {
-                _logger.LogError("Error reading all entries from user  | " + ex);
+                _logger.LogError(ex, "Error reading all entries from Users");
             }
 
             return Task.FromResult(userEntries?.FirstOrDefault());
@@ -42,13 +36,13 @@ namespace vicuna_infra.Service
             IEnumerable<User> userEntries = new List<User>();
             try
             {
-                _logger.LogInformation("Reading entries by Username");
+                _logger.LogInformation("Reading entries by email");
                 userEntries = _userUserRepository
                     .GetList(x => x.UserEmail == email).Result.ToImmutableList();
             }
             catch (Exception ex)
             {
-                _logger.LogError("Error reading entries from user by email  | " + ex);
+                _logger.LogError(ex, "Error reading entries from Users by email");
             }
 
             return await Task.FromResult(userEntries?.FirstOrDefault());
@@ -59,13 +53,13 @@ namespace vicuna_infra.Service
             IEnumerable<User> userEntries = new List<User>();
             try
             {
-                _logger.LogInformation("Reading entries by Username");
+                _logger.LogInformation("Reading entries by Username and Password");
                 userEntries = _userUserRepository
                     .GetList(x => x.UserName == userName && x.UserPass == password).Result.ToImmutableList();
             }
             catch (Exception ex)
             {
-                _logger.LogError("Error reading entries from user by email  | " + ex);
+                _logger.LogError(ex, "Error reading entries from Users by username password");
             }
 
             return await Task.FromResult(userEntries?.FirstOrDefault());
@@ -82,7 +76,7 @@ namespace vicuna_infra.Service
             }
             catch (Exception ex)
             {
-                _logger.LogError("Error reading all entries from user  | " + ex);
+                _logger.LogError(ex, "Error reading all entries from Users");
             }
 
             return Task.FromResult(userEntries?.FirstOrDefault());

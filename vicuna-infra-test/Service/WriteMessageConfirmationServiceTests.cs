@@ -1,9 +1,10 @@
 using System.Linq.Expressions;
 using AutoMapper;
 using Moq;
-using vicuna_ddd.Domain.Meesage.Repository;
 using vicuna_ddd.Domain.Messages.Entity;
+using vicuna_ddd.Domain.Messages.Repository;
 using vicuna_ddd.Domain.Users.Dto;
+using Assert = Xunit.Assert;
 
 namespace vicuna_infra.Service
 {

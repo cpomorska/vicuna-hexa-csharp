@@ -1,12 +1,12 @@
 using System.Text.Json;
 using Microsoft.AspNetCore.Mvc.Testing;
-using vicuna_ddd.Domain.Users.Dto;
 using vicuna_ddd.Model.Users.Entity;
 using vicuna_infra.Repository;
+using Assert = Xunit.Assert;
 
 namespace vicuna_infra_test.Controller
 {
-    public class RestUserControllerTest : IClassFixture<RestControllerFixture>
+    public class RestUserControllerTest : RestControllerBase
     {
         private const string RequestUriUserAsDto = "read/user/{userDto}";
         private const string RequestUriUserPass = "/read/bynamepw/Testuser/Testpass";
@@ -30,13 +30,7 @@ namespace vicuna_infra_test.Controller
         {
             // Given
             _user = RestControllerTestHelpers.CreateTestUser("TestUser1");
-            _ = _userUserRepository.Add(_user);
-            var userDto = new UserDto
-            {
-                UserPass = _user.UserPass,
-                UserName = _user.UserName,
-                UserEmail = _user.UserEmail
-            };
+            _ = _userUserRepository.Add(_user!);
 
             // When
             var response = await _httpClient.GetAsync(RequestUriUserAsDto);
@@ -52,7 +46,7 @@ namespace vicuna_infra_test.Controller
         {
             // Given
             _user = RestControllerTestHelpers.CreateTestUser("TestUser1");
-            _ = _userUserRepository.Add(_user);
+            _ = _userUserRepository.Add(_user!);
 
             // When
             var response = await _httpClient.GetAsync(RequestUriUser);
@@ -68,7 +62,7 @@ namespace vicuna_infra_test.Controller
         {
             // Given
             _user = RestControllerTestHelpers.CreateTestUser("TestUser1");
-            _ = _userUserRepository.Add(_user);
+            _ = _userUserRepository.Add(_user!);
 
             // When
             var response = await _httpClient.GetAsync(RequestUriUserPass);
@@ -84,7 +78,7 @@ namespace vicuna_infra_test.Controller
         {
             // Given
             _user = RestControllerTestHelpers.CreateTestUser("TestUser1");
-            _ = _userUserRepository.Add(_user);
+            _ = _userUserRepository.Add(_user!);
 
             // When
             var response = await _httpClient.GetAsync(RequestUriEmail);

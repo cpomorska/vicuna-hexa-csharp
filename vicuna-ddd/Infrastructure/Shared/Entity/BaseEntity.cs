@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
-namespace vicuna_ddd.Shared.Entity
+namespace vicuna_ddd.Infrastructure.Shared.Entity
 {
     public class BaseEntity
     {
