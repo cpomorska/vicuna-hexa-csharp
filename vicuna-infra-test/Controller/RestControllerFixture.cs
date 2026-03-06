@@ -18,7 +18,7 @@ public class RestControllerFixture : IAsyncLifetime
     {
         var dockerEndpoint = Environment.GetEnvironmentVariable("DOCKER_HOST") ?? UnixSocketAddr;
 
-        PostgresContainerTest = new PostgreSqlBuilder("postgres:18")
+        PostgresContainerTest = new PostgreSqlBuilder()
             //.WithDockerEndpoint(dockerEndpoint)
             .WithEnvironment("POSTGRES_DB", "vicuna_pg")
             .WithEnvironment("POSTGRES_USER", "vicuna_user")
@@ -31,14 +31,10 @@ public class RestControllerFixture : IAsyncLifetime
             .WithExtraHost("host.docker.internal", "host-gateway")
             .WithCleanUp(true)
             .Build();
-        if (await IsContainerRunningAsync("tc-vicuna-pg", dockerEndpoint))
+        if (!await IsContainerRunningAsync("tc-vicuna-pg", dockerEndpoint))
         {
             await PostgresContainerTest.StartAsync().ConfigureAwait(true);
         }
-
-        //await PostgresContainerTest.StartAsync().ConfigureAwait(true);
-
-        // Warten, bis der Container vollständig gestartet und bereit ist
     }
 
     public async Task DisposeAsync()

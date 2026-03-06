@@ -3,7 +3,7 @@ using vicuna_infra.Repository;
 
 namespace vicuna_infra_test.Controller
 {
-    public class RestControllerBase : IDisposable
+    public class RestControllerBase : IDisposable, IClassFixture<RestControllerFixture>
     {
         private readonly User? _user;
         private readonly UserUserRepository _userUserRepository;

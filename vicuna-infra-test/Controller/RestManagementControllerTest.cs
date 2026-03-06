@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using vicuna_ddd.Shared.Provider;
 using vicuna_infra.Repository;
 using vicuna_ddd.Infrastructure.Events;
+using vicuna_infra;
 using Assert = Xunit.Assert;
 
 

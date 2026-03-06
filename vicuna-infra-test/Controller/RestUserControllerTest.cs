@@ -1,6 +1,7 @@
 using System.Text.Json;
 using Microsoft.AspNetCore.Mvc.Testing;
 using vicuna_ddd.Model.Users.Entity;
+using vicuna_infra;
 using vicuna_infra.Repository;
 using Assert = Xunit.Assert;
 
