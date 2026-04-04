@@ -18,7 +18,7 @@ public class RestControllerFixture : IAsyncLifetime
     {
         var dockerEndpoint = Environment.GetEnvironmentVariable("DOCKER_HOST") ?? UnixSocketAddr;
 
-        PostgresContainerTest = new PostgreSqlBuilder()
+        PostgresContainerTest = new PostgreSqlBuilder("postgres:18")
             //.WithDockerEndpoint(dockerEndpoint)
             .WithEnvironment("POSTGRES_DB", "vicuna_pg")
             .WithEnvironment("POSTGRES_USER", "vicuna_user")
