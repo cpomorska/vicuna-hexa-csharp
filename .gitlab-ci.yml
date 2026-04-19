@@ -77,7 +77,7 @@ sonarqube:
     - if [ -z "$SONAR_TOKEN" ]; then echo "ERROR: SONAR_TOKEN is not set"; exit 1; fi
     - if [ -z "$SONAR_HOST_URL" ]; then echo "ERROR: SONAR_HOST_URL is not set"; exit 1; fi
     # Start Sonar analysis (use sonar.login for the token). Optionally skip JRE provisioning in CI
-    - dotnet sonarscanner begin /k:"${SONAR_PROJECT_KEY}" /d:sonar.login="$SONAR_TOKEN" /d:sonar.host.url="$SONAR_HOST_URL" /d:sonar.scanner.skipJreProvisioning=true
+    - dotnet sonarscanner begin /k:"${SONAR_PROJECT_KEY}" /d:sonar.login="$SONAR_TOKEN" /d:sonar.host.url="$SONAR_HOST_URL"
     - dotnet build vicuna-ddd.sln
     - dotnet sonarscanner end /d:sonar.login="$SONAR_TOKEN"
   only:
