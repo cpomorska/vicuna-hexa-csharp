@@ -22,7 +22,7 @@ A reference implementation of a REST service using Domain-Driven Design (DDD) an
 - **Identity Provider:** Keycloak 26.x
 - **Message Broker:** Apache Kafka
 - **Containerization:** Docker, Docker Compose
-- **IDE Support:** Visual Studio 2022, JetBrains Rider
+- **IDE Support:** Visual Studio 2026, Visual Studio 2022, JetBrains Rider
 
 ## Getting Started
 
@@ -60,7 +60,7 @@ A reference implementation of a REST service using Domain-Driven Design (DDD) an
 ### Running the Application
 
 - Debug the project by starting the `vicuna-infra:https` profile.
-- Access the OpenAPI/Swagger UI to interact with the service.
+- Access the OpenAPI/Swagger UI (https://localhost:7208/swagger/index.html, when started with docker) to interact with the service.
 
 
 ## Kafka & Docker networking & Troubleshooting

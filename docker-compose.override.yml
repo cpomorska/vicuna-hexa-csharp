@@ -41,7 +41,7 @@ services:
   postgres:
     image: 'postgres:18'
     hostname: 'pginfra'
-    container_name: vicunapostgresql
+    container_name: vicuna-postgres
     environment:
       POSTGRES_DB: vicuna_user
       POSTGRES_USER: vicuna_user
@@ -58,7 +58,7 @@ services:
       retries: 5
 
   postgres-kc:
-    container_name: vicunapostgresql-kc
+    container_name: vicuna-postgres-kc
     image: 'postgres:18'
     hostname: 'pgkc'
     environment:
@@ -97,8 +97,8 @@ services:
       retries: 10
 
   keycloak:
-    container_name: keycloak
-    image: quay.io/keycloak/keycloak:26.6.1
+    container_name: vicuna-keycloak
+    image: quay.io/keycloak/keycloak:latest
 
     env_file:
       - keycloak.base.env
@@ -128,28 +128,7 @@ services:
       test: [ "CMD-SHELL", "exec 3<>/dev/tcp/localhost/8080 && echo -e 'GET /health/ready HTTP/1.1\\r\\nHost: localhost\\r\\nConnection: close\\r\\n\\r\\n' >&3 && cat <&3 | grep -q '200 OK'" ]
       interval: 8s
       timeout: 5s
-      retries: 20
-  
-#  fixodauserservice:
-#    image: ${DOCKER_REGISTRY-}fixodauserservice
-#    build:
-#      context: .
-#      dockerfile: FixodaUserService/Dockerfile
-#  
-#  sqlserver:
-#    image: mcr.microsoft.com/mssql/server:2025-latest
-#    container_name: sqlserver
-#    environment:
-#      - ACCEPT_EULA=Y
-#      - SA_PASSWORD=YourStrong!Passw0rd
-#    ports:
-#      - "1433:1433"
-#    volumes:
-#      - sqlserver_data:/var/opt/mssql
-#    restart: unless-stopped
-
-volumes:
-  sqlserver_data:    
+      retries: 20   
 
 networks:
   vicuna-net:
