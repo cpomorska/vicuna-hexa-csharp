@@ -4,9 +4,10 @@ using Moq;
 using vicuna_ddd.Domain.Messages.Entity;
 using vicuna_ddd.Domain.Messages.Repository;
 using vicuna_ddd.Domain.Users.Dto;
+using vicuna_infra.Service;
 using Assert = Xunit.Assert;
 
-namespace vicuna_infra.Service
+namespace vicuna_infra_test.Service
 {
     public class WriteMessageConfirmationServiceTests
     {
