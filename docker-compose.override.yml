@@ -99,7 +99,6 @@ services:
   keycloak:
     container_name: vicuna-keycloak
     image: quay.io/keycloak/keycloak:latest
-
     env_file:
       - keycloak.base.env
     command:
