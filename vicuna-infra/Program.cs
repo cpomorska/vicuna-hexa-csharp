@@ -1,17 +1,18 @@
+using System.Diagnostics;
 using Confluent.Kafka;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.AspNetCore.Server.Kestrel.Https;
-using System.Diagnostics;
 using vicuna_ddd.Domain.Users.Events;
 using vicuna_ddd.Domain.Users.Messaging;
 using vicuna_ddd.Infrastructure.Events;
 using vicuna_ddd.Shared.Provider;
 using vicuna_infra.Events;
-using vicuna_infra.Filters;
 using vicuna_infra.Messaging;
+
+namespace vicuna_infra;
 
 public partial class Program
 {

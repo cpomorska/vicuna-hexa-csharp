@@ -1,7 +1,7 @@
 variables:
-    SONAR_PROJECT_KEY: vicuna-hexa-sharp
-    SONAR_TOKEN_DEF: ${SONAR_TOKEN}
-    SONAR_URL_DEF: ${SONAR_HOST_URL}
+  # Project key used in SonarQube
+  SONAR_PROJECT_KEY: "vicuna-hexa-sharp"
+  # NOTE: Set SONAR_TOKEN and SONAR_HOST_URL as protected CI variables in GitLab (Settings → CI/CD → Variables)
 
 default:
   tags:
@@ -28,7 +28,7 @@ build_vicuna:
   tags:
     - docker
   image:
-    name: mcr.microsoft.com/dotnet/sdk:9.0.308
+    name: mcr.microsoft.com/dotnet/sdk:10.0.300
   script:
     - echo "from Branch $CI_COMMIT_BRANCH"
     - "dotnet build vicuna-ddd.sln"
@@ -62,7 +62,7 @@ sonarqube:
   tags:
     - docker
   image:
-    name: mcr.microsoft.com/dotnet/sdk:9.0.308
+    name: mcr.microsoft.com/dotnet/sdk:10.0.300
   variables:
     SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"  # Defines the location of the analysis task cache
     GIT_DEPTH: "0"  # Tells git to fetch all the branches of the project, required by the analysis task
@@ -70,12 +70,13 @@ sonarqube:
     key: "${CI_JOB_NAME}"
     paths:
       - .sonar/cache
-  script: 
-      - "dotnet tool install --global dotnet-sonarscanner"
-      - "export PATH=\"$PATH:$HOME/.dotnet/tools\""
-      - "dotnet sonarscanner begin /k:\"vicuna_hexa_csharp\" /d:sonar.token=\"$SONAR_TOKEN\" /d:\"sonar.host.url=$SONAR_HOST_URL\" "
-      - "dotnet build"
-      - "dotnet sonarscanner end /d:sonar.token=\"$SONAR_TOKEN\""
+  script:
+    - dotnet tool install --global dotnet-sonarscanner
+    - export PATH="$PATH:$HOME/.dotnet/tools"
+    # Start Sonar analysis (use sonar.login for the token). Optionally skip JRE provisioning in CI
+    - dotnet sonarscanner begin /k:"${SONAR_PROJECT_KEY}" /d:sonar.login="$SONAR_TOKEN" /d:sonar.host.url="$SONAR_HOST_URL"
+    - dotnet build vicuna-ddd.sln
+    - dotnet sonarscanner end /d:sonar.login="$SONAR_TOKEN"
   only:
     - merge_requests
     - main

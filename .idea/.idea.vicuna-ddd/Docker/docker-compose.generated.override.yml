@@ -3,19 +3,19 @@ version: "3.4"
 services:
   vicuna-infra:
     build:
-      context: "/home/darkstar2025/RiderProjects/vicuna-hexa-csharp"
+      context: "C:\\Users\\darkstar2024\\source\\repos\\cpomorska\\vicuna-hexa-csharp"
       dockerfile: "Dockerfile"
       target: "base"
     command: []
     entrypoint:
     - "dotnet"
-    - "/app/bin/Debug/net9.0/vicuna-infra.dll"
+    - "/app/bin/Debug/net10.0/vicuna-infra.dll"
     environment:
       DOTNET_USE_POLLING_FILE_WATCHER: "true"
     image: "vicunainfra:dev"
     ports: []
     volumes:
-    - "/home/darkstar2025/RiderProjects/vicuna-hexa-csharp/vicuna-infra:/app:rw"
-    - "/home/darkstar2025/RiderProjects/vicuna-hexa-csharp:/src:rw"
-    - "/home/darkstar2025/.nuget/packages:/root/.nuget/packages"
+    - "C:\\Users\\darkstar2024\\source\\repos\\cpomorska\\vicuna-hexa-csharp\\vicuna-infra:/app:rw"
+    - "C:\\Users\\darkstar2024\\source\\repos\\cpomorska\\vicuna-hexa-csharp:/src:rw"
+    - "C:\\Users\\darkstar2024\\.nuget\\packages:/root/.nuget/packages"
     working_dir: "/app"
