@@ -6,6 +6,7 @@ namespace vicuna_infra.Service
     {
         Task<Guid?> AddUser(User user);
         Task<Guid?> RemoveUser(User user);
+        Task<Guid?> RemoveUser(Guid userId);
         Task<Guid?> UpdateUser(User user);
     }
 }

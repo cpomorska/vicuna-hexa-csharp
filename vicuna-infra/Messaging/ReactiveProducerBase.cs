@@ -5,13 +5,11 @@ namespace vicuna_infra.Messaging
 {
     public class ReactiveProducerBase : IObservable<Message<Null, byte[]>>
     {
-        private readonly string bootstrapServers;
         private readonly ProducerConfig config;
         private readonly IProducer<Null, byte[]> producer;
 
         public ReactiveProducerBase(string bootstrapServers)
         {
-            this.bootstrapServers = bootstrapServers;
             config = new ProducerConfig { BootstrapServers = bootstrapServers };
             producer = new ProducerBuilder<Null, byte[]>(config).Build();
         }

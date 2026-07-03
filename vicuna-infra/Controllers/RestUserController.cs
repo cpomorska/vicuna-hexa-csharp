@@ -12,10 +12,9 @@ namespace vicuna_infra.Controllers
     [ApiController]
     [Route("read")]
     [EnableCors("DevelopmentPolicy")]
-    public class RestUserController(ILoggerFactory loggerFactory) : ControllerBase
+    public class RestUserController(ILoggerFactory loggerFactory, IUserService userService) : ControllerBase
     {
         private readonly ILogger<RestUserController> _logger = loggerFactory.CreateLogger<RestUserController>();
-        private readonly UserReadOnlyService _userService = new(loggerFactory);
 
         [HttpGet]
         [Route("user/{userdto}")]
@@ -29,7 +28,7 @@ namespace vicuna_infra.Controllers
                 return BadRequest(ModelState);
             }
             _logger.LogInformation("Reading entries by Username");
-            var userFound = _userService.FindUser(user).Result;
+            var userFound = userService.FindUser(user).Result;
             
             return userFound != null 
                 ? Ok(userFound) 
@@ -48,7 +47,7 @@ namespace vicuna_infra.Controllers
                 return BadRequest();
             }
             _logger.LogInformation("Reading entries by Username");
-            var userFound = _userService.GetUserByUsername(username).Result;
+            var userFound = userService.GetUserByUsername(username).Result;
             
             return userFound != null 
                 ? Ok(userFound) 
@@ -67,7 +66,7 @@ namespace vicuna_infra.Controllers
                 return BadRequest();
             }
             _logger.LogInformation("Reading entries by Username and Password");
-            var userFound = _userService.GetUserByUsernnameAndPassword(username, password).Result;
+            var userFound = userService.GetUserByUsernnameAndPassword(username, password).Result;
             
             return userFound != null 
                 ? Ok(userFound) 
@@ -86,7 +85,7 @@ namespace vicuna_infra.Controllers
                 return BadRequest();
             }
             _logger.LogInformation("Reading entries by Email");
-            var userFound = _userService.GetUserByEmail(useremail).Result;
+            var userFound = userService.GetUserByEmail(useremail).Result;
             
             return userFound != null 
                 ? Ok(userFound) 

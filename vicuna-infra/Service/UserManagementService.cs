@@ -1,5 +1,6 @@
 ﻿using System.Collections.Immutable;
 using vicuna_ddd.Domain.Users.Events;
+using vicuna_ddd.Domain.Users.Repository;
 using vicuna_ddd.Infrastructure.Events;
 using vicuna_ddd.Model.Users.Entity;
 using vicuna_infra.Controllers;
@@ -7,10 +8,9 @@ using vicuna_infra.Repository;
 
 namespace vicuna_infra.Service
 {
-    public class UserManagementService(ILoggerFactory loggerFactory, IDomainEventDispatcher dispatcher) : IUserManagementService
+    public class UserManagementService(ILoggerFactory loggerFactory, IDomainEventDispatcher dispatcher, IGenericUserRepository<User> userRepository) : IUserManagementService
     {
         private readonly ILogger _logger = loggerFactory.CreateLogger<RestUserController>();
-        private readonly UserUserRepository _userUserRepository = new();
 
         public async Task<Guid?> AddUser(User user)
         {
@@ -18,7 +18,7 @@ namespace vicuna_infra.Service
             try
             {
                 _logger.LogInformation("Create user {UserNumber}", user.UserNumber);
-                await _userUserRepository.Add(user);
+                await userRepository.Add(user);
                 guid = user.UserNumber;
 
                 // Domain-Event nach erfolgreichem Persistieren
@@ -40,7 +40,7 @@ namespace vicuna_infra.Service
             try
             {
                 _logger.LogInformation("Update user {UserNumber}", user.UserNumber);
-                _ = _userUserRepository.Update(user);
+                _ = userRepository.Update(user);
                 guid = user.UserNumber;
 
                 // Domain-Event nach erfolgreichem Persistieren
@@ -61,7 +61,7 @@ namespace vicuna_infra.Service
             try
             {
                 _logger.LogInformation("Remove user {UserNumber}", user.UserNumber);
-                _ = _userUserRepository.Remove(user);
+                _ = userRepository.Remove(user);
                 guid = user.UserNumber;
 
                 // Domain-Event nach erfolgreichem Persistieren
@@ -82,14 +82,14 @@ namespace vicuna_infra.Service
             try
             {
                 _logger.LogInformation("Reading entries by Username");
-                IEnumerable<User> userEntries = _userUserRepository
+                IEnumerable<User> userEntries = userRepository
                     .GetList(x => x.UserNumber == userId).Result.ToImmutableList();
                 User user = userEntries.FirstOrDefault(defaultValue: new User());
                 
                 if (user.UserNumber == Guid.Empty) return Task.FromResult(guid);
                 
                 _logger.LogInformation("Remove user {UserNumber}", user.UserNumber);
-                _ = _userUserRepository.Remove(user);
+                _ = userRepository.Remove(user);
                 
                 guid = user.UserNumber;
 

@@ -7,10 +7,14 @@ using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.AspNetCore.Server.Kestrel.Https;
 using vicuna_ddd.Domain.Users.Events;
 using vicuna_ddd.Domain.Users.Messaging;
+using vicuna_ddd.Domain.Users.Repository;
 using vicuna_ddd.Infrastructure.Events;
+using vicuna_ddd.Model.Users.Entity;
 using vicuna_ddd.Shared.Provider;
 using vicuna_infra.Events;
 using vicuna_infra.Messaging;
+using vicuna_infra.Repository;
+using vicuna_infra.Service;
 
 namespace vicuna_infra;
 
@@ -32,6 +36,9 @@ public partial class Program
         builder.Services.AddSingleton(producerConfig);
         builder.Services.AddSingleton<IDomainEventDispatcher, DomainEventDispatcher>();
         builder.Services.AddScoped<IDomainEventHandler<UserCreatedEvent>, UserCreatedEventHandler>();
+        builder.Services.AddScoped<IUserService, UserReadOnlyService>();
+        builder.Services.AddScoped<IUserManagementService, UserManagementService>();
+        builder.Services.AddScoped<IGenericUserRepository<User>, UserUserRepository>();
 
         var consumerConfig = new ExtendedConsumerConfig
         {

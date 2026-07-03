@@ -1,15 +1,16 @@
 ﻿using System.Collections.Immutable;
 using vicuna_ddd.Domain.Users.Dto;
+using vicuna_ddd.Domain.Users.Repository;
 using vicuna_ddd.Model.Users.Entity;
 using vicuna_infra.Controllers;
 using vicuna_infra.Repository;
 
 namespace vicuna_infra.Service
 {
-    public class UserReadOnlyService(ILoggerFactory loggerFactory) : IUserService
+    public class UserReadOnlyService(ILoggerFactory loggerFactory, IGenericUserRepository<User> userRepository) : IUserService
     {
         private readonly ILogger _logger = loggerFactory.CreateLogger<RestUserController>();
-        private readonly UserUserRepository _userUserRepository = new();
+
 
         public Task<User?> FindUser(UserDto userDto)
         {
@@ -17,7 +18,7 @@ namespace vicuna_infra.Service
             try
             {
                 _logger.LogInformation("Reading entries from Users");
-                userEntries = _userUserRepository
+                userEntries = userRepository
                     .GetList(x =>
                         x.UserName == userDto.UserName && x.UserNumber == userDto.UserNumber &&
                         x.UserPass == userDto.UserPass && x.UserEnabled == userDto.UserEnabled).Result
@@ -37,7 +38,7 @@ namespace vicuna_infra.Service
             try
             {
                 _logger.LogInformation("Reading entries by email");
-                userEntries = _userUserRepository
+                userEntries = userRepository
                     .GetList(x => x.UserEmail == email).Result.ToImmutableList();
             }
             catch (Exception ex)
@@ -54,7 +55,7 @@ namespace vicuna_infra.Service
             try
             {
                 _logger.LogInformation("Reading entries by Username and Password");
-                userEntries = _userUserRepository
+                userEntries = userRepository
                     .GetList(x => x.UserName == userName && x.UserPass == password).Result.ToImmutableList();
             }
             catch (Exception ex)
@@ -71,7 +72,7 @@ namespace vicuna_infra.Service
             try
             {
                 _logger.LogInformation("Reading entries by Username");
-                userEntries = _userUserRepository
+                userEntries = userRepository
                     .GetList(x => x.UserName == username).Result.ToImmutableList();
             }
             catch (Exception ex)

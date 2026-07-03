@@ -12,9 +12,9 @@ namespace vicuna_infra.Service
         IMapper mapper)
         : IWriteMessageConfirmationService
     {
-        public async Task<Guid?> StoreDeliveredMessage(DeliveryConfirmationDto? deliveryConfirmationDto)
+        public async Task<Guid?> StoreDeliveredMessage(DeliveryConfirmationDto? messageDeliveryConfirmationDto)
         {
-            var deliveryConfirmation = mapper.Map<DeliveredMessage>(deliveryConfirmationDto);
+            var deliveryConfirmation = mapper.Map<DeliveredMessage>(messageDeliveryConfirmationDto);
             await deliveredMessageRepository.Add(deliveryConfirmation);
             return deliveryConfirmation.Messagekey;
         }

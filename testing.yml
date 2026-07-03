@@ -13,19 +13,19 @@ test_wallet:
   script:
     - "echo 'from Branch $CI_COMMIT_BRANCH' "
     - "dotnet test vicuna-infra-test/vicuna-infra-test.csproj --collect:\"XPlat Code Coverage\" --logger:\"junit;LogFilePath=testresult.xml\""
-    - "dotnet tool install -g dotnet-reportgenerator-globaltool"
-    - "/root/.dotnet/tools/reportgenerator -reports:\"**/coverage.cobertura.xml\" -targetdir:\"./coverage\" --reporttypes:\"Cobertura;HtmlInline\""
+  #  - "dotnet tool install -g dotnet-reportgenerator-globaltool"
+  #  - "/root/.dotnet/tools/reportgenerator -reports:\"**/coverage.cobertura.xml\" -targetdir:\"./coverage\" --reporttypes:\"Cobertura;HtmlInline\""
   #  - "sed -n '/Summary/,/^$/p' coverage/Summary.txt"
-  coverage: '/Line coverage: \d+/'
-  artifacts:
-    reports:
-      junit:
-        - "*/testresult.xml"
-      coverage_report:
-        coverage_format: cobertura
-        path: "./coverage/Cobertura.xml"
-    paths:
-      - "./coverage/*.*"
+  #coverage: '/Line coverage: \d+/'
+  #artifacts:
+  #  reports:
+  #    junit:
+  #      - "*/testresult.xml"
+  #    coverage_report:
+  #      coverage_format: cobertura
+  #      path: "./coverage/Cobertura.xml"
+  #  paths:
+  #    - "./coverage/*.*"
 
 sast:
   stage: test_vicuna

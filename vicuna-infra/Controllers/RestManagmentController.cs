@@ -11,10 +11,9 @@ namespace vicuna_infra.Controllers
     [Route("manage")]
     [EnableCors("DevelopmentPolicy")]
     [AllowAnonymous]
-    public class RestUserManagementController(ILoggerFactory loggerFactory, IDomainEventDispatcher dispatcher) : ControllerBase
+    public class RestUserManagementController(ILoggerFactory loggerFactory, IUserManagementService userService) : ControllerBase
     {
         private readonly ILogger<RestUserController> _logger = loggerFactory.CreateLogger<RestUserController>();
-        private readonly UserManagementService _userService = new(loggerFactory, dispatcher);
 
         [HttpPost]
         [Route("create")]
@@ -28,7 +27,7 @@ namespace vicuna_infra.Controllers
             }
             
             _logger.LogInformation("Adding user {UserNumber}",user.UserNumber);
-            var userFoundGuid = _userService.AddUser(user).Result;
+            var userFoundGuid = userService.AddUser(user).Result;
 
             return userFoundGuid != Guid.Empty 
                 ? Created($"/create/{userFoundGuid}", userFoundGuid) 
@@ -47,7 +46,7 @@ namespace vicuna_infra.Controllers
                 return BadRequest(ModelState);
             }
             _logger.LogInformation("Updating user {UserNumber}", user.UserNumber);
-            var userUpdateGuid = _userService.UpdateUser(user).Result;
+            var userUpdateGuid = userService.UpdateUser(user).Result;
             
             return userUpdateGuid != Guid.Empty
                 ? NoContent()
@@ -66,7 +65,7 @@ namespace vicuna_infra.Controllers
                 return BadRequest(ModelState);
             }
             _logger.LogInformation("Removing user {UserNumber}", user.UserNumber);
-            var userRemoveGuid = _userService.RemoveUser(user).Result;
+            var userRemoveGuid = userService.RemoveUser(user).Result;
             
             return userRemoveGuid != Guid.Empty
                 ? NoContent()
@@ -85,7 +84,7 @@ namespace vicuna_infra.Controllers
                 return BadRequest(ModelState);
             }
             _logger.LogInformation("Removing user {UserId}", userId);
-            var userRemoveGuid = _userService.RemoveUser(userId).Result;
+            var userRemoveGuid = userService.RemoveUser(userId).Result;
             
             return userRemoveGuid != Guid.Empty
                 ? NoContent()
