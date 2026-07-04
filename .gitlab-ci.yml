@@ -43,7 +43,7 @@ owasp_check:
     - docker
   script:
     # Job will scan the project root folder and fail if any vulnerabilities with CVSS > 0 are found
-    - /usr/share/dependency-check/bin/dependency-check.sh --scan "./" --format ALL --project "$CI_PROJECT_NAME" --failOnCVSS 0
+    - /usr/share/dependency-check/bin/dependency-check.sh --scan "./" -exclude "**/node_modules/**" --exclude "**/coverage-results/**" --exclude "**/bin/**" --exclude "**/obj/**" --format ALL --project "$CI_PROJECT_NAME" --failOnCVSS 0
     # Dependency Check will only fail the job based on CVSS scores, and in some cases vulnerabilities do not
     # have CVSS scores (e.g. those from NPM audit), so they don't cause failure.  To fail for any vulnerabilities    
     # grep the resulting report for any "vulnerabilities" sections and exit if any are found (count > 0).
