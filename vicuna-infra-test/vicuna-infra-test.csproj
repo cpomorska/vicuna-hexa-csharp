@@ -45,7 +45,7 @@
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="System.Reactive" Version="7.0.0" />
-        <PackageReference Include="TngTech.ArchUnitNET.xUnitV3" Version="0.13.3" />
+        <PackageReference Include="TngTech.ArchUnitNET.xUnitV3" Version="0.13.4" />
         <PackageReference Include="xunit.v3.assert" Version="4.0.0" />
         <PackageReference Include="xunit.v3.core" Version="4.0.0" />
         <PackageReference Include="xunit.v3.runner.console" Version="4.0.0">
