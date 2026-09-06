@@ -12,10 +12,15 @@ namespace vicuna_ddd.Infrastructure.Users.Repository
 
         public bool UnitTestDb { get; set; }
 
+        private TDbContext CreateContext()
+        {
+            return (TDbContext)Activator.CreateInstance(typeof(TDbContext), UnitTestDb)!;
+        }
+
 
         public async Task Add(params T[] items)
         {
-            using (var context = new UserDbContext(UnitTestDb))
+            using (var context = CreateContext())
             {
                 await context.Set<T>().AddRangeAsync(items);
                 await context.SaveChangesAsync();
@@ -24,7 +29,7 @@ namespace vicuna_ddd.Infrastructure.Users.Repository
 
         public async Task<IList<T>> GetAll(params Expression<Func<T, object>>[] navigationProperties)
         {
-            using (var context = new UserDbContext(UnitTestDb))
+            using (var context = CreateContext())
             {
                 IQueryable<T> dbQuery = context.Set<T>();
 
@@ -42,7 +47,7 @@ namespace vicuna_ddd.Infrastructure.Users.Repository
         public async Task<IList<T>> GetList(Expression<Func<T, bool>> where,
             params Expression<Func<T, object>>[] navigationProperties)
         {
-            using (var context = new UserDbContext(UnitTestDb))
+            using (var context = CreateContext())
             {
                 IQueryable<T> dbQuery = context.Set<T>();
 
@@ -61,7 +66,7 @@ namespace vicuna_ddd.Infrastructure.Users.Repository
         public async Task<T> GetSingle(Expression<Func<T, bool>> where,
             params Expression<Func<T, object>>[] navigationProperties)
         {
-            using (var context = new UserDbContext(UnitTestDb))
+            using (var context = CreateContext())
             {
                 IQueryable<T> dbQuery = context.Set<T>();
 
@@ -78,7 +83,7 @@ namespace vicuna_ddd.Infrastructure.Users.Repository
 
         public async Task Remove(params T[] items)
         {
-            using (var context = new UserDbContext(UnitTestDb))
+            using (var context = CreateContext())
             {
                 context.Set<T>().RemoveRange(items);
                 await context.SaveChangesAsync();
@@ -87,7 +92,7 @@ namespace vicuna_ddd.Infrastructure.Users.Repository
 
         public async Task Update(params T[] items)
         {
-            using (var context = new UserDbContext(UnitTestDb))
+            using (var context = CreateContext())
             {
                 context.Set<T>().UpdateRange(items);
                 await context.SaveChangesAsync();

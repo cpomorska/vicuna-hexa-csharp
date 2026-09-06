@@ -7,6 +7,8 @@ namespace vicuna_ddd.Shared.Provider
 {
     public class UserDbContext : GenericDbContext
     {
+        public UserDbContext(){}
+        
         public UserDbContext(bool useInMemoryDb) : base(useInMemoryDb)
         {
             UseInMemoryDb = useInMemoryDb;

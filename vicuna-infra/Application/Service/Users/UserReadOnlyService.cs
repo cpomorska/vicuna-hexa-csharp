@@ -3,7 +3,6 @@ using vicuna_ddd.Domain.Users.Dto;
 using vicuna_ddd.Domain.Users.Repository;
 using vicuna_ddd.Model.Users.Entity;
 using vicuna_infra.Controllers;
-using vicuna_infra.Repository;
 
 namespace vicuna_infra.Service
 {

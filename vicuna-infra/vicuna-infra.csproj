@@ -35,4 +35,9 @@
         <ProjectReference Include="..\vicuna-ddd\vicuna-core-lib.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Application\" />
+      <Folder Include="Infrastructure\Users\Adapter\Outgoing\Persistence\" />
+    </ItemGroup>
+
 </Project>
